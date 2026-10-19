@@ -10,34 +10,32 @@ Leitura-base: BATISTA, Mariana; DOMINGOS, Amanda (2017). *Mais que boas intenç�
 
 ## A ideia
 
-Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Para cada técnica, os slides trazem as **características**, **exemplos em políticas públicas** e um **passo a passo** com o 'print' do console do R e como lê-lo, com os cortes da literatura (RCT, PSM, DiD e RDD; IV e controle sintético têm o passo a passo completo nos scripts), com números dos scripts. Os **scripts** são demonstrações comentadas, para os alunos entenderem e se basearem. 
+Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Para cada técnica, os slides trazem as **características**, **exemplos em políticas públicas** e um **passo a passo** com o 'print' do console do R, com os cortes da literatura (experimento, PSM, DiD e RDD), com números dos scripts. Metade do curso é quantitativa e metade é **avaliação qualitativa e métodos mistos**. Os **scripts** são demonstrações comentadas, para os alunos entenderem e se basearem. 
 
 | Bloco | Script (demonstração) |
 |---|---|
 | Problema do contrafactual e viés de seleção | `01_contrafactual_vies_selecao.R` |
-| Experimento controlado (RCT) | `02_experimento_rct.R` |
+| Experimento controlado (e natural) | `02_experimento_rct.R` |
 | Pareamento / propensity score (PSM) | `03_pareamento_psm.R` |
 | Diferença-em-diferenças (DiD) | `04_diferenca_em_diferenca.R` |
 | Regressão descontínua (RDD) | `05_regressao_descontinua.R` |
-| Variáveis instrumentais (IV) | `06_variaveis_instrumentais.R` |
-| Controle sintético | `07_controle_sintetico.R` |
+| Outras técnicas: variáveis instrumentais (extra) | `06_variaveis_instrumentais.R` |
+| Outras técnicas: controle sintético (extra) | `07_controle_sintetico.R` |
 | Avaliação qualitativa e métodos mistos | (slides, com passo a passo) |
 
 ## Programa (14h às 18h)
 
 | Horário | Bloco |
 |---|---|
-| 14:00 a 14:10 | Abertura: por que avaliar? |
-| 14:10 a 14:25 | O problema do contrafactual |
-| 14:25 a 14:50 | Experimento controlado |
-| 14:50 a 15:10 | Pareamento (PSM) |
-| 15:10 a 15:35 | Diferença-em-diferenças |
-| 15:35 a 16:05 | **Intervalo** |
-| 16:05 a 16:25 | Regressão descontínua |
-| 16:25 a 16:37 | Variáveis instrumentais |
-| 16:37 a 16:49 | Controle sintético |
-| 16:49 a 16:55 | Como escolher a técnica |
-| 16:55 a 17:50 | Avaliação qualitativa e métodos mistos |
+| 14:00 a 14:20 | Abertura e tipos de avaliação |
+| 14:20 a 14:30 | O problema do contrafactual |
+| 14:30 a 14:45 | Experimento e experimentos naturais |
+| 14:45 a 15:00 | Pareamento (PSM) |
+| 15:00 a 15:15 | Diferença-em-diferenças |
+| 15:15 a 15:30 | Regressão descontínua |
+| 15:30 a 15:40 | Outras técnicas importantes e como escolher |
+| 15:40 a 16:10 | **Intervalo** |
+| 16:10 a 17:50 | Avaliação qualitativa e métodos mistos |
 | 17:50 a 18:00 | Encerramento |
 
 O roteiro minuto a minuto está em [`material/roteiro_instrutor.md`](material/roteiro_instrutor.md).

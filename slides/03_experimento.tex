@@ -1,7 +1,7 @@
 % =============================================================================
-% EXPERIMENTO CONTROLADO (14:25 a 14:50)   [Script 02]
+% EXPERIMENTO CONTROLADO E EXPERIMENTOS NATURAIS (14:30 a 14:45)   [Script 02]
 % =============================================================================
-\section[Experimento]{Experimento controlado}
+\section[Experimento]{Experimento e experimentos naturais}
 \subsection{Ideia e exemplos}
 
 \begin{frame}{O ``padrão ouro'': a aleatorização}
@@ -34,8 +34,8 @@
     \scriptsize
     \begin{itemize}
       \item \textbf{Quênia:} desparasitação em escolas, entrada sorteada por fases; mais frequência escolar (Miguel e Kremer, 2004).
-      \item \textbf{México:} Progresa, localidades sorteadas para entrar primeiro (Gertler, 2004; Schultz, 2004); Seguro Popular, gastos com saúde caíram 23\% (King et al., 2009).
-      \item \textbf{Hipotético (nosso Qualifica):} sorteio das vagas excedentes de um curso de qualificação municipal.
+      \item \textbf{México:} Progresa, localidades sorteadas para entrar primeiro (Gertler, 2004; Schultz, 2004).
+      \item \textbf{México:} Seguro Popular, gastos com saúde caíram 23\% (King et al., 2009).
     \end{itemize}
 \end{frame}
 
@@ -43,12 +43,6 @@
   \centering
   \includegraphics[height=4.4cm]{02_balanco.png}\par
   \footnotesize Com sorteio, até a \ind{motivação} (não observada) fica equilibrada. SMD: diferença padronizada de médias.
-\end{frame}
-
-\begin{frame}{Mil avaliações, dois métodos (Monte Carlo)}
-  \centering
-  \includegraphics[height=4.3cm]{02_montecarlo.png}\par
-  \footnotesize O sorteio acerta \emph{em média} (301); a autosseleção erra \alert{sempre para o mesmo lado} (587). Verdade: 300.
 \end{frame}
 
 \subsection{Passo a passo}
@@ -61,91 +55,69 @@
        idade       mulher escolaridade  renda_antes
        0.049        0.006        0.014       -0.018
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{Experimento, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} um número por característica. É a \textbf{diferença entre as médias dos dois grupos, medida em desvios-padrão} (SMD). Zero = grupos iguais.
-    \item \rot{Exemplo:} idade $=0{,}049$: os grupos diferem em 5\% de um desvio-padrão de idade (cerca de 7 meses). Praticamente nada.
-    \item \rot{Regra prática:} $|\text{SMD}|<0{,}10$ é uma diferença pequena demais para distorcer a comparação (Austin, 2009).
-    \item \rot{Conclusão:} todos ficaram abaixo de 0,05: o sorteio funcionou e podemos comparar os grupos.
+    \item \rot{Onde olhar:} um número por característica: a diferença entre os grupos em desvios-padrão (SMD). Zero = iguais.
+    \item \rot{Corte:} $|\text{SMD}|<0{,}10$ (Austin, 2009). Todos abaixo de 0,05: o sorteio funcionou.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
 \begin{frame}[fragile]{Experimento, passo 2: quanto a renda aumentou?}
 \begin{consoleR}
-@@> t.test(renda_exp ~ tratamento, data = dados)
-    Welch Two Sample t-test
-data:  renda_exp by tratamento
-t = -25.859, df = 4994.8, p-value < 2.2e-16
-alternative hypothesis: true difference in means between
-group 0 and group 1 is not equal to 0
-95 percent confidence interval:
- -317.5637 -272.8064
-sample estimates:
-mean in group 0 mean in group 1
-       2032.597        2327.782
+@@> m <- lm(renda_exp ~ tratamento, data = dados)
+@@> round(c(coef(m)["tratamento"],
+@@+         confint(m)["tratamento", ]), 1)
+tratamento      2.5 %     97.5 %
+     295.2      272.8      317.6
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{Experimento, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Comece pelo fim:} renda média do controle (\texttt{group 0}) $=2.032{,}6$; do tratamento (\texttt{group 1}) $=2.327{,}8$. \textbf{Efeito} $=$ \destaque{R\$ 295}.
-    \item \rot{Intervalo de confiança:} o efeito está, com 95\% de confiança, entre R\$ 273 e R\$ 318. O R mostra os números negativos porque faz ``controle $-$ tratamento''.
-    \item \rot{p-valor} ($<2{,}2\times10^{-16}$): a chance de ver uma diferença desse tamanho \emph{se o programa não tivesse efeito}. Regra usual: $p<0{,}05$ = efeito significativo. Mas olhe o tamanho e o intervalo, não só o $p$ (Wasserstein e Lazar, 2016).
+    \item \rot{Onde olhar:} \texttt{tratamento} é o efeito: \destaque{R\$ 295} (verdade: 300). Os outros dois números são o IC de 95\%: de R\$ 273 a R\$ 318.
+    \item \rot{Corte:} IC sem o zero $\Rightarrow$ efeito significativo ($p<0{,}05$). Olhe o tamanho e o intervalo, não só o $p$ (Wasserstein e Lazar, 2016).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Experimento, passo 3: dá para estimar com mais precisão?}
-\begin{consoleR}
-@@> m <- lm(renda_exp ~ tratamento + escolaridade + idade +
-@@+            mulher + renda_antes, data = dados)
-@@> round(summary(m)$coefficients, 3)
-             Estimate Std. Error t value Pr(>|t|)
-(Intercept)    83.452     10.431   8.000    0.000
-tratamento    302.068      3.413  88.506    0.000
-escolaridade   -0.853      0.815  -1.046    0.296
-idade           0.116      0.143   0.816    0.414
-mulher         -0.786      3.451  -0.228    0.820
-renda_antes     1.011      0.006 158.389    0.000
-\end{consoleR}
-\end{frame}
+\subsection{Experimentos naturais}
 
-\begin{frame}{Experimento, passo 3: como ler}
-\begin{leitura}
-  \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} só a linha \texttt{tratamento}. \texttt{Estimate} $=302{,}1$ é o efeito; \texttt{Std.\ Error} $=3{,}4$ é a margem de incerteza (era 11,4 no passo 2); \texttt{Pr(>|t|)} é o p-valor.
-    \item \rot{Por que ficou mais preciso:} quem já ganhava mais antes continua ganhando mais; a regressão ``desconta'' isso e sobra menos ruído. O efeito quase não muda, porque o sorteio já tinha resolvido o viés.
-    \item \rot{Cuidado:} as outras linhas \textbf{não} são efeitos de nada (Westreich e Greenland, 2013). Só use características medidas \emph{antes} do programa.
+\begin{frame}{Experimentos naturais: quando a ``sorte'' faz o sorteio}
+  \begin{itemize}
+    \item Nem sempre dá para sortear. Às vezes uma \ind{regra}, um \ind{sorteio administrativo} ou um \ind{choque} divide as pessoas \emph{como se} fosse aleatório;
+    \item O pesquisador \textbf{não desenha} a divisão: encontra-a e \textbf{argumenta} que ela é ``quase aleatória'';
+    \item Vantagem: dados de políticas reais, em larga escala. Limite: a aleatoriedade \textbf{não é garantida}; precisa ser defendida e testada (Dunning, 2012).
   \end{itemize}
-\end{leitura}
+  \vspace{0.2cm}
+  \begin{block}{Pergunta-chave}
+    \small Quem recebeu e quem não recebeu a política diferem \emph{só} pelo acaso da regra?
+  \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Experimento, passo 4: quantas pessoas preciso sortear?}
-\begin{consoleR}
-@@> power.t.test(delta = 100, sd = 430, sig.level = 0.05,
-@@+              power = 0.80)
-     Two-sample t test power calculation
-              n = 291.2151
-          delta = 100
-             sd = 430
-      sig.level = 0.05
-          power = 0.8
-    alternative = two.sided
-NOTE: n is number in *each* group
-\end{consoleR}
+\begin{frame}{Tipos de experimento natural e a técnica de cada um}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries\color{azul}\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.5cm}@{}}
+    \toprule
+    Fonte da ``sorte'' & Exemplo de política & Técnica \\ \midrule
+    Loteria ou sorteio & Vagas em escola, moradia, seguro-saúde; sorteio de municípios para fiscalização & Comparação direta ou IV \\
+    Regra com corte & Programa só para renda até um valor; turma dividida acima de 40 alunos & Regressão descontínua \\
+    Choque no tempo e no espaço & Lei que vale só em um estado; desastre; mudança de regra em uma data & Dif.-em-dif. \\
+    Fronteiras e datas de nascimento & Quem nasce um dia antes ou depois da data de corte da matrícula & RDD ou IV \\ \bottomrule
+  \end{tabularx}
+  \vspace{0.2cm}\par
+  \small Por isso as técnicas de hoje (RDD, DiD, IV) são, muitas vezes, formas de \destaque{explorar experimentos naturais}.
 \end{frame}
 
-\begin{frame}{Experimento, passo 4: como ler}
-\begin{leitura}
-  \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Você informa:} \texttt{delta} $=100$ (o menor efeito que vale a pena detectar); \texttt{sd} $=430$ (quanto a renda varia entre as pessoas, de dados anteriores); \texttt{sig.level} $=0{,}05$ (aceito 5\% de risco de ver efeito onde não há); \texttt{power} $=0{,}80$ (quero 80\% de chance de ver o efeito, se ele existir).
-    \item \rot{O R responde:} \texttt{n} $=291{,}2$: são \textbf{292 pessoas em cada grupo} (584 no total).
-    \item \rot{Intuição:} R\$ 100 é pouco perto da variação da renda (430), então é preciso muita gente; para um efeito de R\$ 300 bastariam 34 por grupo. 80\% e 5\% são o padrão (Cohen, 1988).
+\begin{frame}{Experimentos naturais em políticas públicas}
+  \footnotesize
+  \begin{itemize}
+    \item \textbf{EUA:} loteria do alistamento militar (Vietnã) sorteou quem seria convocado e permitiu medir o efeito sobre a renda de veteranos (Angrist, 1990).
+    \item \textbf{EUA:} Oregon sorteou vagas no Medicaid; efeitos sobre saúde e gastos (Finkelstein et al., 2012).
+    \item \textbf{Brasil:} sorteio público de municípios para auditorias da CGU; efeito da divulgação de irregularidades sobre a reeleição de prefeitos (Ferraz e Finan, 2008).
+    \item \textbf{Israel:} regra de Maimônides (turmas divididas acima de 40 alunos) e desempenho escolar (Angrist e Lavy, 1999).
   \end{itemize}
-\end{leitura}
+  \vspace{0.2cm}
+  \begin{block}{Cuidados}
+    \scriptsize Mostre que os grupos são parecidos \emph{antes}; descreva como o acaso operou; teste se houve manipulação da regra; diga \textbf{para quem} vale o efeito.
+  \end{block}
 \end{frame}

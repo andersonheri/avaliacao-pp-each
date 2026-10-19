@@ -1,5 +1,5 @@
 % =============================================================================
-% DIFERENÇA-EM-DIFERENÇAS (15:10 a 15:35)   [Script 04]
+% DIFERENÇA-EM-DIFERENÇAS (15:00 a 15:15)   [Script 04]
 % =============================================================================
 \section[DiD]{Diferença-em-diferenças}
 \subsection{Ideia e exemplos}
@@ -52,7 +52,7 @@
     \begin{itemize}
       \item \textbf{Brasil:} Lei Maria da Penha. Mulheres (tratamento) $\times$ homens (controle), taxa de homicídios (Cerqueira et al., 2015).
       \item \textbf{EUA:} aumento do salário mínimo em Nova Jersey, com lanchonetes da Pensilvânia como controle (Card e Krueger, 1994).
-      \item \textbf{Hipotético:} Qualifica implantado em uma região (script 04).
+      \item \textbf{Brasil:} expansão da Estratégia Saúde da Família entre municípios e mortalidade infantil (Rocha e Soares, 2010).
     \end{itemize}
 \end{frame}
 
@@ -73,87 +73,46 @@
 3       0   1 2405.008
 4       1   1 2402.652
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{DiD, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Como ler as colunas:} \texttt{tratado} 0 = controle, 1 = região do programa; \texttt{pos} 0 = antes, 1 = depois; \texttt{renda} = média do grupo naquele período.
-    \item \rot{Controle} (linhas 1 e 3): $2.171\to2.405$, subiu \textbf{234}. É o que aconteceria sem o programa (a tendência).
-    \item \rot{Tratados} (linhas 2 e 4): $1.868\to2.403$, subiu \textbf{534}.
-    \item \rot{Efeito:} o que os tratados cresceram \emph{além} do normal: $534-234=$ \destaque{300}. Comparar só o ``depois'' (2.403 $\times$ 2.405) daria zero, porque os tratados eram mais pobres.
+    \item \rot{Onde olhar:} \texttt{tratado} 1 = região do programa; \texttt{pos} 1 = depois. Controle: $2.171\to2.405$ (subiu \textbf{234}). Tratados: $1.868\to2.403$ (subiu \textbf{534}).
+    \item \rot{Efeito:} $534-234=$ \destaque{300}. Comparar só o ``depois'' daria zero, porque os tratados eram mais pobres.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{DiD, passo 2: a mesma conta em forma de regressão}
+\begin{frame}[fragile]{DiD, passo 2: qual a incerteza correta?}
 \begin{consoleR}
-@@> round(summary(lm(renda ~ tratado * pos,
-@@+                    data = painel))$coefficients, 2)
-            Estimate Std. Error t value Pr(>|t|)
-(Intercept)  2170.78       8.91  243.54        0
-tratado      -302.59      14.09  -21.47        0
-pos           234.22      12.61   18.58        0
-tratado:pos   300.23      19.93   15.06        0
+@@> round(summary(reg_dd)$coefficients["tratado:pos", ], 2)
+  Estimate Std. Error    t value   Pr(>|t|)
+    300.23      19.93      15.06       0.00
+@@> round(coeftable(reg_fe)[, 1:2], 2)
+            Estimate Std. Error
+tratado:pos   300.23       7.77
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{DiD, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Cada linha repete uma conta do passo 1:} \texttt{(Intercept)} $=2.171$: controle antes. \texttt{tratado} $=-302$: os tratados eram R\$ 302 mais pobres antes. \texttt{pos} $=+234$: quanto o controle cresceu. \texttt{tratado:pos} $=+300$: o crescimento \emph{extra} dos tratados, \textbf{o efeito}.
-    \item \rot{Por que usar regressão:} ela dá o erro-padrão e permite incluir controles.
-    \item \rot{Mas cuidado:} este erro-padrão (19,9) trata os 6 trimestres de uma mesma pessoa como se fossem pessoas diferentes. Isso está errado; o passo 3 corrige.
+    \item \rot{Onde olhar:} o efeito é o mesmo (\destaque{300}), mas o erro-padrão muda. O primeiro (19,9) trata os 6 trimestres da mesma pessoa como pessoas diferentes; o segundo (7,8) compara cada trabalhador com ele mesmo e agrupa por pessoa.
+    \item \rot{Corte:} erro-padrão agrupado por unidade (Bertrand, Duflo e Mullainathan, 2004).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{DiD, passo 3: qual a incerteza correta?}
-\begin{consoleR}
-@@> feols(renda ~ tratado:pos | id + trimestre, data = painel,
-@@+       cluster = ~id)
-OLS estimation, Dep. Var.: renda
-Observations: 6,000
-Fixed-effects: id: 1,000,  trimestre: 6
-Standard-errors: Clustered (id)
-            Estimate Std. Error t value  Pr(>|t|)
-tratado:pos  300.234    7.76534 38.6633 < 2.2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-RMSE: 135.3     Adj. R2: 0.881241
-              Within R2: 0.227944
-\end{consoleR}
-\end{frame}
-
-\begin{frame}{DiD, passo 3: como ler}
-\begin{leitura}
-  \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{O que mudou:} \texttt{| id + trimestre} compara cada trabalhador com ele mesmo; \texttt{cluster = \textasciitilde id} avisa que os dados da mesma pessoa se parecem (regra: Bertrand, Duflo e Mullainathan, 2004).
-    \item \rot{Onde olhar:} linha \texttt{tratado:pos}. Efeito $=300{,}2$; erro-padrão $=7{,}8$; IC 95\% $\approx 300\pm2\times7{,}8$, de 285 a 315; \texttt{***}: $p<0{,}001$. RMSE e R2 medem o ajuste, não o efeito.
-  \end{itemize}
-\end{leitura}
-\end{frame}
-
-\begin{frame}[fragile]{DiD, passo 4: os grupos já se afastavam antes?}
+\begin{frame}[fragile]{DiD, passo 3: os grupos já se afastavam antes?}
 \begin{consoleR}
 @@> estudo <- feols(renda ~ i(trimestre, tratado, ref = 3) |
-@@+                 id + trimestre, data = painel, cluster = ~id)
-@@> round(coeftable(estudo), 2)
-                     Estimate Std. Error t value Pr(>|t|)
-trimestre::1:tratado    23.15      14.27    1.62     0.11
-trimestre::2:tratado    20.67      13.59    1.52     0.13
-trimestre::4:tratado   317.24      13.66   23.23     0.00
-trimestre::5:tratado   306.06      13.61   22.48     0.00
-trimestre::6:tratado   321.22      13.36   24.04     0.00
+@@+         id + trimestre, data = painel, cluster = ~id)
+@@> round(coeftable(estudo)[c(1, 2, 3, 5), c(1, 4)], 2)
+                     Estimate Pr(>|t|)
+trimestre::1:tratado    23.15     0.11
+trimestre::2:tratado    20.67     0.13
+trimestre::4:tratado   317.24     0.00
+trimestre::6:tratado   321.22     0.00
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{DiD, passo 4: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Por que testar:} se os grupos já se afastavam antes, o DiD culparia o programa por uma diferença que já existia.
-    \item \rot{Onde olhar:} cada linha é a distância entre tratados e controle naquele trimestre, comparada ao 3.º (o último antes). Trimestres 1 e 2 (antes): 23 e 21, com \texttt{Pr} 0,11 e 0,13 ($>0{,}05$): \textbf{não diferem de zero}. Trimestres 4 a 6 (depois): ${\approx}$ 300.
-    \item \rot{Regra:} coeficientes de antes com $p>0{,}05$ e pequenos perto do efeito (23 $\times$ 300). ``Não significativo'' não prova o paralelismo (Roth, 2022).
+    \item \rot{Onde olhar:} distância tratados $-$ controle por trimestre (base: o 3.º). \textbf{Antes} (1 e 2): 23 e 21, $p>0{,}05$. \textbf{Depois} (4 e 6): perto de 300.
+    \item \rot{Corte:} pré-coeficientes pequenos, $p>0{,}05$; isso não prova o paralelismo (Roth, 2022).
   \end{itemize}
 \end{leitura}
 \end{frame}

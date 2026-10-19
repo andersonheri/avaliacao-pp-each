@@ -1,5 +1,5 @@
 % =============================================================================
-% O PROBLEMA DO CONTRAFACTUAL (14:10 a 14:25)   [Script 01]
+% O PROBLEMA DO CONTRAFACTUAL (14:20 a 14:30)   [Script 01]
 % =============================================================================
 \section[Contrafactual]{O problema do contrafactual}
 \subsection{O problema}
@@ -46,8 +46,12 @@
       \end{block}
     \end{column}
   \end{columns}
-  \vspace{0.3cm}
+  \vspace{0.2cm}
   \centering\small Nos dois casos o efeito do programa se mistura com outros fatores.
+  \vspace{0.1cm}
+  \begin{block}{Voltando à enquete (dados simulados do \textit{Qualifica}, efeito verdadeiro R\$ 300)}
+    \footnotesize Participantes $\times$ não: R\$ 587 (\destaque{+287}, seleção). Antes $\times$ depois: R\$ 402 (\destaque{+102}, tendência). Resposta (b): o efeito é \textbf{menor}.
+  \end{block}
 \end{frame}
 
 \begin{frame}{Viés de seleção: os grupos já eram diferentes}
@@ -56,52 +60,35 @@
   \footnotesize Renda \textbf{antes} do programa: participantes R\$ 2.122; não participantes R\$ 1.836. A motivação (não observada) também difere.
 \end{frame}
 
-\subsection{O laboratório}
+\subsection{Características}
 
-\begin{frame}{Nosso laboratório: o programa \textit{Qualifica}}
-  \begin{itemize}
-    \item 5.000 trabalhadores; treinamento profissional; resultado: \textbf{renda}.
-    \item \destaque{Efeito verdadeiro: R\$ 300/mês} (escrito por nós).
-    \item Participam mais os escolarizados e \textbf{motivados} (motivação não observada).
-    \item A renda de todos cresce R\$ 100 no período (tendência).
-  \end{itemize}
-  \vspace{0.2cm}
-  \begin{exerciciobox}{Hora do R: \texttt{scripts/01\_contrafactual\_vies\_selecao.R}}
-    \footnotesize Rodem linha a linha: a verdade (300), a comparação ingênua e o antes-depois.
-  \end{exerciciobox}
-\end{frame}
-
-\begin{frame}{Resultado: os dois falsos contrafactuais erram}
-  \begin{center}
-  \small
-  \renewcommand{\arraystretch}{1.4}
-  \begin{tabular}{lrl}
+\begin{frame}{Características de um bom contrafactual}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries\color{azul}\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
     \toprule
-    \textbf{Método} & \textbf{Estimativa} & \textbf{Erro} \\ \midrule
-    \rowcolor{verde!15}
-    Verdade (simulada) & R\$ 300 & \\
-    Participantes $\times$ não part. & R\$ 587 & \destaque{+287} (seleção) \\
-    Antes $\times$ depois & R\$ 402 & \destaque{+102} (tendência) \\ \bottomrule
-  \end{tabular}
-  \end{center}
-  \vspace{0.3cm}
-  \begin{block}{Voltando à enquete}
-    \small Resposta (b): o efeito é \textbf{menor}. Os R\$ 587 misturam o efeito do programa com o fato de os participantes \emph{já ganharem mais} e serem mais motivados.
-  \end{block}
+    Característica & O que significa & Como checar \\ \midrule
+    Comparável antes & Mesmo nível e trajetória antes da política & Balanço; pré-tendências \\
+    Seleção independente & Quem entra não foi escolhido pelo que espera ganhar & Desenho (sorteio, regra) \\
+    Mesmos choques & Os grupos enfrentam o mesmo contexto e período & Dados de antes e depois \\
+    Sem contaminação & O controle não recebe efeitos indiretos & Distância entre unidades \\
+    Mesma medida & Resultado medido igual, sem perda seletiva & Taxa de resposta por grupo \\ \bottomrule
+  \end{tabularx}
+  \vspace{0.2cm}\par
+  \small Cada técnica garante essas características de um jeito: o \textbf{sorteio}, o \textbf{gêmeo}, a \textbf{tendência paralela}, o \textbf{corte}.
 \end{frame}
 
 \begin{frame}{Mapa das técnicas}
   \centering
   \begin{tikzpicture}[scale=0.8,every node/.style={transform shape}]
     \node[cxl,minimum width=4.2cm,minimum height=0.8cm,font=\small\bfseries] (top) at (0,0) {Identificar o impacto causal};
-    \node[cxi,minimum width=2.6cm] (exp) at (-4.3,-1.7) {\textbf{Experimento}\\sorteio entre\\elegíveis};
+    \node[cxi,minimum width=3.4cm] (exp) at (-4.3,-1.7) {\textbf{Experimento}\\sorteio entre elegíveis\\(ou natural)};
     \node[cx,minimum width=3.6cm] (qe) at (1.8,-1.7) {\textbf{Quase-experimentos}\\(dados observacionais)};
     \draw[seta] (top) -- (exp); \draw[seta] (top) -- (qe);
-    \node[cxi,minimum width=2.1cm] (psm) at (-2.9,-4.1) {\textbf{Pareamento}\\``gêmeos''\\observados};
-    \node[cxi,minimum width=2.1cm] (did) at (-0.4,-4.1) {\textbf{Dif.-em-dif.}\\tendência do\\controle};
-    \node[cxi,minimum width=2.1cm] (rdd) at (2.1,-4.1) {\textbf{Reg. descont.}\\corte de\\elegibilidade};
-    \node[cxi,minimum width=2.1cm] (iv) at (4.6,-4.1) {\textbf{Var. instr.}\\algo que\\``empurra''};
-    \node[cxi,minimum width=2.1cm] (sc) at (7.1,-4.1) {\textbf{Controle sint.}\\média pond.\\de controles};
-    \foreach \x in {psm,did,rdd,iv,sc} { \draw[seta] (qe) -- (\x); }
+    \node[cxi,minimum width=2.1cm] (psm) at (-1.6,-4.1) {\textbf{Pareamento}\\``gêmeos''\\observados};
+    \node[cxi,minimum width=2.1cm] (did) at (1.0,-4.1) {\textbf{Dif.-em-dif.}\\tendência do\\controle};
+    \node[cxi,minimum width=2.1cm] (rdd) at (3.6,-4.1) {\textbf{Reg. descont.}\\corte de\\elegibilidade};
+    \node[cx,minimum width=2.1cm] (out) at (6.2,-4.1) {\textbf{Outras}\\IV, sintético,\\ponderação};
+    \foreach \x in {psm,did,rdd,out} { \draw[seta] (qe) -- (\x); }
   \end{tikzpicture}
 \end{frame}

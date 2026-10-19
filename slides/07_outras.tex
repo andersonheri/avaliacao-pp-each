@@ -1,0 +1,68 @@
+% =============================================================================
+% OUTRAS TÉCNICAS IMPORTANTES (15:30 a 15:35)   [Scripts 06 e 07: material extra]
+% =============================================================================
+\section[Outras]{Outras técnicas importantes}
+
+\begin{frame}{Outras técnicas (1): variáveis instrumentais}
+  \begin{block}{Variáveis instrumentais (IV)}
+    \small
+    \begin{itemize}\setlength{\itemsep}{2pt}
+      \item \textbf{Ideia:} usar algo que ``empurra'' a participação sem afetar o resultado por outro caminho (sorteio de vagas, distância, regra);
+      \item \textbf{Quando usar:} adesão imperfeita; participar é escolha; existe sorteio ou regra que muda quem participa;
+      \item \textbf{Exemplo:} sorteio de vouchers escolares na Colômbia (Angrist et al., 2002); Medicaid em Oregon (Finkelstein et al., 2012);
+      \item \textbf{Cuidado:} instrumento forte ($F>10$; Staiger e Stock, 1997). O efeito vale para quem ``obedece'' ao instrumento (\emph{compliers}).
+    \end{itemize}
+  \end{block}
+  \scriptsize Passo a passo completo em \cod{scripts/06\_variaveis\_instrumentais.R}.
+\end{frame}
+
+\begin{frame}{Outras técnicas (2): controle sintético}
+  \begin{block}{Controle sintético}
+    \small
+    \begin{itemize}\setlength{\itemsep}{2pt}
+      \item \textbf{Ideia:} construir um ``estado sintético'', média ponderada de unidades não tratadas que imita o tratado \emph{antes} da política;
+      \item \textbf{Quando usar:} uma ou poucas unidades tratadas (estado, cidade, país) e série longa de dados;
+      \item \textbf{Exemplo:} lei antitabaco da Califórnia, com os outros estados como doadores (Abadie, Diamond e Hainmueller, 2010);
+      \item \textbf{Cuidado:} bom ajuste antes da política; rodar placebos nos doadores para ver se a lacuna se destaca.
+    \end{itemize}
+  \end{block}
+  \scriptsize Passo a passo completo em \cod{scripts/07\_controle\_sintetico.R}.
+\end{frame}
+
+\begin{frame}{Outras técnicas (3): DiD escalonado}
+  \begin{block}{DiD escalonado e estudo de eventos}
+    \small
+    \begin{itemize}\setlength{\itemsep}{2pt}
+      \item \textbf{Ideia:} a política entra em momentos diferentes em cada unidade; o estudo de eventos mostra o efeito antes e depois da entrada;
+      \item \textbf{Quando usar:} expansão gradual por municípios ou estados;
+      \item \textbf{Exemplo:} expansão da Estratégia Saúde da Família entre municípios (Rocha e Soares, 2010);
+      \item \textbf{Cuidado:} o DiD tradicional com efeitos fixos pode enviesar quando o efeito varia no tempo (Goodman-Bacon, 2021). Use estimadores novos (Callaway e Sant'Anna, 2021).
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Outras técnicas (4): ponderação pelo escore}
+  \begin{block}{Ponderação pelo escore (IPW) e dupla robustez}
+    \small
+    \begin{itemize}\setlength{\itemsep}{2pt}
+      \item \textbf{Ideia:} em vez de parear, dar mais peso aos controles parecidos com os tratados. A dupla robustez combina o escore com um modelo do resultado;
+      \item \textbf{Quando usar:} política já implantada, sem sorteio, com muitas covariáveis; quando se quer o efeito para toda a população (ATE);
+      \item \textbf{Exemplo:} o mesmo cenário do PSM (Bolsa Família), usando o escore de outro modo;
+      \item \textbf{Cuidado:} escores perto de 0 ou 1 geram pesos extremos; ainda exige ``sem confundidores não observados'' (Robins, Rotnitzky e Zhao, 1994).
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Outras técnicas (5): para conhecer}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries\color{azul}\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Técnica & Para que serve na avaliação de políticas públicas \\ \midrule
+    Custo-efetividade e custo-benefício & Comparar programas pelo custo por unidade de resultado (por emprego gerado, por aluno alfabetizado) \\
+    Efeitos heterogêneos & Descobrir \emph{para quem} a política funciona mais (subgrupos, floresta causal) \\
+    Mediação e avaliação baseada em teoria & Testar \emph{por quais canais} o efeito acontece (cadeia de resultados) \\
+    Microssimulação ex-ante & Estimar efeito e custo \emph{antes} de implantar, com dados de pesquisas domiciliares \\
+    DiD sintético & Combina o DiD com o controle sintético quando há poucas unidades tratadas \\ \bottomrule
+  \end{tabularx}
+\end{frame}

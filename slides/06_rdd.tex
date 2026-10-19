@@ -1,5 +1,5 @@
 % =============================================================================
-% REGRESSÃO DESCONTÍNUA (16:05 a 16:25)   [Script 05]
+% REGRESSÃO DESCONTÍNUA (15:15 a 15:30)   [Script 05]
 % =============================================================================
 \section[RDD]{Regressão descontínua}
 \subsection{Ideia e exemplos}
@@ -26,7 +26,6 @@
       \item \textbf{México:} elegibilidade do Progresa e frequência escolar (Buddelmeyer e Skoufias, 2004).
       \item \textbf{Israel:} turmas divididas quando passam de 40 alunos (regra de Maimônides) e desempenho (Angrist e Lavy, 1999).
       \item \textbf{Eleições:} candidatos eleitos por margem mínima (Lee, 2008).
-      \item \textbf{Hipotético:} transferência de renda com corte de R\$ 77 (script 05).
     \end{itemize}
 \end{frame}
 
@@ -41,67 +40,49 @@
 \begin{frame}[fragile]{RDD, passo 1: de quanto é o salto no corte?}
 \begin{consoleR}
 @@> janela <- d[abs(d$x) <= 15, ]
-@@> round(summary(lm(freq ~ elegivel * x,
-@@+                    data = janela))$coefficients, 3)
-            Estimate Std. Error t value Pr(>|t|)
-(Intercept)   68.387      0.635 107.668    0.000
-elegivel       6.179      0.895   6.902    0.000
-x              0.054      0.072   0.750    0.454
-elegivel:x     0.150      0.103   1.450    0.147
+@@> m <- lm(freq ~ elegivel * x, data = janela)
+@@> round(summary(m)$coefficients["elegivel", ], 2)
+  Estimate Std. Error    t value   Pr(>|t|)
+      6.18       0.90       6.90       0.00
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{RDD, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Antes de ler:} \texttt{x} $=$ renda $-$ 77, então $x=0$ é o corte; \texttt{elegivel} $=1$ para renda até R\$ 77; \texttt{janela} usa só famílias entre R\$ 62 e R\$ 92.
-    \item \rot{\texttt{(Intercept)} $=68{,}4$:} frequência escolar de uma família \textbf{não elegível} bem no corte. \rot{\texttt{elegivel} $=6{,}2$:} quanto a família \textbf{elegível}, também no corte, frequenta a mais (74,6\%). Esse \textbf{salto é o efeito} (EP 0,9; $p<0{,}001$; verdade: 6).
-    \item \rot{\texttt{x} e \texttt{elegivel:x}:} quanto a frequência muda a cada R\$ 1 de renda, de cada lado (a inclinação das retas). Não são efeito do programa.
+    \item \rot{Onde olhar:} \texttt{x} é a renda menos 77 (o corte é $x=0$); \texttt{janela} usa famílias entre R\$ 62 e R\$ 92. \texttt{Estimate} é o salto: \destaque{6,2 pontos} de frequência escolar (verdade: 6), EP 0,9.
+    \item \rot{Corte:} $p<0{,}05$ ($t$ grande, $p\approx 0$).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
 \begin{frame}[fragile]{RDD, passo 2: o resultado depende da janela?}
 \begin{consoleR}
-@@> round(sens, 2)
-  h efeito   ep    n   li   ls
-  5   6.59 1.56  440 3.54 9.65
- 10   7.11 1.12  836 4.92 9.29
- 15   6.18 0.90 1271 4.42 7.93
- 20   5.91 0.78 1641 4.38 7.45
- 30   5.50 0.65 2271 4.22 6.78
- 40   5.64 0.57 2833 4.52 6.77
+@@> round(sens[sens$h %in% c(5, 15, 40), ], 2)
+   h efeito   ep    n   li   ls
+2  5   6.59 1.56  440 3.54 9.65
+5 15   6.18 0.90 1271 4.42 7.93
+8 40   5.64 0.57 2833 4.52 6.77
 \end{consoleR}
-\end{frame}
-
-\begin{frame}{RDD, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Colunas:} \texttt{h} $=$ janela (h $=15$: famílias até R\$ 15 do corte); \texttt{efeito} $=$ o salto; \texttt{ep} $=$ erro-padrão; \texttt{n} $=$ famílias usadas; \texttt{li} e \texttt{ls} $=$ limites inferior e superior do IC 95\%.
-    \item \rot{O dilema:} janela pequena ($h=5$) usa famílias muito parecidas, mas poucas (440): estimativa imprecisa (ep 1,56). Janela grande ($h=40$) usa muitas (2.833): mais precisa (ep 0,57), mas inclui famílias menos parecidas.
-    \item \rot{Conclusão:} o efeito fica entre 5,5 e 7,1 e nenhum IC inclui zero: \textbf{não depende da janela}. Regra: mostrar várias janelas (Lee e Lemieux, 2010).
+    \item \rot{Onde olhar:} \texttt{h} é a janela em R\$; \texttt{n} são as famílias; \texttt{li} e \texttt{ls} o IC de 95\%. Janela pequena: poucas famílias e muito parecidas (ep 1,56). Janela grande: mais precisão (ep 0,57), mas menos comparáveis.
+    \item \rot{Corte:} mostrar várias janelas (Lee e Lemieux, 2010). Aqui o efeito fica entre 5,6 e 6,6 e nenhum IC inclui zero.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
 \begin{frame}[fragile]{RDD, passo 3: os dois lados do corte são comparáveis?}
-\begin{consoleRpeq}
-@@> round(summary(lm(idade_mae ~ elegivel * x,
-@@+                    data = janela))$coefficients["elegivel", ], 3)
+\begin{consoleR}
+@@> m2 <- lm(idade_mae ~ elegivel * x, data = janela)
+@@> round(summary(m2)$coefficients["elegivel", ], 2)
   Estimate Std. Error    t value   Pr(>|t|)
-     0.066      0.773      0.085      0.932
+      0.07       0.77       0.09       0.93
 @@> table(cut(d$renda, breaks = c(62, 67, 72, 77, 82, 87, 92)))
 (62,67] (67,72] (72,77] (77,82] (82,87] (87,92]
     197     206     213     227     190     238
-\end{consoleRpeq}
-\end{frame}
-
-\begin{frame}{RDD, passo 3: como ler}
+\end{consoleR}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Teste 1, idade da mãe:} o programa não muda a idade da mãe. Se ela ``saltasse'' no corte, as famílias dos dois lados seriam diferentes. Salto $=0{,}07$ ano, \texttt{Pr} $=0{,}93$ ($>0{,}05$): \textbf{sem salto}.
-    \item \rot{Teste 2, contagem:} quantas famílias há em cada faixa de R\$ 5 de renda. Se as famílias ``baixassem'' a renda declarada para entrar, a faixa (72,77] ficaria cheia e a (77,82] vazia. Aqui: 213 $\times$ 227, normal (com manipulação simulada: 413 $\times$ 116).
-    \item \rot{Regra:} covariáveis sem salto e contagens sem acúmulo no corte (McCrary, 2008).
+    \item \rot{Onde olhar:} (1) a idade da mãe não deve ``saltar'' no corte: salto $0{,}07$, $p=0{,}93$. (2) a contagem por faixa não deve acumular logo abaixo do corte: 213 e 227, normal.
+    \item \rot{Corte:} covariáveis sem salto e densidade contínua no corte (McCrary, 2008).
   \end{itemize}
 \end{leitura}
 \end{frame}

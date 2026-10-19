@@ -1,5 +1,5 @@
 % =============================================================================
-% AVALIAÇÃO QUALITATIVA E MÉTODOS MISTOS (16:55 a 17:50)   
+% AVALIAÇÃO QUALITATIVA E MÉTODOS MISTOS (16:10 a 17:50)
 % =============================================================================
 \section[Qualitativo]{Avaliação qualitativa e métodos mistos}
 \subsection{Por quê e com que técnicas}
@@ -66,7 +66,7 @@
     \draw[seta] (a) -- (b); \draw[seta] (b) -- (c); \draw[seta] (c) -- (d);
   \end{tikzpicture}
   \vspace{0.3cm}\par
-  \small Hoje o foco é a etapa de \textbf{impacto}, mas o qualitativo também aparece antes e depois.
+  \small O qualitativo aparece em \textbf{todas} as etapas, e não só na de impacto.
 \end{frame}
 
 \begin{frame}{Desenhando uma pesquisa qualitativa}
@@ -163,8 +163,6 @@
   \end{columns}
 \end{frame}
 
-\subsection{Análise e métodos mistos}
-
 \begin{frame}{Documentos, estudos de caso e \textit{process tracing}}
   \begin{itemize}
     \item \textbf{Análise documental}: leis, portarias, atas, relatórios, bases administrativas. Mostra o \emph{desenho formal}; a observação e as entrevistas mostram a \emph{prática};
@@ -177,6 +175,20 @@
   \end{block}
 \end{frame}
 
+\subsection{Ética, análise e rigor}
+
+\begin{frame}{Ética na pesquisa com pessoas}
+  \small
+  \begin{itemize}
+    \item \textbf{Consentimento livre e esclarecido} (TCLE): explicar o objetivo, os riscos e a liberdade de recusar ou sair a qualquer momento;
+    \item \textbf{Confidencialidade e anonimato}: nomes fictícios, sem detalhes que identifiquem; guarda segura de gravações e transcrições;
+    \item \textbf{Proteção de dados}: dados pessoais e sensíveis seguem a LGPD (Lei 13.709/2018);
+    \item \textbf{Comitê de ética}: pesquisas em ciências humanas e sociais seguem a Resolução CNS 510/2016; consulte o CEP da sua instituição;
+    \item \textbf{Relação de poder}: quem depende da política pode se sentir pressionado a responder; deixe claro que a entrevista não afeta o benefício;
+    \item \textbf{Devolutiva}: retornar os achados aos participantes é também um dever ético.
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Da fala ao tema: análise dos dados}
   \centering
   \begin{tikzpicture}[scale=0.85,every node/.style={transform shape}]
@@ -187,7 +199,64 @@
     \draw[seta] (t) -- (c); \draw[seta] (c) -- (g); \draw[seta] (g) -- (h);
   \end{tikzpicture}
   \vspace{0.2cm}\par
-  \footnotesize Passos da \ind{análise temática}: transcrever e ler, codificar, agrupar, rever os temas, nomeá-los e relatar com trechos (Braun e Clarke, 2006).
+  \footnotesize Do trecho ao tema: \ind{codificar}, \ind{agrupar} em categorias e \ind{nomear} o tema que ajuda a explicar o achado.
+\end{frame}
+
+\begin{frame}{Codificação na prática: um exemplo}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.1cm}@{}}
+    \toprule
+    \textbf{Trecho (ilustrativo)} & \textbf{Códigos} & \textbf{Categoria} \\ \midrule
+    ``O curso era à noite e eu não tinha com quem deixar as crianças.'' & falta de creche; horário noturno & barreiras de cuidado \\
+    ``Minha vizinha já tinha feito e me indicou.'' & indicação; rede de contatos & acesso à informação \\
+    ``Eu entrava na sala e não entendia nada, todo mundo já sabia mexer no computador.'' & nivelamento; vergonha & turmas desiguais \\
+    ``Depois do curso, falei com um conhecido e consegui a vaga.'' & uso da rede; emprego & rede de contatos \\ \bottomrule
+  \end{tabularx}
+  \vspace{0.2cm}\par
+  \small Um trecho pode ter \textbf{mais de um código}. Anote tudo em um \ind{livro de códigos}: nome, definição e um exemplo de cada código.
+\end{frame}
+
+\begin{frame}{Análise temática: seis fases}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{@{}c>{\bfseries\color{azul}\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \pn{1} & Familiarização & Transcrever, ler e reler; anotar primeiras ideias \\
+    \pn{2} & Códigos iniciais & Codificar trechos de todo o material \\
+    \pn{3} & Busca de temas & Agrupar códigos em temas candidatos \\
+    \pn{4} & Revisão dos temas & Conferir se cada tema se sustenta nos trechos e no conjunto \\
+    \pn{5} & Definição e nomes & Dizer o que cada tema significa e dar um nome claro \\
+    \pn{6} & Relatório & Contar a história com trechos que ilustram os temas \\ \bottomrule
+  \end{tabularx}
+  \vspace{0.2cm}\par
+  \small Braun e Clarke (2006). O processo é \emph{recursivo}: vai-se e volta-se entre as fases.
+\end{frame}
+
+\begin{frame}{Análise de conteúdo e software}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \begin{block}{Análise de conteúdo (Bardin)}
+        \footnotesize
+        \begin{enumerate}
+          \item \textbf{Pré-análise}: leitura flutuante, escolha do material, regras;
+          \item \textbf{Exploração}: codificação e categorização;
+          \item \textbf{Tratamento}: frequências, inferência e interpretação.
+        \end{enumerate}
+      \end{block}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Diferença de foco}
+        \scriptsize
+        \textbf{Análise de conteúdo}: categorias, que podem ser contadas.\\
+        \textbf{Análise temática}: temas interpretativos, que explicam.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.2cm}
+  \begin{block}{Software}
+    \small NVivo, ATLAS.ti e MAXQDA (pagos); Taguette e QualCoder (gratuitos). O programa \textbf{organiza} os trechos; quem analisa é você.
+  \end{block}
 \end{frame}
 
 \begin{frame}{Rigor na pesquisa qualitativa}
@@ -212,6 +281,23 @@
     \small Subjetividade, ausência de regularidades, menor precisão e dificuldade de replicação: respondem-se com \emph{rigor explícito}, não com a imitação do quantitativo.
   \end{block}
 \end{frame}
+
+\begin{frame}{Critérios de qualidade (Lincoln e Guba)}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries\color{azul}\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Critério & Equivale a (no quanti) & Como fortalecer \\ \midrule
+    Credibilidade & Validade interna & Triangulação, devolutiva, permanência no campo \\
+    Transferibilidade & Validade externa & Descrição densa do contexto, para o leitor julgar se serve ao seu caso \\
+    Confiabilidade & Fidedignidade & Trilha de auditoria: registrar cada decisão \\
+    Confirmabilidade & Objetividade & Reflexividade; outro pesquisador revisa os códigos \\ \bottomrule
+  \end{tabularx}
+  \vspace{0.2cm}\par
+  \small Lincoln e Guba (1985): o qualitativo tem critérios \emph{próprios}, que não são os do quantitativo.
+\end{frame}
+
+\subsection{Métodos mistos}
 
 \begin{frame}{Métodos mistos: por que combinar?}
   \begin{enumerate}
@@ -247,6 +333,21 @@
   \footnotesize Explanatório: o survey acha o padrão e as entrevistas o explicam. Exploratório: entrevistas orientam o questionário. (Creswell e Plano Clark)
 \end{frame}
 
+\begin{frame}{Integrando: o quadro conjunto (\textit{joint display})}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Achado quantitativo} & \textbf{Achado qualitativo} & \textbf{O que juntos mostram} \\ \midrule
+    Efeito médio de R\$ 300 & Participantes citam as competências e a rede de contatos & O efeito se confirma e o canal é claro \\
+    Efeito de R\$ 80 entre mães com filhos pequenos & Falta de creche e horário noturno & Barreira de cuidado: oferecer turma diurna e creche \\
+    35\% abandonam & Turmas desiguais e vergonha de perguntar & Nivelar a turma antes do curso \\
+    80\% muito satisfeitos & ``Satisfeito'' é ser bem tratado, não ter conseguido emprego & Satisfação não mede resultado \\ \bottomrule
+  \end{tabularx}
+  \vspace{0.2cm}\par
+  \small Colocar os dois lados na \textbf{mesma tabela} é o que transforma duas pesquisas em \emph{uma} avaliação. (Exemplo ilustrativo.)
+\end{frame}
+
 \begin{frame}{Métodos mistos na prática}
   \footnotesize
   \begin{itemize}
@@ -268,7 +369,7 @@
 \end{frame}
 
 \begin{frame}{Passo a passo: avaliação qualitativa (2 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}c>{\raggedright\arraybackslash}p{2.55cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.15cm}@{}}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.0}\begin{tabular}{@{}c>{\raggedright\arraybackslash}p{2.55cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.15cm}@{}}
     \toprule
     \textbf{} & \textbf{O que fazer} & \textbf{Exemplo (Qualifica)} & \textbf{Como decidir} \\ \midrule
     \pn{5} & \textbf{Codifique} os trechos & ``Não tinha com quem deixar as crianças'': falta de creche; horário noturno & Códigos descrevem \emph{o que o trecho diz}; mantenha um livro de códigos. \\ \midrule
@@ -279,15 +380,17 @@
   \caixaconclusao{os temas viram \emph{hipóteses sobre mecanismos}; sua magnitude e generalização vêm dos dados quantitativos.}
 \end{frame}
 
-\begin{frame}{Para discutir em plenária}
-  \begin{exerciciobox}{Pensem numa política que vocês conhecem}
-    \small
-    \begin{enumerate}
-      \item Que número (efeito médio) a avaliação de impacto daria?
-      \item Que pergunta de \emph{como} e \emph{por quê} esse número deixaria sem resposta?
-      \item Quem vocês entrevistariam, e que técnica usariam além da entrevista?
-    \end{enumerate}
-  \end{exerciciobox}
-  \vspace{0.2cm}
-  \small Não é um exercício: é uma conversa. Dois ou três voluntários compartilham no chat ou por voz.
+\begin{frame}{Como relatar a avaliação}
+  \small
+  \begin{enumerate}
+    \item \textbf{Resumo executivo}: uma página, com o achado e a recomendação;
+    \item \textbf{Contexto e teoria do programa}: o que ele quer mudar e como;
+    \item \textbf{Perguntas e métodos}: o que se perguntou e por que cada técnica;
+    \item \textbf{Resultados quantitativos}: efeito, intervalo, e o pressuposto testado;
+    \item \textbf{Resultados qualitativos}: temas, com trechos que os ilustram;
+    \item \textbf{Integração}: o que os dois lados explicam juntos;
+    \item \textbf{Limites e recomendações}: o que fazer, por quem e para quem.
+  \end{enumerate}
+  \vspace{0.1cm}
+  \footnotesize Texto para o gestor: \textbf{número} (quanto) + \textbf{voz} (por quê) + \textbf{ação} (o que mudar).
 \end{frame}

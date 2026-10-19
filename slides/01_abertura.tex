@@ -1,26 +1,25 @@
 % =============================================================================
-% ABERTURA (14:00 a 14:10)
+% ABERTURA E TIPOS DE AVALIAÇÃO (14:00 a 14:20)
 % =============================================================================
-\section[Abertura]{Abertura}
+\section[Abertura]{Abertura e tipos de avaliação}
+\subsection{Abertura}
 
 \begin{frame}{Sumário executivo}
   \scriptsize
-  \renewcommand{\arraystretch}{1.08}
+  \renewcommand{\arraystretch}{1.12}
   \begin{tabularx}{\textwidth}{@{}l>{\bfseries}lX@{}}
     \toprule
     \textbf{Horário} & \textbf{Bloco} & \textbf{Em uma frase} \\ \midrule
-    14:00 & Abertura & Avaliar impacto é perguntar o que teria acontecido sem a política \\
-    14:10 & Contrafactual & Por que comparar participantes e não participantes engana \\
-    14:25 & Experimento & O sorteio cria grupos iguais: o ``padrão ouro'' \\
-    14:50 & Pareamento & Comparar cada participante com um ``gêmeo'' observado \\
-    15:10 & Dif.-em-dif. & Comparar quanto cada grupo \emph{mudou} no tempo \\
+    14:00 & Abertura & O que é avaliar e que tipos de avaliação existem \\
+    14:20 & Contrafactual & Por que comparar participantes e não participantes engana \\
+    14:30 & Experimento & O sorteio, feito por nós ou pela natureza, cria grupos iguais \\
+    14:45 & Pareamento & Comparar cada participante com um ``gêmeo'' observado \\
+    15:00 & Dif.-em-dif. & Comparar quanto cada grupo \emph{mudou} no tempo \\
+    15:15 & Reg. descontínua & O salto no resultado no corte de elegibilidade \\
+    15:30 & Outras técnicas & IV, controle sintético, DiD escalonado, ponderação; como escolher \\
     \rowcolor{laranjaclaro}
-    15:35 & Intervalo & 30 minutos \\
-    16:05 & Reg. descontínua & O salto no resultado no corte de elegibilidade \\
-    16:25 & Var. instrumentais & Um ``empurrão'' que muda quem participa \\
-    16:37 & Controle sintético & Fabricar um controle quando só uma unidade é tratada \\
-    16:49 & Escolha & Que técnica usar em cada situação \\
-    16:55 & Qualitativo & Como e por quê: entrevistas, grupos focais, métodos mistos \\
+    15:40 & Intervalo & 30 minutos \\
+    16:10 & Qualitativo & Como e por quê: coleta, análise, rigor e métodos mistos (100 min) \\
     17:50 & Encerramento & Cinco perguntas antes de confiar em uma estimativa \\ \bottomrule
   \end{tabularx}
 \end{frame}
@@ -28,13 +27,13 @@
 \begin{frame}{O que vamos fazer}
   \begin{itemize}
     \item Entender por que \destaque{comparar} participantes e não participantes (ou antes e depois) \destaque{engana};
-    \item Conhecer as técnicas de avaliação de impacto: \textbf{características}, \textbf{exemplos em políticas públicas} e um \ind{passo a passo} de como fazer e interpretar;
-    \item \ind{Simular em R}: sabemos a \emph{verdade} do programa e testamos se a técnica a recupera;
-    \item Ver o que a avaliação \ind{qualitativa} e os \ind{métodos mistos} acrescentam aos números.
+    \item Conhecer as principais técnicas \textbf{quantitativas} de avaliação de impacto, com exemplos de políticas públicas e um \ind{passo a passo} em R;
+    \item Ver o que a avaliação \ind{qualitativa} e os \ind{métodos mistos} acrescentam aos números;
+    \item Metade do tempo para cada lado: \textbf{quanto} (até 15:40) e \textbf{como e por quê} (depois do intervalo).
   \end{itemize}
   \vspace{0.2cm}
   \begin{block}{Como funciona}
-    \small Aula expositiva + scripts em R comentados (demonstração), com um passo a passo de como ler cada resultado.
+    \small Aula expositiva + scripts em R comentados (demonstração). Os dados são simulados: sabemos a \emph{verdade} e vemos se a técnica a recupera.
   \end{block}
 \end{frame}
 
@@ -68,20 +67,78 @@
   \small A avaliação \destaque{renova o ciclo}: informa se a política deve ser mantida, reformulada ou interrompida (políticas baseadas em evidências).
 \end{frame}
 
-\begin{frame}{Tipos de avaliação}
+\subsection{Tipos de avaliação}
+
+\begin{frame}{Tipos de avaliação: pela pergunta}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{@{}p{1.9cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    & \textbf{Pergunta} & \textbf{Exemplo: curso de qualificação} \\ \midrule
+    \ind{Diagnóstico} & Qual é o problema e quem é afetado? & Quantos trabalhadores estão desempregados e por quê? \\
+    \ind{Processo} & As atividades aconteceram e chegaram ao público-alvo? & Quantos se inscreveram? Os cursos ocorreram? \\
+    \ind{Resultados} & A situação do público-alvo mudou? & A renda dos participantes subiu entre antes e depois? \\
+    \rowcolor{laranjaclaro}
+    \destaque{Impacto} & A mudança \textbf{é causada} pelo programa? & Quanto da renda existe \emph{por causa} do curso? \\
+    \ind{Eficiência} & Os resultados justificam o custo? & Quanto custa cada trabalhador a mais empregado? \\ \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{Tipos de avaliação: pelo momento}
+  \centering
+  \begin{tikzpicture}[scale=0.9,every node/.style={transform shape}]
+    \draw[-{Stealth},thick,azul] (-0.3,0) -- (10.6,0);
+    \node[cxi,minimum width=2.6cm] (a) at (1.6,1.1) {\textbf{Ex-ante}};
+    \node[cxi,minimum width=2.6cm] (b) at (5.1,1.1) {\textbf{Monitoramento}\\e intermediária};
+    \node[cxl,minimum width=2.6cm] (c) at (8.6,1.1) {\textbf{Ex-post}};
+    \foreach \x in {1.6,5.1,8.6} { \draw[thick,azul] (\x,0.2) -- (\x,-0.2); }
+    \node[align=center,font=\scriptsize,text width=3cm] at (1.6,-1.0) {\textbf{antes} de implantar: diagnóstico, desenho, simulação de custos e efeitos};
+    \node[align=center,font=\scriptsize,text width=3cm] at (5.1,-1.0) {\textbf{durante}: indicadores, correção de rota, ajuste da implementação};
+    \node[align=center,font=\scriptsize,text width=3cm] at (8.6,-1.0) {\textbf{depois}: resultados e impacto; decidir manter, mudar ou encerrar};
+  \end{tikzpicture}
+  \vspace{0.2cm}\par
+  \small As técnicas de hoje são, em geral, \destaque{ex-post}. Algumas exigem planejamento \textbf{ex-ante} (o sorteio, por exemplo, só se faz antes).
+\end{frame}
+
+\begin{frame}{Tipos de avaliação: por função e por quem avalia}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Quanto à função}
+        \footnotesize
+        \begin{itemize}
+          \item \textbf{Formativa}: melhorar a política \emph{enquanto} ela acontece;
+          \item \textbf{Somativa}: julgar o resultado final e decidir sobre sua continuidade.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Quanto a quem avalia}
+        \footnotesize
+        \begin{itemize}
+          \item \textbf{Interna}: conhece a política, mas pode ter conflito de interesse;
+          \item \textbf{Externa}: mais independente, conhece menos o contexto;
+          \item \textbf{Participativa}: beneficiários e gestores ajudam a desenhar e interpretar.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.3cm}
+  \centering\small Nenhuma é a ``melhor'': depende do \textbf{uso} que se pretende dar à avaliação.
+\end{frame}
+
+\begin{frame}{Monitoramento e avaliação não são a mesma coisa}
   \footnotesize
   \renewcommand{\arraystretch}{1.25}
-  \begin{tabularx}{\textwidth}{@{}p{1.9cm}XX@{}}
+  \begin{tabularx}{\textwidth}{@{}p{2.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
     \toprule
-    & \textbf{Pergunta} & \textbf{No programa Qualifica} \\ \midrule
-    \ind{Processo} & As atividades aconteceram e os serviços chegaram ao público-alvo? & Quantos se inscreveram? Os cursos ocorreram? \\
-    \ind{Resultados} & A situação do público-alvo mudou? & A renda dos participantes aumentou entre antes e depois? \\
-    \rowcolor{laranjaclaro}
-    \destaque{Impacto} & A mudança \textbf{é causada} pelo programa? & Quanto da variação de renda existe \emph{por causa} do treinamento? \\ \bottomrule
+    & \textbf{Monitoramento} & \textbf{Avaliação} \\ \midrule
+    Pergunta & Estamos fazendo o que planejamos? & Funcionou? Por quê? Para quem? \\
+    Frequência & Contínua (mensal, trimestral) & Pontual, em momentos-chave \\
+    Dados & Indicadores e registros administrativos & Pesquisas, experimentos, entrevistas \\
+    Causalidade & Não estabelece & Pode estabelecer (impacto) \\ \bottomrule
   \end{tabularx}
-  \vspace{0.3cm}
-
-  \small Também se classificam por \textbf{tempo} (\emph{ex-ante} e \emph{ex-post}) e por \textbf{quem avalia} (interna, externa, participativa).
+  \vspace{0.3cm}\par
+  \small Um bom monitoramento \emph{alimenta} a avaliação: sem registros de quem participou e quando, não há como estimar impacto depois.
 \end{frame}
 
 \begin{frame}{Cadeia de resultados (teoria do programa)}
