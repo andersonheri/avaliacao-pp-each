@@ -19,3 +19,4 @@ slides/*.synctex.gz
 # Sistema
 .DS_Store
 Thumbs.db
+slides/*.listing
