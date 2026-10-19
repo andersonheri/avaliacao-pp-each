@@ -34,4 +34,3 @@
 
 - Tenha **dois monitores/janelas** se possível: um para os slides (Zoom/Meet), outro para o RStudio.
 - Rodem os scripts **linha a linha** (`Ctrl+Enter`); leiam os comentários (são o roteiro).
-- Exercícios: troquem cada `COMPLETE` pelo código que falta. Não há "certo e errado" para os comentários finais: queremos discussão.

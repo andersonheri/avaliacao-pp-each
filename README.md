@@ -10,18 +10,18 @@ Leitura-base: BATISTA, Mariana; DOMINGOS, Amanda (2017). *Mais que boas intenç�
 
 ## A ideia
 
-Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Para cada técnica, os slides trazem as **características**, **exemplos em políticas públicas** e um **passo a passo** com o 'print' do console do R e como lê-lo, com os cortes da literatura (RCT, PSM, DiD e RDD; IV e controle sintético têm o passo a passo completo nos scripts), com números dos scripts. Os **scripts** são demonstrações comentadas, para os alunos entenderem e se basearem. Há **um exercício** em R (experimento).
+Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Para cada técnica, os slides trazem as **características**, **exemplos em políticas públicas** e um **passo a passo** com o 'print' do console do R e como lê-lo, com os cortes da literatura (RCT, PSM, DiD e RDD; IV e controle sintético têm o passo a passo completo nos scripts), com números dos scripts. Os **scripts** são demonstrações comentadas, para os alunos entenderem e se basearem. 
 
-| Bloco | Script (demonstração) | Exercício |
-|---|---|---|
-| Problema do contrafactual e viés de seleção | `01_contrafactual_vies_selecao.R` | |
-| Experimento controlado (RCT) | `02_experimento_rct.R` | **Exercício 1** |
-| Pareamento / propensity score (PSM) | `03_pareamento_psm.R` | |
-| Diferença-em-diferenças (DiD) | `04_diferenca_em_diferenca.R` | |
-| Regressão descontínua (RDD) | `05_regressao_descontinua.R` | |
-| Variáveis instrumentais (IV) | `06_variaveis_instrumentais.R` | |
-| Controle sintético | `07_controle_sintetico.R` | |
-| Avaliação qualitativa e métodos mistos | (slides, com passo a passo) | |
+| Bloco | Script (demonstração) |
+|---|---|
+| Problema do contrafactual e viés de seleção | `01_contrafactual_vies_selecao.R` |
+| Experimento controlado (RCT) | `02_experimento_rct.R` |
+| Pareamento / propensity score (PSM) | `03_pareamento_psm.R` |
+| Diferença-em-diferenças (DiD) | `04_diferenca_em_diferenca.R` |
+| Regressão descontínua (RDD) | `05_regressao_descontinua.R` |
+| Variáveis instrumentais (IV) | `06_variaveis_instrumentais.R` |
+| Controle sintético | `07_controle_sintetico.R` |
+| Avaliação qualitativa e métodos mistos | (slides, com passo a passo) |
 
 ## Programa (14h às 18h)
 
@@ -29,7 +29,7 @@ Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevem
 |---|---|
 | 14:00 a 14:10 | Abertura: por que avaliar? |
 | 14:10 a 14:25 | O problema do contrafactual |
-| 14:25 a 14:50 | Experimento controlado + **Exercício 1** |
+| 14:25 a 14:50 | Experimento controlado |
 | 14:50 a 15:10 | Pareamento (PSM) |
 | 15:10 a 15:35 | Diferença-em-diferenças |
 | 15:35 a 16:05 | **Intervalo** |
@@ -49,7 +49,6 @@ O roteiro minuto a minuto está em [`material/roteiro_instrutor.md`](material/ro
 3. Abra o arquivo **`avaliacao-pp.Rproj`** no RStudio (isso define a pasta raiz certa).
 4. Abra `scripts/00_setup.R` e rode (instala o único pacote obrigatório, `ggplot2`).
 5. Abra o script do bloco (ex.: `scripts/02_experimento_rct.R`) e rode **linha a linha** com `Ctrl+Enter`. Cada passo está comentado; no fim há uma seção "PARA EXPLORAR".
-6. Nos exercícios (`atividades/`), troque cada `COMPLETE` pelo código que falta e responda às perguntas em comentários.
 
 Pacotes **opcionais**: `MatchIt`, `rdrobust`, `fixest` (nada depende deles).
 
@@ -64,8 +63,6 @@ Pacotes **opcionais**: `MatchIt`, `rdrobust`, `fixest` (nada depende deles).
 │   ├── 01_...R a 07_...R       # um script por técnica, passo a passo
 │   ├── 08_exportar_dados.R     # (opcional) exporta os dados simulados para CSV
 │   └── 99_gerar_todas_figuras.R# (instrutor) regenera as figuras dos slides
-├── atividades/                 # exercício 1 (R com lacunas)
-├── gabaritos/                  # soluções comentadas (liberar após cada exercício)
 ├── slides/                     # Beamer (tema Berlin): main.tex + um arquivo por bloco; main.pdf pronto
 ├── figuras/                    # gráficos dos slides (gerados pelos scripts)
 ├── dados/                      # CSVs simulados

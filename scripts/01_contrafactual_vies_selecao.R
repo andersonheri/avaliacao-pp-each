@@ -149,5 +149,3 @@ print(resumo, row.names = FALSE)
 #   - O que o avaliador precisaria para construir um contrafactual válido?
 # -----------------------------------------------------------------------------
 #
-# PARA EXPLORAR: o Exercício 1 (atividades/exercicio_01_vies_e_experimento.R)
-# parte deste script.

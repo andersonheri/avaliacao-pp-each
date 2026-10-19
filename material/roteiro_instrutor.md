@@ -1,6 +1,6 @@
 # Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula e exercício + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 80 páginas).
+**Total:** 240 min = 210 min de aula + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 79 páginas). Não há exercícios: os scripts são demonstrações.
 **Formato de cada técnica:** ideia, *características e exemplos em políticas públicas* e *passo a passo*: um slide por passo, com o **print do console do R** (comando em azul + output real) e a caixa **Como ler**, com o **corte da literatura** quando existe (ex.: |SMD| < 0,10, Austin 2009; p < 0,05; poder de 80%, Cohen 1988). Leia de cima para baixo: "o que eu faço, o que aparece, o que concluo". IV e controle sintético: só ideia, características, exemplos e gráficos (o passo a passo completo está nos scripts 06 e 07).
 **Ritmo:** se atrasar, pule "Região comum e resultado" (PSM) e "Teste de manipulação" (RDD), e use os passo a passo como síntese.
 
@@ -10,7 +10,6 @@
 - [ ] RStudio com `avaliacao-pp.Rproj` aberto; alternar entre slides e RStudio.
 - [ ] Rodar uma vez `Rscript scripts/99_gerar_todas_figuras.R` para garantir pacotes e figuras.
 - [ ] Enquete do slide "Para começar" pronta.
-- [ ] Avisar que `gabaritos/` está no repositório e deve ser aberta só após cada exercício.
 
 ## Abertura (14:00 a 14:10, 10 min)
 
@@ -29,14 +28,13 @@
 | 11 a 13 | **Revelar a enquete**: resposta (b) |
 | 13 a 15 | Mapa das técnicas (as 5 técnicas quase-experimentais) |
 
-## Experimento (14:25 a 14:50, 25 min) · script 02 · Exercício 1
+## Experimento (14:25 a 14:50, 25 min) · script 02
 
 | Min | O que fazer |
 |---|---|
-| 0 a 5 | Aleatorização; **características e exemplos**; balanço e Monte Carlo |
-| 5 a 12 | **Passo a passo** (4 slides): balanço (SMD), `t.test` (atenção ao sinal negativo), regressão com covariáveis (ler só a linha `tratamento`), `power.t.test` |
-| 12 a 23 | **Exercício 1** (10 min) |
-| 23 a 25 | Correção rápida |
+| 0 a 7 | Aleatorização; **características e exemplos**; balanço e Monte Carlo (rodar o laço no script) |
+| 7 a 22 | **Passo a passo** (4 slides): balanço (SMD), `t.test` (efeito = diferença das médias; sinal negativo), regressão com covariáveis (ler só a linha `tratamento`), `power.t.test` (o que se informa e o que o R responde) |
+| 22 a 25 | Perguntas |
 
 ## Pareamento (14:50 a 15:10, 20 min) · script 03 (demonstração)
 

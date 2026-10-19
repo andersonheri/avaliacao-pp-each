@@ -38,8 +38,7 @@
 
 \subsection{Passo a passo}
 
-\begin{frame}[fragile]{RDD, passo 1: estimar o salto no corte}
-\fazer{regressão local na janela de $\pm$ R\$ 15, com retas diferentes de cada lado (\texttt{x} = renda $-$ 77).}
+\begin{frame}[fragile]{RDD, passo 1: de quanto é o salto no corte?}
 \begin{consoleR}
 @@> janela <- d[abs(d$x) <= 15, ]
 @@> round(summary(lm(freq ~ elegivel * x, data = janela))$coefficients, 3)
@@ -50,16 +49,15 @@ x              0.054      0.072   0.750    0.454
 elegivel:x     0.150      0.103   1.450    0.147
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item \texttt{elegivel} $=6{,}18$ é o \textbf{salto no corte}: elegíveis no corte frequentam \destaque{6,2 p.p.} a mais (EP 0,90; $p<0{,}001$). Verdade: 6.
-    \item \texttt{x} e \texttt{elegivel:x} são as inclinações de cada lado: \textbf{não} são efeitos.
-    \item A janela é escolha do analista; em trabalho real, use a janela ótima de \texttt{rdrobust} (Calonico, Cattaneo e Titiunik, 2014).
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Antes de ler:} \texttt{x} $=$ renda $-$ 77, então $x=0$ é o corte; \texttt{elegivel} $=1$ para renda até R\$ 77; \texttt{janela} usa só famílias entre R\$ 62 e R\$ 92.
+    \item \rot{\texttt{(Intercept)} $=68{,}4$:} frequência escolar de uma família \textbf{não elegível} bem no corte. \rot{\texttt{elegivel} $=6{,}2$:} quanto a família \textbf{elegível}, também no corte, frequenta a mais (74,6\%). Esse \textbf{salto é o efeito} (EP 0,9; $p<0{,}001$; verdade: 6).
+    \item \rot{\texttt{x} e \texttt{elegivel:x}:} quanto a frequência muda a cada R\$ 1 de renda, de cada lado (a inclinação das retas). Não são efeito do programa.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
 \begin{frame}[fragile]{RDD, passo 2: o resultado depende da janela?}
-\fazer{reestimar com várias janelas (\texttt{h}) e comparar efeito, erro-padrão e tamanho da amostra.}
 \begin{consoleR}
 @@> round(sens, 2)
   h efeito   ep    n   li   ls
@@ -71,16 +69,15 @@ elegivel:x     0.150      0.103   1.450    0.147
  40   5.64 0.57 2833 4.52 6.77
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item O efeito fica entre 5,5 e 7,1; todos os IC (\texttt{li} a \texttt{ls}) excluem o zero: resultado \textbf{robusto}.
-    \item Janela estreita: menos viés, mais incerteza (EP 1,56 com 440 famílias). Janela larga: o inverso (EP 0,57 com 2.833).
-    \item \corte{relate várias janelas, incluindo metade e o dobro da escolhida (Lee e Lemieux, 2010).}
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Colunas:} \texttt{h} $=$ janela (h $=15$: famílias até R\$ 15 do corte); \texttt{efeito} $=$ o salto; \texttt{ep} $=$ erro-padrão; \texttt{n} $=$ famílias usadas; \texttt{li} e \texttt{ls} $=$ limites inferior e superior do IC 95\%.
+    \item \rot{O dilema:} janela pequena ($h=5$) usa famílias muito parecidas, mas poucas (440): estimativa imprecisa (ep 1,56). Janela grande ($h=40$) usa muitas (2.833): mais precisa (ep 0,57), mas inclui famílias menos parecidas.
+    \item \rot{Conclusão:} o efeito fica entre 5,5 e 7,1 e nenhum IC inclui zero: \textbf{não depende da janela}. Regra: mostrar várias janelas (Lee e Lemieux, 2010).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{RDD, passo 3: o desenho é válido?}
-\fazer{testar uma covariável pré-programa no corte e contar famílias perto do corte (manipulação).}
+\begin{frame}[fragile]{RDD, passo 3: os dois lados do corte são comparáveis?}
 \begin{consoleRpeq}
 @@> round(summary(lm(idade_mae ~ elegivel * x, data = janela))$coefficients["elegivel", ], 3)
   Estimate Std. Error    t value   Pr(>|t|)
@@ -90,10 +87,10 @@ elegivel:x     0.150      0.103   1.450    0.147
     197     206     213     227     190     238
 \end{consoleRpeq}
 \begin{leitura}
-  \begin{itemize}
-    \item A idade da mãe \textbf{não salta} no corte ($p=0{,}93$): as famílias dos dois lados são comparáveis.
-    \item As contagens são parecidas dos dois lados de R\$ 77 (213 e 227): \textbf{sem acúmulo}. Com manipulação (simulada), seriam 413 e 116: RDD inválido.
-    \item \corte{covariáveis sem salto ($p>0{,}05$) e densidade contínua no corte (McCrary, 2008; \texttt{rddensity}: Cattaneo, Jansson e Ma, 2020).}
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Teste 1, idade da mãe:} o programa não muda a idade da mãe. Se ela ``saltasse'' no corte, as famílias dos dois lados seriam diferentes. Salto $=0{,}07$ ano, \texttt{Pr} $=0{,}93$ ($>0{,}05$): \textbf{sem salto}.
+    \item \rot{Teste 2, contagem:} quantas famílias há em cada faixa de R\$ 5 de renda. Se as famílias ``baixassem'' a renda declarada para entrar, a faixa (72,77] ficaria cheia e a (77,82] vazia. Aqui: 213 $\times$ 227, normal (com manipulação simulada: 413 $\times$ 116).
+    \item \rot{Regra:} covariáveis sem salto e contagens sem acúmulo no corte (McCrary, 2008).
   \end{itemize}
 \end{leitura}
 \end{frame}

@@ -50,8 +50,7 @@
 
 \subsection{Passo a passo}
 
-\begin{frame}[fragile]{Pareamento, passo 1: estimar o escore de propensão}
-\fazer{modelar a probabilidade de participar com covariáveis \textbf{pré-programa} (script 03).}
+\begin{frame}[fragile]{Pareamento, passo 1: quem tende a se inscrever?}
 \begin{consoleR}
 @@> m_ps <- glm(participa ~ escolaridade + idade + mulher + renda_antes,
 @@+             data = dados, family = binomial)
@@ -64,16 +63,15 @@ mulher         0.1883     0.0660   2.8522   0.0043
 renda_antes    0.0026     0.0001  19.5414   0.0000
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item O sinal diz quem tende a participar: quem tinha \textbf{renda antes} maior ($+$) e é mais jovem ($-$ idade).
-    \item O modelo serve para \textbf{balancear}, não para interpretar causas: não se lê esses coeficientes como efeitos (Rosenbaum e Rubin, 1983).
-    \item Só entram variáveis medidas \textbf{antes} do programa.
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Onde olhar:} o \textbf{sinal} da coluna \texttt{Estimate}. Positivo: aumenta a chance de participar; negativo: diminui.
+    \item \rot{O que diz:} \texttt{renda\_antes} $+$: quem já ganhava mais se inscreveu mais; \texttt{idade} $-$: os mais jovens se inscreveram mais; \texttt{mulher} $+$: mulheres um pouco mais. Ninguém ``escolheu'' essas pessoas: \textbf{elas se escolheram} (autosseleção).
+    \item \rot{Por que importa:} se quem já ganhava mais participou mais, a comparação simples exagera o efeito. O modelo dá a cada pessoa uma \textbf{probabilidade de participar} (o escore), para comparar participantes e não participantes com a \emph{mesma} probabilidade.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Pareamento, passo 2: há região comum?}
-\fazer{comparar a distribuição do escore entre não participantes (0) e participantes (1).}
+\begin{frame}[fragile]{Pareamento, passo 2: existe com quem comparar?}
 \begin{consoleR}
 @@> dados$ps <- predict(m_ps, type = "response")
 @@> tapply(dados$ps, dados$participa, summary)
@@ -85,16 +83,15 @@ $`1`
 0.04621 0.28872 0.41042 0.42225 0.55083 0.89851
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item Participantes vão de 0,046 a 0,899; não participantes, de 0,010 a 0,906: as faixas se \textbf{sobrepõem} quase inteiras.
-    \item Os participantes têm escore médio maior (0,42 $\times$ 0,28): é o viés de seleção, que o pareamento vai corrigir.
-    \item \corte{com pouca sobreposição, descarte quem tem escore fora de [0,1; 0,9] (Crump et al., 2009).}
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Onde olhar:} \texttt{\$`0`} são os não participantes; \texttt{\$`1`}, os participantes. Compare \texttt{Min.} e \texttt{Max.}: participantes vão de 0,05 a 0,90 e não participantes de 0,01 a 0,91. As faixas \textbf{se sobrepõem}: há com quem comparar.
+    \item \rot{Por que pode faltar comparação:} imagine alguém com escore 0,98: quase todo mundo com aquele perfil participou, então não sobra ninguém parecido entre os não participantes. Comparar seria ``chutar''.
+    \item \rot{Regra prática:} nesse caso, excluir quem tem escore abaixo de 0,1 ou acima de 0,9 e dizer para quem o efeito vale (Crump et al., 2009). Aqui a sobreposição é boa: não precisamos cortar.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Pareamento, passo 3: o pareamento equilibrou?}
-\fazer{parear (vizinho mais próximo, \emph{caliper} de 0,2 dp) e comparar o balanço antes e depois.}
+\begin{frame}[fragile]{Pareamento, passo 3: os pares ficaram parecidos?}
 \begin{consoleR}
 @@> sum(!is.na(par_controle)); length(tratados)
 [1] 1630
@@ -107,15 +104,15 @@ mulher           0.000      0.012     1.001
 renda_antes      0.801     -0.004     0.967
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item 1.630 dos 1.631 participantes acharam par (\emph{caliper} de 0,2 dp do logit do escore: Austin, 2011).
-    \item \corte{$|\text{SMD}|<0{,}10$ (Austin, 2009) e razão de variâncias entre 0,5 e 2 (Rubin, 2001).} Antes: 0,50 e 0,80 (desbalanceado). Depois: todos ${<}\,0{,}04$ e razões ${\approx}\,1$.
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Primeiras linhas:} 1.630 dos 1.631 participantes acharam um par (só 1 ficou sem).
+    \item \rot{Tabela:} \texttt{smd\_antes} é a diferença entre os grupos \emph{antes} de parear (renda antes: 0,80, muito diferente); \texttt{smd\_depois}, \emph{depois} ($-0{,}004$, praticamente igual). \texttt{razao\_var} compara o quanto cada grupo varia (1 = igual).
+    \item \rot{Regras:} $|\text{SMD}|<0{,}10$ (Austin, 2009) e razão de variâncias entre 0,5 e 2 (Rubin, 2001): médias \emph{e} dispersão parecidas. Tudo dentro: pareamento bem-sucedido.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Pareamento, passo 4: estimar o efeito (ATT)}
-\fazer{média das diferenças de renda dentro dos pares; incerteza por reamostragem.}
+\begin{frame}[fragile]{Pareamento, passo 4: qual o efeito e quão certo ele é?}
 \begin{consoleR}
 @@> att_psm
 [1] 297.3
@@ -124,10 +121,10 @@ renda_antes      0.801     -0.004     0.967
   8.8 282.4 314.2
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item Participantes ganham \destaque{R\$ 297} a mais por causa do programa (verdade: 300); IC 95\% de 282 a 314.
-    \item Atenção: o \emph{bootstrap} simples não é válido para vizinho mais próximo (Abadie e Imbens, 2008); em trabalho real, use o erro-padrão de Abadie e Imbens.
-    \item \textbf{Robustez:} sem a renda antes no escore, o ATT vira 476. O PSM só iguala o que está no modelo.
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{\texttt{att\_psm} = 297,3:} a média da diferença de renda entre cada participante e o seu par: o efeito do programa para quem participou (verdade: 300).
+    \item \rot{De onde vem \texttt{boot}:} refizemos todo o pareamento 100 vezes, cada vez numa amostra ``sorteada'' a partir da nossa (\emph{bootstrap}). Isso simula outras pesquisas possíveis.
+    \item \rot{O que o comando mostra:} \texttt{sd(boot)} $=8{,}8$: quanto as 100 estimativas variam, ou seja, o \textbf{erro-padrão}. \texttt{quantile} 2,5\% e 97,5\%: entre esses valores ficam 95\% das estimativas, ou seja, o \textbf{IC 95\%}: R\$ 282 a R\$ 314.
   \end{itemize}
 \end{leitura}
 \end{frame}
@@ -143,4 +140,7 @@ renda_antes      0.801     -0.004     0.967
       {\tiny Linha verde: verdade (R\$ 300).}
     \end{column}
   \end{columns}
+  \vspace{0.2cm}
+  \footnotesize \textbf{Robustez:} sem a renda antes no escore, o efeito vira R\$ 476. O PSM só iguala o que está no modelo.\\
+  {\scriptsize Nota técnica: para pareamento por vizinho mais próximo, o erro-padrão recomendado é o de Abadie e Imbens (2008); o \emph{bootstrap} simples é usado aqui por ser intuitivo.}
 \end{frame}

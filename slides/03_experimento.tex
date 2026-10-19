@@ -1,5 +1,5 @@
 % =============================================================================
-% EXPERIMENTO CONTROLADO (14:25 a 14:50)   [Script 02 | Exercício 1]
+% EXPERIMENTO CONTROLADO (14:25 a 14:50)   [Script 02]
 % =============================================================================
 \section[Experimento]{Experimento controlado}
 \subsection{Ideia e exemplos}
@@ -54,7 +54,6 @@
 \subsection{Passo a passo}
 
 \begin{frame}[fragile]{Experimento, passo 1: o sorteio equilibrou os grupos?}
-\fazer{comparar tratamento e controle \textbf{antes} do programa (script 02).}
 \begin{consoleR}
 @@> sapply(c("idade", "mulher", "escolaridade", "renda_antes"),
 @@+        function(v) round(smd(dados[[v]], dados$tratamento), 3))
@@ -62,16 +61,16 @@
        0.049        0.006        0.014       -0.018
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item Cada número é a \textbf{diferença padronizada de médias} (SMD) entre tratados e controles, em desvios-padrão.
-    \item \corte{$|\text{SMD}|<0{,}10$ indica balanço adequado (Austin, 2009).} Aqui, todos ${\le}\,0{,}05$.
-    \item Decisão: o sorteio funcionou, \textbf{siga} para a estimação. Se alguma passasse de 0,10, revise o sorteio ou controle por ela.
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Onde olhar:} um número por característica. É a \textbf{diferença entre as médias dos dois grupos, medida em desvios-padrão} (SMD). Zero = grupos iguais.
+    \item \rot{Exemplo:} idade $=0{,}049$: os grupos diferem em 5\% de um desvio-padrão de idade (cerca de 7 meses). Praticamente nada.
+    \item \rot{Regra prática:} $|\text{SMD}|<0{,}10$ é uma diferença pequena demais para distorcer a comparação (Austin, 2009).
+    \item \rot{Conclusão:} todos ficaram abaixo de 0,05: o sorteio funcionou e podemos comparar os grupos.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Experimento, passo 2: estimar o efeito}
-\fazer{comparar as médias de renda dos dois grupos (teste $t$).}
+\begin{frame}[fragile]{Experimento, passo 2: quanto a renda aumentou?}
 \begin{consoleRpeq}
 @@> t.test(renda_exp ~ tratamento, data = dados)
     Welch Two Sample t-test
@@ -85,15 +84,15 @@ mean in group 0 mean in group 1
        2032.597        2327.782
 \end{consoleRpeq}
 \begin{leitura}
-  \begin{itemize}
-    \item Efeito $=$ \texttt{mean in group 1} $-$ \texttt{mean in group 0} $=2.327{,}8-2.032{,}6=$ \destaque{R\$ 295}. O R calcula ``grupo 0 $-$ grupo 1'': por isso $t$ e IC saem \textbf{negativos}.
-    \item \corte{$p<0{,}05$ (equivale a $|t|>1{,}96$) e IC 95\% sem o zero.} Aqui $p<2{,}2\times10^{-16}$; IC de 273 a 318. Relate o tamanho e o IC, não só o $p$ (Wasserstein e Lazar, 2016).
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Comece pelo fim:} renda média do controle (\texttt{group 0}) $=2.032{,}6$; do tratamento (\texttt{group 1}) $=2.327{,}8$. \textbf{Efeito} $=$ \destaque{R\$ 295}.
+    \item \rot{Intervalo de confiança:} o efeito está, com 95\% de confiança, entre R\$ 273 e R\$ 318. O R mostra os números negativos porque faz ``controle $-$ tratamento''.
+    \item \rot{p-valor} ($<2{,}2\times10^{-16}$): a chance de ver uma diferença desse tamanho \emph{se o programa não tivesse efeito}. Regra usual: $p<0{,}05$ = efeito significativo. Mas olhe o tamanho e o intervalo, não só o $p$ (Wasserstein e Lazar, 2016).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Experimento, passo 3: ganhar precisão com covariáveis}
-\fazer{regressão com o tratamento e as covariáveis medidas \textbf{antes} do programa.}
+\begin{frame}[fragile]{Experimento, passo 3: dá para estimar com mais precisão?}
 \begin{consoleR}
 @@> m <- lm(renda_exp ~ tratamento + escolaridade + idade + mulher + renda_antes,
 @@+         data = dados)
@@ -107,16 +106,15 @@ mulher         -0.786      3.451  -0.228    0.820
 renda_antes     1.011      0.006 158.389    0.000
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item Leia \textbf{só a linha \texttt{tratamento}}: 302,1 (EP 3,4). Mesmo efeito do passo 2, com erro-padrão \textbf{3 vezes menor} (era 11,4).
-    \item As outras linhas são controles e \textbf{não} têm interpretação causal (a ``falácia da tabela 2'': Westreich e Greenland, 2013).
-    \item Nunca inclua variáveis medidas \emph{depois} do programa.
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Onde olhar:} só a linha \texttt{tratamento}. \texttt{Estimate} $=302{,}1$ é o efeito; \texttt{Std.\ Error} $=3{,}4$ é a margem de incerteza (era 11,4 no passo 2); \texttt{Pr(>|t|)} é o p-valor.
+    \item \rot{Por que ficou mais preciso:} quem já ganhava mais antes continua ganhando mais; a regressão ``desconta'' isso e sobra menos ruído. O efeito quase não muda, porque o sorteio já tinha resolvido o viés.
+    \item \rot{Cuidado:} as outras linhas \textbf{não} são efeitos de nada (Westreich e Greenland, 2013). Só use características medidas \emph{antes} do programa.
   \end{itemize}
 \end{leitura}
 \end{frame}
 
-\begin{frame}[fragile]{Experimento, passo 4: quantas pessoas eu preciso?}
-\fazer{calcular, \textbf{antes} do experimento, o tamanho de amostra para detectar R\$ 100.}
+\begin{frame}[fragile]{Experimento, passo 4: quantas pessoas preciso sortear?}
 \begin{consoleR}
 @@> power.t.test(delta = 100, sd = 430, sig.level = 0.05, power = 0.80)
      Two-sample t test power calculation
@@ -129,21 +127,10 @@ renda_antes     1.011      0.006 158.389    0.000
 NOTE: n is number in *each* group
 \end{consoleR}
 \begin{leitura}
-  \begin{itemize}
-    \item \texttt{n = 291.2}: são \textbf{292 pessoas por grupo} (arredonde para cima), 584 no total. Para detectar R\$ 300, bastam 34 por grupo.
-    \item \corte{poder de 80\% e significância de 5\% (Cohen, 1988).} \texttt{sd} vem de dados anteriores ou de um piloto.
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Você informa:} \texttt{delta} $=100$ (o menor efeito que vale a pena detectar); \texttt{sd} $=430$ (quanto a renda varia entre as pessoas, de dados anteriores); \texttt{sig.level} $=0{,}05$ (aceito 5\% de risco de ver efeito onde não há); \texttt{power} $=0{,}80$ (quero 80\% de chance de ver o efeito, se ele existir).
+    \item \rot{O R responde:} \texttt{n} $=291{,}2$: são \textbf{292 pessoas em cada grupo} (584 no total).
+    \item \rot{Intuição:} R\$ 100 é pouco perto da variação da renda (430), então é preciso muita gente; para um efeito de R\$ 300 bastariam 34 por grupo. 80\% e 5\% são o padrão (Cohen, 1988).
   \end{itemize}
 \end{leitura}
-\end{frame}
-
-\begin{frame}{Exercício 1: viés de seleção e sorteio (12 min)}
-  \begin{exerciciobox}{\texttt{atividades/exercicio\_01\_vies\_e\_experimento.R}}
-    \small
-    \begin{enumerate}
-      \item Varie a força da motivação (0 a 1,5): compare o viés da \textbf{comparação ingênua} com o do \textbf{sorteio};
-      \item Quantas pessoas por grupo para detectar R\$ 100 com poder de 90\%?
-    \end{enumerate}
-  \end{exerciciobox}
-  \vspace{0.2cm}
-  \textbf{Discutam:} por que o sorteio recupera ${\approx}$ R\$ 300 mesmo quando a motivação pesa muito na inscrição?
 \end{frame}
