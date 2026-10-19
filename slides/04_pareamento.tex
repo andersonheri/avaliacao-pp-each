@@ -52,8 +52,8 @@
 
 \begin{frame}[fragile]{Pareamento, passo 1: quem tende a se inscrever?}
 \begin{consoleR}
-@@> m_ps <- glm(participa ~ escolaridade + idade + mulher + renda_antes,
-@@+             data = dados, family = binomial)
+@@> m_ps <- glm(participa ~ escolaridade + idade + mulher +
+@@+             renda_antes, data = dados, family = binomial)
 @@> round(summary(m_ps)$coefficients, 4)
              Estimate Std. Error  z value Pr(>|z|)
 (Intercept)   -4.6114     0.2185 -21.1034   0.0000
@@ -62,6 +62,9 @@ idade         -0.0235     0.0028  -8.4700   0.0000
 mulher         0.1883     0.0660   2.8522   0.0043
 renda_antes    0.0026     0.0001  19.5414   0.0000
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Pareamento, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Onde olhar:} o \textbf{sinal} da coluna \texttt{Estimate}. Positivo: aumenta a chance de participar; negativo: diminui.
@@ -82,6 +85,9 @@ $`1`
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 0.04621 0.28872 0.41042 0.42225 0.55083 0.89851
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Pareamento, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Onde olhar:} \texttt{\$`0`} são os não participantes; \texttt{\$`1`}, os participantes. Compare \texttt{Min.} e \texttt{Max.}: participantes vão de 0,05 a 0,90 e não participantes de 0,01 a 0,91. As faixas \textbf{se sobrepõem}: há com quem comparar.
@@ -103,6 +109,9 @@ idade           -0.170      0.008     1.010
 mulher           0.000      0.012     1.001
 renda_antes      0.801     -0.004     0.967
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Pareamento, passo 3: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Primeiras linhas:} 1.630 dos 1.631 participantes acharam um par (só 1 ficou sem).
@@ -120,6 +129,9 @@ renda_antes      0.801     -0.004     0.967
    EP  2.5% 97.5%
   8.8 282.4 314.2
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Pareamento, passo 4: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{\texttt{att\_psm} = 297,3:} a média da diferença de renda entre cada participante e o seu par: o efeito do programa para quem participou (verdade: 300).

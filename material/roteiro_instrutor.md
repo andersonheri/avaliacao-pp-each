@@ -1,6 +1,6 @@
 # Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 79 páginas). Não há exercícios: os scripts são demonstrações.
+**Total:** 240 min = 210 min de aula + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 94 páginas). Não há exercícios: os scripts são demonstrações.
 **Formato de cada técnica:** ideia, *características e exemplos em políticas públicas* e *passo a passo*: um slide por passo, com o **print do console do R** (comando em azul + output real) e a caixa **Como ler**, com o **corte da literatura** quando existe (ex.: |SMD| < 0,10, Austin 2009; p < 0,05; poder de 80%, Cohen 1988). Leia de cima para baixo: "o que eu faço, o que aparece, o que concluo". IV e controle sintético: só ideia, características, exemplos e gráficos (o passo a passo completo está nos scripts 06 e 07).
 **Ritmo:** se atrasar, pule "Região comum e resultado" (PSM) e "Teste de manipulação" (RDD), e use os passo a passo como síntese.
 

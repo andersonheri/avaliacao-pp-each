@@ -56,10 +56,14 @@
 \begin{frame}[fragile]{Experimento, passo 1: o sorteio equilibrou os grupos?}
 \begin{consoleR}
 @@> sapply(c("idade", "mulher", "escolaridade", "renda_antes"),
-@@+        function(v) round(smd(dados[[v]], dados$tratamento), 3))
+@@+        function(v) round(smd(dados[[v]],
+@@+                             dados$tratamento), 3))
        idade       mulher escolaridade  renda_antes
        0.049        0.006        0.014       -0.018
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Experimento, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Onde olhar:} um número por característica. É a \textbf{diferença entre as médias dos dois grupos, medida em desvios-padrão} (SMD). Zero = grupos iguais.
@@ -71,18 +75,22 @@
 \end{frame}
 
 \begin{frame}[fragile]{Experimento, passo 2: quanto a renda aumentou?}
-\begin{consoleRpeq}
+\begin{consoleR}
 @@> t.test(renda_exp ~ tratamento, data = dados)
     Welch Two Sample t-test
 data:  renda_exp by tratamento
 t = -25.859, df = 4994.8, p-value < 2.2e-16
-alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+alternative hypothesis: true difference in means between
+group 0 and group 1 is not equal to 0
 95 percent confidence interval:
  -317.5637 -272.8064
 sample estimates:
 mean in group 0 mean in group 1
        2032.597        2327.782
-\end{consoleRpeq}
+\end{consoleR}
+\end{frame}
+
+\begin{frame}{Experimento, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Comece pelo fim:} renda média do controle (\texttt{group 0}) $=2.032{,}6$; do tratamento (\texttt{group 1}) $=2.327{,}8$. \textbf{Efeito} $=$ \destaque{R\$ 295}.
@@ -94,8 +102,8 @@ mean in group 0 mean in group 1
 
 \begin{frame}[fragile]{Experimento, passo 3: dá para estimar com mais precisão?}
 \begin{consoleR}
-@@> m <- lm(renda_exp ~ tratamento + escolaridade + idade + mulher + renda_antes,
-@@+         data = dados)
+@@> m <- lm(renda_exp ~ tratamento + escolaridade + idade +
+@@+            mulher + renda_antes, data = dados)
 @@> round(summary(m)$coefficients, 3)
              Estimate Std. Error t value Pr(>|t|)
 (Intercept)    83.452     10.431   8.000    0.000
@@ -105,6 +113,9 @@ idade           0.116      0.143   0.816    0.414
 mulher         -0.786      3.451  -0.228    0.820
 renda_antes     1.011      0.006 158.389    0.000
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Experimento, passo 3: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Onde olhar:} só a linha \texttt{tratamento}. \texttt{Estimate} $=302{,}1$ é o efeito; \texttt{Std.\ Error} $=3{,}4$ é a margem de incerteza (era 11,4 no passo 2); \texttt{Pr(>|t|)} é o p-valor.
@@ -116,7 +127,8 @@ renda_antes     1.011      0.006 158.389    0.000
 
 \begin{frame}[fragile]{Experimento, passo 4: quantas pessoas preciso sortear?}
 \begin{consoleR}
-@@> power.t.test(delta = 100, sd = 430, sig.level = 0.05, power = 0.80)
+@@> power.t.test(delta = 100, sd = 430, sig.level = 0.05,
+@@+              power = 0.80)
      Two-sample t test power calculation
               n = 291.2151
           delta = 100
@@ -126,6 +138,9 @@ renda_antes     1.011      0.006 158.389    0.000
     alternative = two.sided
 NOTE: n is number in *each* group
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{Experimento, passo 4: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Você informa:} \texttt{delta} $=100$ (o menor efeito que vale a pena detectar); \texttt{sd} $=430$ (quanto a renda varia entre as pessoas, de dados anteriores); \texttt{sig.level} $=0{,}05$ (aceito 5\% de risco de ver efeito onde não há); \texttt{power} $=0{,}80$ (quero 80\% de chance de ver o efeito, se ele existir).

@@ -41,13 +41,17 @@
 \begin{frame}[fragile]{RDD, passo 1: de quanto é o salto no corte?}
 \begin{consoleR}
 @@> janela <- d[abs(d$x) <= 15, ]
-@@> round(summary(lm(freq ~ elegivel * x, data = janela))$coefficients, 3)
+@@> round(summary(lm(freq ~ elegivel * x,
+@@+                    data = janela))$coefficients, 3)
             Estimate Std. Error t value Pr(>|t|)
 (Intercept)   68.387      0.635 107.668    0.000
 elegivel       6.179      0.895   6.902    0.000
 x              0.054      0.072   0.750    0.454
 elegivel:x     0.150      0.103   1.450    0.147
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{RDD, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Antes de ler:} \texttt{x} $=$ renda $-$ 77, então $x=0$ é o corte; \texttt{elegivel} $=1$ para renda até R\$ 77; \texttt{janela} usa só famílias entre R\$ 62 e R\$ 92.
@@ -68,6 +72,9 @@ elegivel:x     0.150      0.103   1.450    0.147
  30   5.50 0.65 2271 4.22 6.78
  40   5.64 0.57 2833 4.52 6.77
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{RDD, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Colunas:} \texttt{h} $=$ janela (h $=15$: famílias até R\$ 15 do corte); \texttt{efeito} $=$ o salto; \texttt{ep} $=$ erro-padrão; \texttt{n} $=$ famílias usadas; \texttt{li} e \texttt{ls} $=$ limites inferior e superior do IC 95\%.
@@ -79,13 +86,17 @@ elegivel:x     0.150      0.103   1.450    0.147
 
 \begin{frame}[fragile]{RDD, passo 3: os dois lados do corte são comparáveis?}
 \begin{consoleRpeq}
-@@> round(summary(lm(idade_mae ~ elegivel * x, data = janela))$coefficients["elegivel", ], 3)
+@@> round(summary(lm(idade_mae ~ elegivel * x,
+@@+                    data = janela))$coefficients["elegivel", ], 3)
   Estimate Std. Error    t value   Pr(>|t|)
      0.066      0.773      0.085      0.932
 @@> table(cut(d$renda, breaks = c(62, 67, 72, 77, 82, 87, 92)))
 (62,67] (67,72] (72,77] (77,82] (82,87] (87,92]
     197     206     213     227     190     238
 \end{consoleRpeq}
+\end{frame}
+
+\begin{frame}{RDD, passo 3: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Teste 1, idade da mãe:} o programa não muda a idade da mãe. Se ela ``saltasse'' no corte, as famílias dos dois lados seriam diferentes. Salto $=0{,}07$ ano, \texttt{Pr} $=0{,}93$ ($>0{,}05$): \textbf{sem salto}.

@@ -73,6 +73,9 @@
 3       0   1 2405.008
 4       1   1 2402.652
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{DiD, passo 1: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Como ler as colunas:} \texttt{tratado} 0 = controle, 1 = região do programa; \texttt{pos} 0 = antes, 1 = depois; \texttt{renda} = média do grupo naquele período.
@@ -85,13 +88,17 @@
 
 \begin{frame}[fragile]{DiD, passo 2: a mesma conta em forma de regressão}
 \begin{consoleR}
-@@> round(summary(lm(renda ~ tratado * pos, data = painel))$coefficients, 2)
+@@> round(summary(lm(renda ~ tratado * pos,
+@@+                    data = painel))$coefficients, 2)
             Estimate Std. Error t value Pr(>|t|)
 (Intercept)  2170.78       8.91  243.54        0
 tratado      -302.59      14.09  -21.47        0
 pos           234.22      12.61   18.58        0
 tratado:pos   300.23      19.93   15.06        0
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{DiD, passo 2: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Cada linha repete uma conta do passo 1:} \texttt{(Intercept)} $=2.171$: controle antes. \texttt{tratado} $=-302$: os tratados eram R\$ 302 mais pobres antes. \texttt{pos} $=+234$: quanto o controle cresceu. \texttt{tratado:pos} $=+300$: o crescimento \emph{extra} dos tratados, \textbf{o efeito}.
@@ -103,7 +110,8 @@ tratado:pos   300.23      19.93   15.06        0
 
 \begin{frame}[fragile]{DiD, passo 3: qual a incerteza correta?}
 \begin{consoleR}
-@@> feols(renda ~ tratado:pos | id + trimestre, data = painel, cluster = ~id)
+@@> feols(renda ~ tratado:pos | id + trimestre, data = painel,
+@@+       cluster = ~id)
 OLS estimation, Dep. Var.: renda
 Observations: 6,000
 Fixed-effects: id: 1,000,  trimestre: 6
@@ -115,6 +123,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 RMSE: 135.3     Adj. R2: 0.881241
               Within R2: 0.227944
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{DiD, passo 3: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{O que mudou:} \texttt{| id + trimestre} compara cada trabalhador com ele mesmo; \texttt{cluster = \textasciitilde id} avisa que os dados da mesma pessoa se parecem (regra: Bertrand, Duflo e Mullainathan, 2004).
@@ -125,8 +136,8 @@ RMSE: 135.3     Adj. R2: 0.881241
 
 \begin{frame}[fragile]{DiD, passo 4: os grupos já se afastavam antes?}
 \begin{consoleR}
-@@> estudo <- feols(renda ~ i(trimestre, tratado, ref = 3) | id + trimestre,
-@@+                 data = painel, cluster = ~id)
+@@> estudo <- feols(renda ~ i(trimestre, tratado, ref = 3) |
+@@+                 id + trimestre, data = painel, cluster = ~id)
 @@> round(coeftable(estudo), 2)
                      Estimate Std. Error t value Pr(>|t|)
 trimestre::1:tratado    23.15      14.27    1.62     0.11
@@ -135,6 +146,9 @@ trimestre::4:tratado   317.24      13.66   23.23     0.00
 trimestre::5:tratado   306.06      13.61   22.48     0.00
 trimestre::6:tratado   321.22      13.36   24.04     0.00
 \end{consoleR}
+\end{frame}
+
+\begin{frame}{DiD, passo 4: como ler}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
     \item \rot{Por que testar:} se os grupos já se afastavam antes, o DiD culparia o programa por uma diferença que já existia.

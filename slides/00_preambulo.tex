@@ -77,7 +77,7 @@
 % Linhas iniciadas por @@ são os comandos (aparecem em azul, como no RStudio).
 \usepackage[most]{tcolorbox}
 \lstdefinestyle{console}{
-  language={}, basicstyle=\ttfamily\fontsize{5.6}{6.15}\selectfont, columns=fixed, keywordstyle={}, commentstyle={}, stringstyle={}, aboveskip=0pt, belowskip=0pt, frame=none, keepspaces=true,
+  language={}, basicstyle=\ttfamily\fontsize{8}{8.8}\selectfont, columns=fixed, keywordstyle={}, commentstyle={}, stringstyle={}, aboveskip=0pt, belowskip=0pt, frame=none, keepspaces=true,
   showstringspaces=false, breaklines=false, tabsize=4, upquote=true,
   moredelim=[il][\color{azul}]{@@},
   literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ã}{{\~a}}1 {ç}{{\c c}}1 {~}{{\char126}}1
@@ -86,19 +86,19 @@
   listing only, listing options={style=console},
   colback=white, colframe=gray!55, boxrule=0.4pt, arc=1pt,
   left=3pt, right=3pt, top=1pt, bottom=1pt,
-  title={\fontsize{5.4}{6}\selectfont\ttfamily Console\hspace{1em}R 4.6.1\hspace{1em}\textasciitilde/avaliacao-pp/},
+  title={\fontsize{7}{8}\selectfont\ttfamily Console\hspace{1em}R 4.6.1\hspace{1em}\textasciitilde/avaliacao-pp/},
   colbacktitle=gray!18, coltitle=black, toptitle=0.3pt, bottomtitle=0.3pt
 }
 % versão com letra menor, para outputs com linhas longas (ex.: t.test)
 \newtcblisting{consoleRpeq}{
-  listing only, listing options={style=console,basicstyle=\ttfamily\fontsize{4.8}{5.6}\selectfont},
+  listing only, listing options={style=console,basicstyle=\ttfamily\fontsize{6.8}{7.6}\selectfont},
   colback=white, colframe=gray!55, boxrule=0.4pt, arc=1pt,
   left=3pt, right=3pt, top=1pt, bottom=1pt,
-  title={\fontsize{5.4}{6}\selectfont\ttfamily Console\hspace{1em}R 4.6.1\hspace{1em}\textasciitilde/avaliacao-pp/},
+  title={\fontsize{7}{8}\selectfont\ttfamily Console\hspace{1em}R 4.6.1\hspace{1em}\textasciitilde/avaliacao-pp/},
   colbacktitle=gray!18, coltitle=black, toptitle=0.3pt, bottomtitle=0.3pt
 }
 % Caixa "Como ler" e etiqueta de corte da literatura
-\newtcolorbox{leitura}{colback=azulclaro, colframe=azul, boxrule=0.4pt, arc=1pt, left=3pt, right=3pt, top=1pt, bottom=1pt, title={\scriptsize\bfseries Como ler}, colbacktitle=azul, coltitle=white, toptitle=0pt, bottomtitle=0pt, fontupper=\fontsize{7.4}{8.6}\selectfont, before upper={\setlength{\leftmargini}{1em}\vspace*{1pt}}, after upper={\vspace*{-4pt}}}
+\newtcolorbox{leitura}{colback=azulclaro, colframe=azul, boxrule=0.4pt, arc=1pt, left=3pt, right=3pt, top=1pt, bottom=1pt, title={\scriptsize\bfseries Como ler}, colbacktitle=azul, coltitle=white, toptitle=0pt, bottomtitle=0pt, fontupper=\fontsize{11}{13}\selectfont, before upper={\setlength{\leftmargini}{1em}\vspace*{1pt}}, after upper={\vspace*{-4pt}}}
 \newcommand{\corte}[1]{{\color{laranja}\bfseries Corte:} #1}
 \newcommand{\fazer}[1]{{\scriptsize\textbf{O que fazer:} #1\par}\vspace{2pt}}
 \newcommand{\pergunta}[1]{{\scriptsize{\color{laranja}\bfseries Pergunta deste passo:} #1\par}\vspace{2pt}}
