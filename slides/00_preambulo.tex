@@ -1,0 +1,131 @@
+% =============================================================================
+% 00_preambulo.tex  |  Tema e macros dos slides
+% Workshop: Técnicas de Avaliação de Políticas Públicas (EACH/USP, 2026)
+% Paleta inspirada no cartaz do Seminário Discente 2026 (laranja + índigo).
+% =============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds,decorations.pathreplacing}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+
+\graphicspath{{../figuras/}}
+
+% ---- Cores --------------------------------------------------------------------
+\definecolor{laranja}{HTML}{F26B21}
+\definecolor{indigo}{HTML}{4A55A2}
+\definecolor{cinza}{HTML}{8E93B0}
+\definecolor{verde}{HTML}{2E8B57}
+\definecolor{fundo}{HTML}{F8F8F8}
+\definecolor{indigoclaro}{HTML}{E4E6F3}
+\definecolor{laranjaclaro}{HTML}{FDE8DC}
+
+% ---- Aparência geral -----------------------------------------------------------
+\usetheme{default}
+\usefonttheme{professionalfonts}
+\renewcommand{\familydefault}{\sfdefault}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{background canvas}{bg=fundo}
+\setbeamercolor{normal text}{fg=black!85}
+\setbeamercolor{structure}{fg=indigo}
+\setbeamercolor{frametitle}{fg=indigo,bg=fundo}
+\setbeamercolor{itemize item}{fg=laranja}
+\setbeamercolor{itemize subitem}{fg=indigo}
+\setbeamercolor{enumerate item}{fg=laranja}
+\setbeamercolor{block title}{bg=indigo,fg=white}
+\setbeamercolor{block body}{bg=indigoclaro,fg=black!85}
+\setbeamercolor{alerted text}{fg=laranja}
+\setbeamerfont{block title}{series=\bfseries,size=\normalsize}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamerfont{caption}{size=\scriptsize}
+
+% título do slide: alinhado à esquerda com uma barra laranja
+\setbeamertemplate{frametitle}{%
+  \vspace{0.3cm}
+  \begin{tikzpicture}[baseline=0pt]
+    \fill[laranja] (0,-0.25) rectangle (0.14,0.55);
+    \node[anchor=west,text=indigo,font=\Large\bfseries,text width=0.92\paperwidth] at (0.3,0.15) {\insertframetitle};
+  \end{tikzpicture}
+}
+
+% rodapé: identificação e numeração
+\setbeamertemplate{footline}{%
+  \hbox to \paperwidth{\hspace*{0.6cm}%
+    {\tiny\color{cinza}Técnicas de Avaliação de Políticas Públicas \,$\cdot$\, PPGGP EACH/USP \,$\cdot$\, Seminário Discente 2026}%
+    \hfill {\tiny\color{cinza}\insertframenumber}\hspace*{0.6cm}}%
+  \vspace*{0.25cm}%
+}
+\setlength{\leftmargini}{1.2em}
+
+% ---- Macros --------------------------------------------------------------------
+\newcommand{\fonte}[1]{\par\vfill{\tiny\color{cinza}Fonte: #1}}
+\newcommand{\destaque}[1]{{\bfseries\color{laranja}#1}}
+\newcommand{\ind}[1]{{\bfseries\color{indigo}#1}}
+\newcommand{\cod}[1]{\texttt{\color{indigo}#1}}
+
+% Slide de seção (fundo índigo)
+\newcommand{\secao}[3]{%   #1 = número, #2 = título, #3 = tempo/subtítulo
+  {\setbeamercolor{background canvas}{bg=indigo}%
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[laranja] (current page.south west) rectangle ++(0.5,\paperheight);
+      \node[anchor=west,text=white,font=\Huge\bfseries,text width=0.8\paperwidth,align=left]
+        at ([xshift=1.5cm,yshift=0.6cm]current page.west) {#2};
+      \node[anchor=west,text=laranjaclaro,font=\large,align=left]
+        at ([xshift=1.5cm,yshift=-1.2cm]current page.west) {#1 \,$\cdot$\, #3};
+    \end{tikzpicture}
+  \end{frame}}%
+}
+
+% Caixa "Hora do R" (demonstração em R)
+\newenvironment{horaR}[1]{%
+  \begin{beamercolorbox}[wd=\textwidth,rounded=true,leftskip=0.4cm,rightskip=0.4cm,sep=0.25cm]{laranjabox}
+  {\bfseries\color{laranja}\large $\blacktriangleright$ Hora do R \,$\cdot$\, \cod{#1}}\par\smallskip
+}{%
+  \end{beamercolorbox}
+}
+\setbeamercolor{laranjabox}{bg=laranjaclaro,fg=black!85}
+
+% Slide de atividade: bloco laranja
+\newenvironment{atividadebox}[1]{%
+  \setbeamercolor{block title}{bg=laranja,fg=white}
+  \setbeamercolor{block body}{bg=laranjaclaro,fg=black!85}
+  \begin{block}{#1}
+}{%
+  \end{block}
+  \setbeamercolor{block title}{bg=indigo,fg=white}
+  \setbeamercolor{block body}{bg=indigoclaro,fg=black!85}
+}
+
+% Trechos de código R
+\lstdefinestyle{R}{
+  language=R, basicstyle=\ttfamily\scriptsize, keywordstyle=\color{indigo}\bfseries,
+  commentstyle=\color{verde}\itshape, stringstyle=\color{laranja},
+  backgroundcolor=\color{white}, frame=single, rulecolor=\color{indigoclaro},
+  breaklines=true, showstringspaces=false, columns=fullflexible, keepspaces=true,
+  literate={á}{{\'a}}1 {à}{{\`a}}1 {â}{{\^a}}1 {ã}{{\~a}}1 {é}{{\'e}}1 {ê}{{\^e}}1
+           {í}{{\'i}}1 {ó}{{\'o}}1 {ô}{{\^o}}1 {õ}{{\~o}}1 {ú}{{\'u}}1 {ç}{{\c c}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ç}{{\c C}}1
+           {°}{{\textdegree}}1
+}
+\lstset{style=R}
+
+% Estilos TikZ comuns
+\tikzset{
+  cx/.style={draw=indigo,fill=white,rounded corners=3pt,thick,align=center,inner sep=5pt,font=\small},
+  cxl/.style={draw=laranja,fill=laranjaclaro,rounded corners=3pt,thick,align=center,inner sep=5pt,font=\small},
+  cxi/.style={draw=indigo,fill=indigoclaro,rounded corners=3pt,thick,align=center,inner sep=5pt,font=\small},
+  seta/.style={-{Stealth[length=2.6mm]},thick,color=indigo},
+  setal/.style={-{Stealth[length=2.6mm]},thick,color=laranja},
+}

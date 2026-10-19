@@ -1,0 +1,276 @@
+% =============================================================================
+% BLOCO 2 — EXPERIMENTO CONTROLADO (RCT)  (14:35–15:05)   [Script 02 | Atividade 2]
+% =============================================================================
+\secao{Bloco 2}{Experimento controlado}{14:35 -- 15:05 \,$\cdot$\, Script 02 \,$\cdot$\, Atividade 2}
+
+\begin{frame}{O ``padrão ouro'': a aleatorização}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}
+      \begin{itemize}
+        \item Participantes são \ind{distribuídos aleatoriamente} em dois grupos:
+        \begin{itemize}
+          \item \textbf{Tratamento}: recebe a política;
+          \item \textbf{Controle}: não recebe.
+        \end{itemize}
+        \item Todos têm a \emph{mesma probabilidade} de cair em cada grupo $\Rightarrow$ os grupos são equivalentes \destaque{em média}, nas características observadas \textbf{e não observadas};
+        \item A única coisa que distingue os grupos é \alert{receber ou não a política}: a diferença nos resultados é o impacto.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \begin{atividadebox}{Atenção: o desenho vem antes}
+        \small
+        A avaliação experimental é definida no momento da \textbf{formulação} da política: é preciso medir o \emph{baseline} e sortear \emph{antes} de implementar.
+      \end{atividadebox}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), pp.~6--8.}
+\end{frame}
+
+\begin{frame}{Como funciona um experimento de avaliação}
+  \centering
+  \begin{tikzpicture}[scale=0.8,every node/.style={transform shape}]
+    \node[cx,minimum width=2.8cm] (pop) at (0,0) {Elegíveis\\{\scriptsize (população-alvo)}};
+    \node[cxi,minimum width=2.6cm,font=\small\bfseries] (sorteio) at (3.9,0) {Sorteio\\{\scriptsize (aleatorização)}};
+    \node[cxl,minimum width=2.8cm] (trat) at (8.0,1.2) {Grupo de\\\textbf{tratamento}};
+    \node[cxi,minimum width=2.8cm] (ctrl) at (8.0,-1.2) {Grupo de\\\textbf{controle}};
+    \node[cx,minimum width=2.4cm] (rt) at (12.2,1.2) {Resultado $\bar Y_T$};
+    \node[cx,minimum width=2.4cm] (rc) at (12.2,-1.2) {Resultado $\bar Y_C$};
+    \node[cxl,minimum width=2.2cm,font=\small\bfseries] (imp) at (15.6,0) {Impacto\\$=\bar Y_T-\bar Y_C$};
+    \draw[seta] (pop) -- (sorteio);
+    \draw[seta] (sorteio) -- (trat); \draw[seta] (sorteio) -- (ctrl);
+    \draw[setal] (trat) -- node[above,font=\scriptsize]{recebe} (rt);
+    \draw[seta] (ctrl) -- node[below,font=\scriptsize]{não recebe} (rc);
+    \draw[seta] (rt) -- (imp); \draw[seta] (rc) -- (imp);
+  \end{tikzpicture}
+  \vspace{0.4cm}\par
+  \small Em termos estatísticos: \ind{diferença de médias} (teste $t$) ou \ind{regressão} em que a variável independente é uma \emph{dummy} de tratamento.
+  \fonte{Batista e Domingos (2017), Figura 3 e pp.~6--7.}
+\end{frame}
+
+\begin{frame}{Por que funciona? Os grupos ficam equivalentes}
+  \begin{columns}[T]
+    \begin{column}{0.62\textwidth}
+      \includegraphics[width=\textwidth]{02_balanco.png}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+      \footnotesize
+      \begin{itemize}
+        \item $|\text{SMD}|<0{,}10$ = bom balanceamento;
+        \item Com sorteio, \emph{todas} as covariáveis ficam equilibradas --- inclusive a \ind{motivação}, que o avaliador não mede;
+        \item Com autosseleção, a escolaridade, a renda e a motivação diferem fortemente.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \fonte{Simulação nossa (script 02). SMD = diferença padronizada de médias.}
+\end{frame}
+
+\begin{frame}{Estimando o efeito: diferença de médias e regressão}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Diferença de médias}
+        \small
+        $\widehat{\text{Impacto}}=\bar Y_{\text{trat}}-\bar Y_{\text{ctrl}}$\\[0.15cm]
+        Renda média: R\$ 2.328 $-$ R\$ 2.033 \\ $=$ \destaque{R\$ 295}
+      \end{block}
+      \begin{block}{Regressão}
+        \small
+        $Y_i=\beta_0+\beta_1\,\text{Trat}_i+\varepsilon_i$\\[0.15cm]
+        $\hat\beta_1$ é o impacto.
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \small
+        \renewcommand{\arraystretch}{1.4}
+        \begin{tabular}{lrr}
+          \toprule
+          & \textbf{Efeito} & \textbf{Erro-padrão} \\ \midrule
+          Sem covariáveis & 295,2 & 11,4 \\
+          Com covariáveis & 302,1 & \destaque{3,4} \\ \bottomrule
+        \end{tabular}
+      \end{center}
+      \vspace{0.2cm}
+      \small Covariáveis não são necessárias para \emph{eliminar} o viés (o sorteio já fez isso), mas deixam a estimativa mais \ind{precisa}.\\[0.2cm]
+      \textbf{Verdade: R\$ 300.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Mil avaliações, dois métodos (simulação de Monte Carlo)}
+  \begin{columns}[T]
+    \begin{column}{0.64\textwidth}
+      \includegraphics[width=\textwidth]{02_montecarlo.png}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      \footnotesize
+      Repetimos ``a pesquisa'' 1.000 vezes (amostras de 400 pessoas):
+      \vspace{0.2cm}
+      \begin{center}
+      \begin{tabular}{@{}lr@{}}
+        \toprule
+        \textbf{Método} & \textbf{Média} \\ \midrule
+        Autosseleção & 587 \\
+        Experimento & 301 \\ \bottomrule
+      \end{tabular}
+      \end{center}
+      \vspace{0.2cm}
+      O sorteio é \ind{não viesado}: erra para cima e para baixo, mas acerta \emph{em média}. A autosseleção erra \alert{sempre para o mesmo lado}.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Experimentos na avaliação de políticas: dois exemplos}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Desparasitação no Quênia (PSDP)}
+        \footnotesize
+        \begin{itemize}
+          \item 75 escolas divididas em 3 grupos de 25 (1998--2001);
+          \item \textbf{Implementação em fases}: grupo 1 recebe no 1.º ano; grupo 2 no 2.º; grupo 3 no 3.º;
+          \item Crianças tratadas tiveram \ind{melhor saúde} e \ind{maior frequência escolar}.
+        \end{itemize}
+      \end{block}
+      \vspace{-0.1cm}
+      {\tiny Miguel e Kremer (2004).}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Seguro Popular (México)}
+        \footnotesize
+        \begin{itemize}
+          \item Acesso à saúde para famílias de baixa renda; 100 \emph{clusters} randomizados;
+          \item Gastos com saúde \ind{caíram 23\%} no grupo de tratamento (55\% entre quem aderiu);
+          \item Mas \alert{sem efeito substantivo} no uso de serviços médicos.
+        \end{itemize}
+      \end{block}
+      \vspace{-0.1cm}
+      {\tiny King et al.~(2009).}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), p.~8.}
+\end{frame}
+
+\begin{frame}{Implementação em fases: sorteio que é também justiça}
+  \centering
+  \begin{tikzpicture}[x=1.7cm,y=0.9cm]
+    \foreach \t/\l in {1/Ano 1,2/Ano 2,3/Ano 3} { \node[font=\small\bfseries,text=indigo] at (\t+0.5,3.9) {\l}; }
+    \foreach \g/\lab/\s in {1/Grupo 1/1,2/Grupo 2/2,3/Grupo 3/3} {
+      \node[anchor=east,font=\small\bfseries] at (0.8,3-\g+1) {\lab};
+      \foreach \t in {1,2,3} {
+        \ifnum\t<\s
+          \fill[indigoclaro,draw=indigo] (\t,3-\g+0.6) rectangle (\t+1,3-\g+1.4);
+          \node[font=\scriptsize,text=indigo] at (\t+0.5,3-\g+1) {controle};
+        \else
+          \fill[laranjaclaro,draw=laranja] (\t,3-\g+0.6) rectangle (\t+1,3-\g+1.4);
+          \node[font=\scriptsize,text=laranja!80!black] at (\t+0.5,3-\g+1) {tratado};
+        \fi
+      }
+    }
+  \end{tikzpicture}
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item Todos os elegíveis recebem a política \emph{ao final do processo}, em ordem \destaque{sorteada}; quem espera funciona como controle;
+    \item Com recursos escassos, dar a todos os elegíveis igual chance de participar --- uma \emph{loteria} --- é uma das regras de alocação mais justas e transparentes (Gertler et al., 2011, citado no artigo).
+  \end{itemize}
+  \fonte{Batista e Domingos (2017), pp.~7--8.}
+\end{frame}
+
+\begin{frame}{Problemas no campo: \textit{compliance}, atrito e \textit{spillovers}}
+  \begin{columns}[T]
+    \begin{column}{0.33\textwidth}
+      \begin{block}{\textit{Compliance}}
+        \footnotesize
+        Sorteados não aderem; ou o controle recebe o benefício por outro canal.\\[0.1cm]
+        Na simulação (adesão de 70\%): \textbf{ITT = R\$ 193} (efeito da \emph{oferta}); efeito sobre quem aderiu $\approx$ R\$ 293.
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{block}{Atrito}
+        \footnotesize
+        Indivíduos ``saem'' do grupo de tratamento (mudança, não resposta).\\[0.1cm]
+        Se saem de forma \emph{sistemática} (os que não melhoraram somem), o viés volta: estimativa de \textbf{R\$ 345} (verdade: 300).
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{block}{\textit{Spillovers}}
+        \footnotesize
+        O tratamento ``transborda'' para o controle (ex.: vizinhos que compartilham informação).\\[0.1cm]
+        O controle é contaminado e a diferença \emph{subestima} o efeito.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.3cm}
+  \begin{center}\small Esses problemas dificultam a interpretação, mas \textbf{não a inviabilizam} (Khandker, Koolwal e Samad, 2010).\end{center}
+  \fonte{Batista e Domingos (2017), p.~7; números da simulação (script 02).}
+\end{frame}
+
+\begin{frame}{Poder estatístico: quantas pessoas são necessárias?}
+  \begin{columns}[T]
+    \begin{column}{0.43\textwidth}
+      \footnotesize
+      \renewcommand{\arraystretch}{1.3}
+      \begin{tabular}{@{}p{2.1cm}p{1.9cm}p{2.0cm}@{}}
+        \toprule
+        & \textbf{Programa funciona} & \textbf{Não funciona} \\ \midrule
+        \textbf{Detecta} & acerto & \textbf{Erro tipo I}\\
+        \textbf{Não detecta} & \textbf{Erro tipo II} & acerto \\ \bottomrule
+      \end{tabular}
+      \vspace{0.3cm}
+
+      \begin{itemize}
+        \item Poder $=1-P(\text{erro tipo II})$; meta usual: \textbf{80\%};
+        \item Efeito de R\$ 300: \destaque{34 pessoas por grupo};
+        \item Efeito de R\$ 100: \destaque{291 por grupo}.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.57\textwidth}
+      \includegraphics[width=\textwidth]{02_poder.png}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), p.~7. A análise de poder (\cod{power.t.test}) deve ser feita \emph{antes} do experimento (Gerber e Green, 2012).}
+\end{frame}
+
+\begin{frame}{Limites do experimento}
+  \begin{itemize}
+    \item \textbf{Viabilidade}: exige desenhar a avaliação \emph{antes} da implementação; se a política já foi distribuída de forma não aleatória, não há mais experimento;
+    \item \textbf{Ética e aceitação}: sortear quem recebe pode parecer arbitrário ou antiético --- mas, com recursos escassos, a loteria costuma ser a regra mais justa;
+    \item \textbf{Custo e escala}: amostras grandes, acompanhamento de campo;
+    \item \textbf{Validade externa}: o efeito vale para a população e o contexto do experimento.
+  \end{itemize}
+  \vspace{0.3cm}
+  \begin{block}{Quando não dá para sortear\ldots}
+    \small As técnicas quase-experimentais tentam \emph{emular} um grupo de controle com dados observacionais. É o que veremos a seguir.
+  \end{block}
+  \fonte{Batista e Domingos (2017), pp.~7--8.}
+\end{frame}
+
+\begin{frame}[fragile]{Hora do R: \texttt{02\_experimento\_rct.R}}
+  \begin{horaR}{scripts/02\_experimento\_rct.R}
+\begin{lstlisting}
+dados <- gerar_populacao(n = 5000, efeito = 300)
+
+# 1. Sorteio: metade tratamento, metade controle
+dados$tratamento <- sample(rep(0:1, length.out = nrow(dados)))
+dados$renda_exp <- ifelse(dados$tratamento == 1,
+                          dados$renda_depois_Y1, dados$renda_depois_Y0)
+
+# 2. Impacto: diferenca de medias, teste t e regressao
+t.test(renda_exp ~ tratamento, data = dados)
+lm(renda_exp ~ tratamento, data = dados)
+
+# 3. Quantas pessoas por grupo para detectar R$ 300 (poder 80%)?
+power.t.test(delta = 300, sd = 430, power = 0.80)
+\end{lstlisting}
+  \end{horaR}
+\end{frame}
+
+\begin{frame}{Atividade 2 \,$\cdot$\, Planejando um experimento (10 min)}
+  \begin{atividadebox}{Arquivo: \texttt{atividades/atividade\_02\_experimento.R}}
+    \begin{enumerate}
+      \item \textbf{Tarefa 1.} Quantas pessoas por grupo para detectar R\$ 100 com poder de 90\%?
+      \item \textbf{Tarefa 2.} Estime o poder \emph{por simulação} (100 pessoas por grupo, efeito de R\$ 150) e compare com o valor teórico;
+      \item \textbf{Tarefa 3.} Reduza a adesão de 70\% para 40\%: o que acontece com o ITT e com o efeito sobre os aderentes?
+    \end{enumerate}
+  \end{atividadebox}
+  \vspace{0.2cm}
+  \textbf{Para discutir:} qual medida o gestor deve usar para decidir expandir o programa --- o ITT ou o efeito sobre quem aderiu?
+\end{frame}

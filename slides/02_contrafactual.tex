@@ -1,0 +1,186 @@
+% =============================================================================
+% BLOCO 1 — O PROBLEMA DO CONTRAFACTUAL  (14:15–14:35)   [Script 01 | Atividade 1]
+% =============================================================================
+\secao{Bloco 1}{O problema do contrafactual}{14:15 -- 14:35 \,$\cdot$\, Script 01 \,$\cdot$\, Atividade 1}
+
+\begin{frame}{O problema fundamental da inferência causal}
+  Para cada pessoa, só observamos \destaque{um} dos dois mundos:
+  \vspace{0.2cm}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{lcccc}
+    \toprule
+    & \textbf{Participou?} & \textbf{Renda COM programa} & \textbf{Renda SEM programa} & \textbf{Efeito} \\ \midrule
+    Ana    & sim & R\$ 2.400 & \destaque{?} & \destaque{?} \\
+    Bruno  & não & \destaque{?} & R\$ 2.000 & \destaque{?} \\
+    Carla  & sim & R\$ 2.700 & \destaque{?} & \destaque{?} \\
+    Davi   & não & \destaque{?} & R\$ 1.800 & \destaque{?} \\ \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item O resultado que \emph{não} observamos é o \ind{contrafactual}: o que teria acontecido com a mesma pessoa no outro cenário;
+    \item Toda técnica de avaliação de impacto é uma \destaque{estratégia para estimar o contrafactual}.
+  \end{itemize}
+  \fonte{Batista e Domingos (2017), p.~5; Gertler et al.~(2011).}
+\end{frame}
+
+\begin{frame}{O contrafactual: a comparação ideal}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \includegraphics[width=\textwidth]{01_contrafactual.png}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \small
+      \begin{itemize}
+        \item A comparação ideal é entre o grupo que recebeu a política e \emph{esse mesmo grupo} sem a política;
+        \item Na vida real essa situação é \alert{inviável}: a linha tracejada nunca é observada;
+        \item Só numa \ind{simulação} podemos desenhar as duas linhas --- e é por isso que vamos simular.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), Figura 2 (p.~6); simulação nossa (script 01).}
+\end{frame}
+
+\begin{frame}{Dois ``falsos contrafactuais'' intuitivos --- e equivocados}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{1. Participantes $\times$ não participantes}
+        \small
+        Compara quem recebeu a política com quem não recebeu, \textbf{depois} do programa.\\[0.2cm]
+        \destaque{Problema}: \ind{viés de seleção}. Quem participa pode ser diferente de quem não participa (mais motivado, mais escolarizado\ldots).
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{2. Antes $\times$ depois}
+        \small
+        Compara os \textbf{mesmos} participantes antes e depois do programa.\\[0.2cm]
+        \destaque{Problema}: \ind{tendência no tempo}. A renda pode ter subido por crescimento econômico, inflação, ciclo de vida\ldots
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.4cm}
+  \begin{center}
+    Nos dois casos, a comparação ``\emph{contamina}'' o efeito do programa com outros fatores.
+  \end{center}
+  \fonte{Batista e Domingos (2017), p.~5: ``falsos contrafactuais'' (\emph{counterfeit counterfactuals}).}
+\end{frame}
+
+\begin{frame}{Viés de seleção: os grupos já eram diferentes antes}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \includegraphics[width=\textwidth]{01_vies_selecao.png}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \footnotesize
+      Na simulação (\textbf{antes} de qualquer treinamento):
+      \vspace{0.2cm}
+      \begin{center}
+      \begin{tabular}{lrr}
+        \toprule
+        & \textbf{Participa} & \textbf{Não} \\ \midrule
+        Renda antes & R\$ 2.122 & R\$ 1.836 \\
+        Motivação (índice) & $+0{,}49$ & $-0{,}23$ \\ \bottomrule
+      \end{tabular}
+      \end{center}
+      \vspace{0.2cm}
+      A motivação \ind{não é observada} pelo avaliador, mas eleva a renda \emph{com ou sem} programa.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Nosso laboratório: o programa \textit{Qualifica}}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{itemize}
+        \item 5.000 trabalhadores; o programa oferece \textbf{treinamento profissional};
+        \item Resultado: \textbf{renda mensal};
+        \item \destaque{Efeito verdadeiro: + R\$ 300/mês} (escrevemos nós mesmos);
+        \item Quem participa: mais escolarizado e \ind{mais motivado};
+        \item A renda de \emph{todos} cresce R\$ 100 no período (tendência).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{beamercolorbox}[wd=\textwidth,rounded=true,sep=0.3cm]{laranjabox}
+        \small
+        \textbf{Por que simular?}\\[0.1cm]
+        Na vida real nunca sabemos a verdade. Aqui sabemos e podemos perguntar:
+        \emph{a técnica recupera os R\$ 300?}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+  \vspace{0.3cm}
+  \small Código do ``mundo simulado'': \cod{scripts/funcoes\_dgp.R} (comentado, leitura recomendada).
+\end{frame}
+
+\begin{frame}[fragile]{Hora do R: \texttt{01\_contrafactual\_vies\_selecao.R}}
+  \begin{horaR}{scripts/01\_contrafactual\_vies\_selecao.R}
+\begin{lstlisting}
+source("scripts/00_setup.R")
+dados <- gerar_populacao(n = 5000, efeito = 300)
+
+# Falso contrafactual 1: participantes x nao participantes
+mean(dados$renda_depois[dados$participa == 1]) -
+  mean(dados$renda_depois[dados$participa == 0])      # 587
+
+# Falso contrafactual 2: antes x depois (so participantes)
+part <- dados[dados$participa == 1, ]
+mean(part$renda_depois) - mean(part$renda_antes)      # 402
+\end{lstlisting}
+  \end{horaR}
+  \vspace{0.2cm}
+  {\small Rodem linha a linha (Ctrl+Enter) e comparem com a verdade: \destaque{300}.}
+\end{frame}
+
+\begin{frame}{Resultado: os dois falsos contrafactuais erram}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{lrr}
+    \toprule
+    \textbf{Método} & \textbf{Estimativa} & \textbf{Erro} \\ \midrule
+    \rowcolor{verde!15}
+    Verdade (efeito simulado) & R\$ 300 & --- \\
+    Participantes $\times$ não participantes & R\$ 587 & \destaque{+287} (viés de seleção) \\
+    Antes $\times$ depois & R\$ 402 & \destaque{+102} (tendência) \\ \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{0.4cm}
+  \begin{block}{Voltando à enquete}
+    \small
+    Resposta (b): o efeito é \textbf{menor} que a diferença observada. Os R\$ 587 misturam o efeito do programa (R\$ 300) com o fato de que os participantes \emph{já ganhavam mais e eram mais motivados}.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Mapa das técnicas de avaliação}
+  \centering
+  \begin{tikzpicture}[node distance=0.5cm]
+    \node[cxl,minimum width=4.6cm,minimum height=0.9cm,font=\small\bfseries] (top) {Identificar o impacto causal};
+    \node[cxi,below left=0.9cm and -0.4cm of top,minimum width=3.4cm] (exp) {\textbf{Experimento}\\sorteio entre elegíveis};
+    \node[cx,below right=0.9cm and -1.6cm of top,minimum width=3.4cm,align=center] (qe) {\textbf{Quase-experimentos}\\(dados observacionais)};
+    \draw[seta] (top) -- (exp); \draw[seta] (top) -- (qe);
+    \node[cxi,below=1.0cm of qe,xshift=-4.3cm,minimum width=3.3cm] (psm) {\textbf{Pareamento}\\``gêmeos'' nas\\características observadas};
+    \node[cxi,below=1.0cm of qe,xshift=0cm,minimum width=3.3cm] (did) {\textbf{Dif.-em-diferenças}\\tendência do grupo\\de controle};
+    \node[cxi,below=1.0cm of qe,xshift=4.3cm,minimum width=3.3cm] (rdd) {\textbf{Regr. descontínua}\\corte de\\elegibilidade};
+    \draw[seta] (qe) -- (psm); \draw[seta] (qe) -- (did); \draw[seta] (qe) -- (rdd);
+    \node[below=0.1cm of exp,font=\scriptsize,text=indigo] {Bloco 2};
+    \node[below=0.12cm of psm,font=\scriptsize,text=indigo] {Bloco 3};
+    \node[below=0.12cm of did,font=\scriptsize,text=indigo] {Bloco 4};
+    \node[below=0.12cm of rdd,font=\scriptsize,text=indigo] {Bloco 5};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Atividade 1 \,$\cdot$\, Viés de seleção (6--8 min)}
+  \begin{atividadebox}{Arquivo: \texttt{atividades/atividade\_01\_vies\_selecao.R}}
+    \begin{enumerate}
+      \item \textbf{Tarefa 1.} Varie a \cod{forca\_motivacao} (0, 0,5, 0,9, 1,5) e calcule o viés da comparação ingênua;
+      \item \textbf{Tarefa 2.} Gere uma população \emph{sem} tendência e refaça o antes-depois.
+    \end{enumerate}
+  \end{atividadebox}
+  \vspace{0.2cm}
+  \textbf{Discutam (1 min):}
+  \begin{itemize}
+    \item Quando a motivação não influencia a inscrição, o viés some por completo?
+    \item Por que o antes-depois acertaria sem tendência --- e isso é realista?
+  \end{itemize}
+  \vfill{\scriptsize Gabarito comentado: \cod{gabaritos/gabarito\_01\_vies\_selecao.R} (liberado após a atividade).}
+\end{frame}

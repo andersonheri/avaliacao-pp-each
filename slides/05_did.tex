@@ -1,0 +1,214 @@
+% =============================================================================
+% BLOCO 4 — DIFERENÇA-EM-DIFERENÇAS  (16:10–16:40)   [Script 04 | Atividade 4]
+% =============================================================================
+\secao{Bloco 4}{Diferença-em-diferenças}{16:10 -- 16:40 \,$\cdot$\, Script 04 \,$\cdot$\, Atividade 4}
+
+\begin{frame}{Diferença-em-diferenças: a ideia}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \begin{itemize}
+        \item Compara a \ind{variação} (depois $-$ antes) do grupo \textbf{tratado} com a variação do grupo de \textbf{controle};
+        \item A variação do controle é a \destaque{tendência} que o tratado teria seguido sem a política;
+        \item Elimina diferenças \emph{fixas} entre os grupos --- mesmo as \textbf{não observadas};
+        \item Usa \emph{dois} ``falsos contrafactuais'' e os combina: a ``dupla diferença''.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{Fórmula}
+        \small
+        $$\text{DD}=(\bar Y_{T}^{\,dep}-\bar Y_{T}^{\,ant})-(\bar Y_{C}^{\,dep}-\bar Y_{C}^{\,ant})$$
+      \end{block}
+      \vspace{0.1cm}
+      \footnotesize \textbf{Pressuposto-chave}: \destaque{tendências paralelas} --- sem a política, os dois grupos evoluiriam em paralelo.
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), pp.~11--12.}
+\end{frame}
+
+\begin{frame}{Exemplo do artigo, ``na calculadora'' (Figura 6)}
+  \begin{columns}[T]
+    \begin{column}{0.45\textwidth}
+      \renewcommand{\arraystretch}{1.5}
+      \begin{tabular}{lrr}
+        \toprule
+        \textbf{Renda} & \textbf{Participantes} & \textbf{Não part.} \\ \midrule
+        Antes & 80 & 90 \\
+        Depois & 125 & 120 \\ \midrule
+        \textbf{Variação} & \textbf{+45} & \textbf{+30} \\ \bottomrule
+      \end{tabular}
+      \vspace{0.3cm}
+
+      \small
+      \begin{block}{Dupla diferença}
+        DD $=45-30=$ \destaque{15}
+      \end{block}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \includegraphics[width=\textwidth]{04_figura6.png}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), Figura 6 (p.~11), adaptada de Khandker, Koolwal e Samad (2010).}
+\end{frame}
+
+\begin{frame}{Dois ``falsos contrafactuais'' e o DD}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.6}
+  \begin{tabular}{lcl}
+    \toprule
+    \textbf{Comparação} & \textbf{Estimativa} & \textbf{Problema} \\ \midrule
+    Antes $\times$ depois (participantes) & 45 & \destaque{superestima}: inclui a tendência (+30) \\
+    Participantes $\times$ não part. (depois) & 5 & \destaque{subestima}: ignora que partiam de nível menor \\
+    \rowcolor{verde!15}
+    \textbf{Diferença-em-diferenças} & \textbf{15} & remove tendência \emph{e} diferença fixa \\ \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item O DD aumenta a \alert{discricionariedade do avaliador}: dependendo da técnica, recomenda-se manter ou interromper a política!
+  \end{itemize}
+  \fonte{Batista e Domingos (2017), p.~11.}
+\end{frame}
+
+\begin{frame}{DD por regressão: o coeficiente da interação}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Modelo}
+        \small
+        $$Y_{it}=\beta_0+\beta_1\,\text{Trat}_i+\beta_2\,\text{Pós}_t+\beta_3\,(\text{Trat}_i\times\text{Pós}_t)+\varepsilon_{it}$$
+      \end{block}
+      \footnotesize
+      \begin{itemize}
+        \item $\beta_1$: diferença \emph{fixa} entre os grupos;
+        \item $\beta_2$: \emph{tendência} comum;
+        \item $\beta_3$: \destaque{efeito da política} (o DD).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \footnotesize
+      Em dados reais, os erros de uma mesma unidade se repetem no tempo: use erros-padrão \ind{agrupados} (\emph{cluster}) por unidade, ou modelos com efeitos fixos de unidade e de tempo (pacote \cod{fixest}).
+      \vspace{0.3cm}
+
+      \begin{beamercolorbox}[wd=\textwidth,rounded=true,sep=0.25cm]{laranjabox}
+        \footnotesize Nossa simulação: \textbf{1.000 trabalhadores}, 6 trimestres, programa a partir do 4.º trimestre.
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), p.~11.}
+\end{frame}
+
+\begin{frame}{Simulação: tendências paralelas antes do programa}
+  \begin{columns}[T]
+    \begin{column}{0.6\textwidth}
+      \includegraphics[width=\textwidth]{04_tendencias.png}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \footnotesize
+      \begin{itemize}
+        \item Os tratados são \emph{estruturalmente mais pobres} (efeito fixo $-$R\$ 300);
+        \item Antes do trimestre 4, as linhas evoluem em \ind{paralelo};
+        \item Depois, a distância muda: é o impacto ($+$R\$ 300).
+      \end{itemize}
+      \vspace{0.2cm}
+      \begin{center}
+      \begin{tabular}{@{}lr@{}}
+        \toprule
+        \textbf{Estimador} & \textbf{R\$} \\ \midrule
+        Antes $\times$ depois & 535 \\
+        Trat. $\times$ ctrl. (depois) & $-2$ \\
+        \rowcolor{verde!15} \textbf{DD} & \textbf{300} \\ \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+  \end{columns}
+  \fonte{Simulação nossa (script 04). Verdade = R\$ 300; EP agrupado por trabalhador = 7,8.}
+\end{frame}
+
+\begin{frame}{Testando o pressuposto: estudo de eventos e placebo}
+  \begin{columns}[T]
+    \begin{column}{0.6\textwidth}
+      \includegraphics[width=\textwidth]{04_estudo_eventos.png}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \footnotesize
+      \begin{itemize}
+        \item \textbf{Estudo de eventos}: o efeito em \emph{cada} período, em relação ao último antes da política;
+        \item Antes do programa: coeficientes próximos de zero $\Rightarrow$ \ind{sem pré-tendências};
+        \item \textbf{Placebo}: finja que a política começou antes (só com dados pré-programa): o DD deve ser $\approx 0$ (aqui: $-13$);
+        \item Isso \emph{não prova} o pressuposto: é um indício.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Quando as tendências \textit{não} são paralelas}
+  \begin{columns}[T]
+    \begin{column}{0.6\textwidth}
+      \includegraphics[width=\textwidth]{04_nao_paralelas.png}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \footnotesize
+      Cenário: os tratados já cresciam R\$ 40 a mais por trimestre.
+      \begin{itemize}
+        \item DD estimado: \alert{R\$ 420} (verdade: 300);
+        \item O DD atribui à política o crescimento \emph{extra} que já existia;
+        \item O placebo denuncia: \alert{+47} (longe de zero).
+      \end{itemize}
+      \vspace{0.1cm}
+      Se as características pré-tratamento variam no tempo, \emph{combine PSM com DD}: primeiro pareie, depois calcule a dupla diferença entre os pares.
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), p.~12.}
+\end{frame}
+
+\begin{frame}{Um caso real: a Lei Maria da Penha}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{itemize}
+        \footnotesize
+        \item \textbf{Política}: lei nacional contra a violência de gênero --- benefícios para \emph{todas} as mulheres do país;
+        \item \textbf{Problema}: como achar um grupo de controle?
+        \item \textbf{Solução} (Cerqueira et al., 2015): \textbf{homens} como controle --- expostos às outras causas gerais de violência, mas \emph{não beneficiários};
+        \item \textbf{Resultado}: taxa de homicídio; \textbf{DD} = interação entre ser mulher e período pós-lei;
+        \item A lei mostrou-se \destaque{efetiva}.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{atividadebox}{Para pensar}
+        \small
+        O que seriam ``tendências paralelas'' entre homicídios de mulheres e de homens? Que evento poderia afetar \emph{os dois grupos de modo diferente} e violar o pressuposto?
+      \end{atividadebox}
+    \end{column}
+  \end{columns}
+  \fonte{Batista e Domingos (2017), pp.~11--12.}
+\end{frame}
+
+\begin{frame}[fragile]{Hora do R: \texttt{04\_diferenca\_em\_diferenca.R}}
+  \begin{horaR}{scripts/04\_diferenca\_em\_diferenca.R}
+\begin{lstlisting}
+painel <- gerar_painel()        # 1.000 trabalhadores x 6 trimestres
+
+# DD "na mao": quatro medias
+m <- function(t, p) mean(painel$renda[painel$tratado == t & painel$pos == p])
+(m(1, 1) - m(1, 0)) - (m(0, 1) - m(0, 0))          # 300
+
+# DD por regressao: coeficiente da interacao
+summary(lm(renda ~ tratado * pos, data = painel))
+
+# Efeitos fixos de unidade e tempo, erro-padrao por cluster
+library(fixest)
+feols(renda ~ tratado:pos | id + trimestre, data = painel, cluster = ~id)
+\end{lstlisting}
+  \end{horaR}
+\end{frame}
+
+\begin{frame}{Atividade 4 \,$\cdot$\, Diferença-em-diferenças (10 min)}
+  \begin{atividadebox}{Arquivo: \texttt{atividades/atividade\_04\_diferenca\_em\_diferenca.R}}
+    \begin{enumerate}
+      \item \textbf{Tarefa 1.} DD ``na calculadora'' com a evasão escolar em escolas com e sem bolsa-permanência;
+      \item \textbf{Tarefa 2.} Gere um painel com tendência extra de R\$ 20/trimestre para os tratados: o DD acerta? O placebo avisa?
+      \item \textbf{Desafio.} Gere um painel com efeito \emph{zero}: o coeficiente de \cod{tratado:pos} fica perto de zero?
+    \end{enumerate}
+  \end{atividadebox}
+  \vspace{0.2cm}
+  \textbf{Para discutir:} no exemplo da Lei Maria da Penha, que choque poderia violar o pressuposto de tendências paralelas?
+\end{frame}
