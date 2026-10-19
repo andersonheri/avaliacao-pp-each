@@ -2,11 +2,10 @@
 # 01_contrafactual_vies_selecao.R
 # -----------------------------------------------------------------------------
 # TEMA: Por que "comparar quem participou com quem não participou" engana?
-#       (Batista e Domingos, 2017, seção "Técnicas quantitativas", pp. 5-6)
 #
 # OBJETIVOS DE APRENDIZAGEM
 #   1. Entender o CONTRAFACTUAL: "o que teria acontecido sem a política?"
-#   2. Ver, com números, os dois "falsos contrafactuais" do artigo:
+#   2. Ver, com números, os dois "falsos contrafactuais" (Gertler et al., 2011):
 #        (a) comparar participantes x não participantes  -> viés de seleção
 #        (b) comparar antes x depois                      -> tendência no tempo
 #   3. Calcular a "verdade" (impossível na vida real, mas possível na simulação).
@@ -17,7 +16,7 @@
 source("scripts/00_setup.R")
 
 # -----------------------------------------------------------------------------
-# PASSO 1 — Gerar o mundo simulado
+# PASSO 1: Gerar o mundo simulado
 # -----------------------------------------------------------------------------
 # 5.000 trabalhadores. O programa "Qualifica" tem efeito VERDADEIRO de R$ 300.
 dados <- gerar_populacao(n = 5000, efeito = 300)
@@ -31,7 +30,7 @@ table(dados$participa)                 # contagem
 round(prop.table(table(dados$participa)), 2)  # proporção
 
 # -----------------------------------------------------------------------------
-# PASSO 2 — A "visão de Deus": o EFEITO VERDADEIRO
+# PASSO 2: A "visão de Deus": o EFEITO VERDADEIRO
 # -----------------------------------------------------------------------------
 # Só na simulação conhecemos Y1 (renda COM programa) e Y0 (renda SEM programa)
 # de TODO MUNDO. O efeito individual é Y1 - Y0; a média dele é o ATE.
@@ -47,7 +46,7 @@ cat("Efeito verdadeiro (ATE):", round(efeito_verdadeiro, 1), "reais/mês\n")
 cat("Efeito sobre participantes (ATT):", round(att_verdadeiro, 1), "reais/mês\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 3 — FALSO CONTRAFACTUAL nº 1: participantes x não participantes
+# PASSO 3: FALSO CONTRAFACTUAL nº 1: participantes x não participantes
 # -----------------------------------------------------------------------------
 # Compara a renda DEPOIS entre quem participou e quem não participou.
 renda_part  <- mean(dados$renda_depois[dados$participa == 1])
@@ -74,7 +73,7 @@ cat("Motivação média - não participantes:",
     round(mean(dados$motivacao[dados$participa == 0]), 2), "\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 4 — FALSO CONTRAFACTUAL nº 2: antes x depois (só participantes)
+# PASSO 4: FALSO CONTRAFACTUAL nº 2: antes x depois (só participantes)
 # -----------------------------------------------------------------------------
 # Compara a renda dos MESMOS participantes antes e depois do programa.
 antes_depois <- with(dados[dados$participa == 1, ],
@@ -88,7 +87,7 @@ cat("Erro (tendência da economia):       ", round(antes_depois - att_verdadeiro
 # crescimento econômico... O antes-depois atribui esse crescimento ao programa.
 
 # -----------------------------------------------------------------------------
-# PASSO 5 — VISUALIZAR: o gráfico do contrafactual (Figura 2 do artigo)
+# PASSO 5: VISUALIZAR: o gráfico do contrafactual
 # -----------------------------------------------------------------------------
 # Médias dos participantes: antes, depois COM programa (observado) e
 # depois SEM programa (contrafactual - só existe na simulação!).
@@ -118,7 +117,7 @@ g_cf <- ggplot(fig_cf, aes(momento, renda, group = serie, colour = serie,
   scale_x_discrete(expand = expansion(add = c(0.3, 0.6))) +
   labs(title = "Identificação do impacto: o contrafactual",
        subtitle = "Só na simulação conseguimos ver a linha tracejada",
-       x = NULL, y = "Renda média dos participantes (R$)")
+       x = NULL, y = "Renda média (R$)")
 print(g_cf)
 salvar_fig(g_cf, "01_contrafactual")
 
@@ -133,7 +132,7 @@ print(g_sel)
 salvar_fig(g_sel, "01_vies_selecao")
 
 # -----------------------------------------------------------------------------
-# PASSO 6 — Resumo para discussão
+# PASSO 6: Resumo para discussão
 # -----------------------------------------------------------------------------
 resumo <- data.frame(
   Metodo = c("Verdade (ATT)", "Participantes x Não participantes", "Antes x Depois"),
@@ -149,3 +148,6 @@ print(resumo, row.names = FALSE)
 #   - Se o gestor do programa só tivesse esses números, o que ele concluiria?
 #   - O que o avaliador precisaria para construir um contrafactual válido?
 # -----------------------------------------------------------------------------
+#
+# PARA EXPLORAR: o Exercício 1 (atividades/exercicio_01_vies_e_experimento.R)
+# parte deste script.

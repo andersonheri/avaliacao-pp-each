@@ -2,7 +2,6 @@
 # 02_experimento_rct.R
 # -----------------------------------------------------------------------------
 # TEMA: Experimento controlado aleatorizado (RCT) - o "padrão ouro"
-#       (Batista e Domingos, 2017, pp. 6-8)
 #
 # OBJETIVOS DE APRENDIZAGEM
 #   1. Ver que a ALEATORIZAÇÃO cria grupos equivalentes (inclusive na
@@ -16,7 +15,7 @@
 source("scripts/00_setup.R")
 
 # -----------------------------------------------------------------------------
-# PASSO 1 — Mundo simulado + ALEATORIZAÇÃO
+# PASSO 1: Mundo simulado + ALEATORIZAÇÃO
 # -----------------------------------------------------------------------------
 dados <- gerar_populacao(n = 5000, efeito = 300)
 n <- nrow(dados)
@@ -33,7 +32,7 @@ dados$renda_exp <- ifelse(dados$tratamento == 1,
                           dados$renda_depois_Y0)   # renda SEM programa
 
 # -----------------------------------------------------------------------------
-# PASSO 2 — Checagem de BALANCEAMENTO: a aleatorização funcionou?
+# PASSO 2: Checagem de BALANCEAMENTO: a aleatorização funcionou?
 # -----------------------------------------------------------------------------
 # Se a loteria foi limpa, tratamento e controle devem ter características
 # parecidas ANTES do programa. Inclusive a motivação (que na vida real não
@@ -76,7 +75,7 @@ print(g_balanco)
 salvar_fig(g_balanco, "02_balanco")
 
 # -----------------------------------------------------------------------------
-# PASSO 3 — Estimar o impacto: diferença de médias
+# PASSO 3: Estimar o impacto: diferença de médias
 # -----------------------------------------------------------------------------
 media_t <- mean(dados$renda_exp[dados$tratamento == 1])
 media_c <- mean(dados$renda_exp[dados$tratamento == 0])
@@ -103,7 +102,7 @@ cat("Com covariáveis:", round(coef(modelo2)["tratamento"], 1),
 cat("Verdade:        300\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 4 — Por que funciona? Simulação de Monte Carlo
+# PASSO 4: Por que funciona? Simulação de Monte Carlo
 # -----------------------------------------------------------------------------
 # Repetimos "a pesquisa" 1.000 vezes: em cada uma, sorteamos 400 pessoas da
 # população e estimamos o efeito de duas maneiras:
@@ -150,7 +149,7 @@ print(g_mc)
 salvar_fig(g_mc, "02_montecarlo")
 
 # -----------------------------------------------------------------------------
-# PASSO 5 — Poder estatístico e tamanho de amostra (power analysis)
+# PASSO 5: Poder estatístico e tamanho de amostra (power analysis)
 # -----------------------------------------------------------------------------
 # Erro tipo I (falso positivo): dizer que o programa funciona quando não funciona.
 # Erro tipo II (falso negativo): NÃO detectar um efeito que existe.
@@ -190,7 +189,7 @@ print(g_poder)
 salvar_fig(g_poder, "02_poder")
 
 # -----------------------------------------------------------------------------
-# PASSO 6 — Problemas de campo (1): NÃO-CUMPRIMENTO (compliance)
+# PASSO 6: Problemas de campo (1): NÃO-CUMPRIMENTO (compliance)
 # -----------------------------------------------------------------------------
 # Na prática, nem todo mundo sorteado participa, e alguns do controle acabam
 # acessando o programa. Distinguimos:
@@ -217,7 +216,7 @@ cat("Efeito sobre quem aderiu (ITT/aumento): ", round(cace, 1), "  (verdade: 300
 cat("-> O ITT é MENOR que o efeito real: a política 'diluída' pelo não-cumprimento.\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 7 — Problemas de campo (2): ATRITO (attrition)
+# PASSO 7: Problemas de campo (2): ATRITO (attrition)
 # -----------------------------------------------------------------------------
 # Atrito: pessoas "saem" da pesquisa (mudaram de cidade, não responderam).
 # Se saem de forma ALEATÓRIA, perdemos só poder. Se saem de forma
@@ -231,7 +230,9 @@ cat("Perda de observações:", sum(perdeu), "(", round(100 * mean(perdeu), 1), "
 cat("Efeito estimado com atrito seletivo:", round(est_atrito, 1), "(verdade: 300) -> VIÉS\n")
 
 # -----------------------------------------------------------------------------
-# ATIVIDADE (veja atividades/atividade_02_experimento.R)
-#   Mude 'efeito' e 'n' e responda: com 100 pessoas por grupo, conseguimos
-#   detectar um efeito de R$ 100? Qual o poder? E com 500 por grupo?
+# PARA EXPLORAR (mude e rode de novo)
+#   - Troque o 'efeito' e o tamanho da amostra do Monte Carlo (400): o
+#     experimento continua não viesado? E mais ou menos preciso?
+#   - Com 100 pessoas por grupo, conseguimos detectar um efeito de R$ 100? (poder)
+#   - Reduza a adesão (0.70) para 0.40: o que acontece com o ITT?
 # -----------------------------------------------------------------------------

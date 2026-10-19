@@ -1,237 +1,98 @@
 % =============================================================================
-% BLOCO 0 — ABERTURA  (14:00–14:15)
+% ABERTURA (14:00 a 14:15)
 % =============================================================================
+\section[Abertura]{Abertura}
 
-% ---- Capa -------------------------------------------------------------------------
-\begin{frame}[plain,noframenumbering]
-  \setbeamercolor{background canvas}{bg=fundo}
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[indigo] (current page.north west) rectangle ([yshift=-1.9cm]current page.north east);
-    \node[anchor=west,text=white,font=\large\bfseries] at ([xshift=1cm,yshift=-0.95cm]current page.north west) {Seminário Discente 2026 \,$\cdot$\, Minicurso};
-    \node[anchor=east,text=laranjaclaro,font=\normalsize] at ([xshift=-1cm,yshift=-0.95cm]current page.north east) {PPGGP EACH/USP \,$\cdot$\, Online};
-    \fill[laranja] ([yshift=-1.9cm]current page.north west) rectangle ([yshift=-2.0cm]current page.north east);
-    \node[anchor=west,text=indigo,font=\fontsize{30}{34}\selectfont\bfseries,text width=0.85\paperwidth,align=left]
-      at ([xshift=1cm,yshift=0.6cm]current page.west) {Técnicas de Avaliação\\de Políticas Públicas};
-    \node[anchor=west,text=black!70,font=\large,text width=0.8\paperwidth,align=left]
-      at ([xshift=1cm,yshift=-1.4cm]current page.west) {Experimento, pareamento, diferença-em-diferenças\\e regressão descontínua --- com simulações em R};
-    \node[anchor=south west,text=indigo,font=\large\bfseries,align=left]
-      at ([xshift=1cm,yshift=1.7cm]current page.south west) {Anderson Henrique};
-    \node[anchor=south west,text=black!60,font=\small,align=left]
-      at ([xshift=1cm,yshift=0.9cm]current page.south west) {20 de outubro de 2026 \,$\cdot$\, 14h às 18h};
-    \node[anchor=south east,text=cinza,font=\scriptsize,align=right]
-      at ([xshift=-1cm,yshift=0.9cm]current page.south east) {Base: Batista e Domingos (2017),\\\emph{Mais que boas intenções}, RBCS 32(94)};
-  \end{tikzpicture}
-\end{frame}
-
-% ---- Cronograma ----------------------------------------------------------------
 \begin{frame}{Programa do dia}
   \footnotesize
-  \renewcommand{\arraystretch}{1.12}
+  \renewcommand{\arraystretch}{1.15}
   \begin{tabularx}{\textwidth}{@{}lX@{}}
     \toprule
     \textbf{Horário} & \textbf{Bloco} \\ \midrule
-    14:00 -- 14:15 & \ind{Abertura}: por que avaliar? Tipos de avaliação, cadeia de resultados \\
-    14:15 -- 14:35 & \ind{O problema do contrafactual} \hfill \destaque{Atividade 1} \\
-    14:35 -- 15:05 & \ind{Experimento controlado} (RCT) \hfill \destaque{Atividade 2} \\
-    15:05 -- 15:40 & \ind{Pareamento} e propensity score (PSM) \hfill \destaque{Atividade 3} \\
+    14:00 a 14:15 & Abertura: por que avaliar? \\
+    14:15 a 14:35 & O problema do contrafactual \\
+    14:35 a 15:05 & Experimento controlado \hfill \destaque{Exercício 1} \\
+    15:05 a 15:25 & Pareamento (PSM) \\
+    15:25 a 15:55 & Diferença-em-diferenças \hfill \destaque{Exercício 2} \\
     \rowcolor{laranjaclaro}
-    15:40 -- 16:10 & \textbf{Intervalo (30 min)} \\
-    16:10 -- 16:40 & \ind{Diferença-em-diferenças} \hfill \destaque{Atividade 4} \\
-    16:40 -- 17:05 & \ind{Regressão descontínua} \hfill \destaque{Atividade 5} \\
-    17:05 -- 17:50 & \ind{Técnicas qualitativas e métodos mistos} \hfill \destaque{Atividade 6} \\
-    17:50 -- 18:00 & Síntese, escolha da técnica e encerramento \\ \bottomrule
+    15:55 a 16:25 & \textbf{Intervalo} \\
+    16:25 a 16:45 & Regressão descontínua \\
+    16:45 a 16:55 & Outras técnicas e como escolher \\
+    16:55 a 17:50 & Avaliação qualitativa e métodos mistos \hfill \destaque{Exercício 3} \\
+    17:50 a 18:00 & Encerramento \\ \bottomrule
   \end{tabularx}
 \end{frame}
 
-% ---- Objetivos ----------------------------------------------------------------------
-\begin{frame}{O que você vai levar daqui}
-  \begin{enumerate}
-    \item \ind{Explicar} por que comparar participantes e não participantes (ou antes e depois) \destaque{engana};
-    \item \ind{Reconhecer} o que cada técnica quantitativa assume para identificar um efeito causal;
-    \item \ind{Simular e estimar} em R o impacto por experimento, pareamento, DiD e RDD;
-    \item \ind{Diagnosticar} quando uma estimativa não é confiável (balanceamento, tendências, manipulação);
-    \item \ind{Combinar} números e narrativas: o que as técnicas qualitativas acrescentam.
-  \end{enumerate}
-  \vspace{0.4cm}
-  \begin{block}{Ideia-guia do artigo}
-    \small Técnicas quantitativas dizem \emph{quanto} a política mudou o resultado; técnicas qualitativas explicam \emph{como} e \emph{por quê}. Avaliações completas combinam as duas.
+\begin{frame}{O que vamos fazer}
+  \begin{itemize}
+    \item Entender por que \destaque{comparar} participantes e não participantes (ou antes e depois) \destaque{engana};
+    \item Conhecer as principais técnicas quase-experimentais e o que cada uma assume;
+    \item \ind{Simular em R}: sabemos a \emph{verdade} do programa e testamos se a técnica a recupera;
+    \item Ver o que a avaliação \ind{qualitativa} e os \ind{métodos mistos} acrescentam aos números.
+  \end{itemize}
+  \vspace{0.3cm}
+  \begin{block}{Como funciona}
+    \small Aula expositiva + scripts em R comentados (demonstração) + 3 exercícios curtos.
   \end{block}
 \end{frame}
 
-% ---- Como funciona ------------------------------------------------------------------
-\begin{frame}{Como vamos trabalhar}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \textbf{Em cada técnica}
-      \begin{enumerate}
-        \item \ind{Ideia} e intuição (slides)
-        \item \ind{Simulação em R} ao vivo: sabemos a \destaque{verdade} (efeito de R\$~300) e testamos se a técnica a recupera
-        \item \ind{Atividade} em R (8--15 min): vocês alteram parâmetros e respondem perguntas
-      \end{enumerate}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \textbf{Antes de começar}
-      \begin{itemize}
-        \item R e RStudio instalados
-        \item Baixar o repositório do curso (botão \emph{Code $\to$ Download ZIP})
-        \item Abrir \cod{avaliacao-pp.Rproj}
-        \item Rodar \cod{scripts/00\_setup.R} (instala o \cod{ggplot2})
-      \end{itemize}
-      \vspace{0.2cm}
-      {\scriptsize Dúvidas: levantem a mão no Zoom/Meet ou escrevam no chat.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% ---- Enquete de abertura ---------------------------------------------------------
 \begin{frame}{Para começar: o programa funciona?}
-  \begin{atividadebox}{Enquete rápida (chat)}
-    Um programa de \textbf{qualificação profissional} foi oferecido a trabalhadores que se inscreveram voluntariamente.\\[0.2cm]
-    Um ano depois, quem participou ganha, em média, \destaque{R\$~587 a mais} por mês do que quem não participou.
-  \end{atividadebox}
-  \vspace{0.3cm}
-  \textbf{Pergunta:} o programa aumentou a renda dos participantes em R\$~587?
+  \begin{exerciciobox}{Enquete rápida (chat)}
+    \small
+    Um programa de \textbf{qualificação profissional} foi oferecido a trabalhadores que se inscreveram voluntariamente. Um ano depois, quem participou ganha, em média, \destaque{R\$ 587 a mais} por mês do que quem não participou.
+  \end{exerciciobox}
+  \vspace{0.2cm}
+  O programa aumentou a renda dos participantes em R\$ 587?
   \begin{itemize}
-    \item[(a)] Sim, o efeito é de R\$~587
+    \item[(a)] Sim, o efeito é de R\$ 587
     \item[(b)] O efeito é menor que isso
     \item[(c)] Não dá para saber só com essa informação
   \end{itemize}
-  \vfill{\scriptsize Guardem sua resposta: voltaremos a ela em 20 minutos.}
 \end{frame}
 
-% ---- Evidência e decisão ------------------------------------------------------------
-\begin{frame}{Por que avaliar? Políticas baseadas em evidências}
-  \begin{columns}[T]
-    \begin{column}{0.58\textwidth}
-      \begin{itemize}
-        \item Recursos e capacidade estatal são \alert{limitados}: é preciso \ind{escolher} que políticas manter, reformular ou interromper;
-        \item Avaliar produz o critério: \emph{o problema foi resolvido? O programa funcionou?}
-        \item Esse raciocínio é o das \ind{políticas baseadas em evidências} (\emph{evidence-based policy-making});
-        \item A avaliação é o estágio de \destaque{renovação} do ciclo de políticas.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.42\textwidth}
-      \begin{beamercolorbox}[wd=\textwidth,rounded=true,sep=0.35cm]{laranjabox}
-        \itshape\small
-        Médicos usam evidências quando prescrevem tratamentos. Formuladores de políticas deveriam usar também.
-        \par\raggedleft\upshape\scriptsize --- \emph{The Economist}, em epígrafe do artigo
-      \end{beamercolorbox}
-    \end{column}
-  \end{columns}
-  \fonte{Batista e Domingos (2017), pp.~1--2.}
-\end{frame}
-
-% ---- Ciclo de políticas ---------------------------------------------------------------
 \begin{frame}{A avaliação no ciclo de políticas públicas}
   \centering
-  \begin{tikzpicture}[scale=1.0]
-    \tikzset{est/.style={minimum width=2.9cm,minimum height=1.1cm,font=\small\bfseries}}
-    \node[cxi,est] (n0) at (90:2.1cm and 2.1cm)    {Formação da\\agenda};
-    \node[cxi,est] (n1) at (18:4.4cm and 2.1cm)    {Formulação};
-    \node[cxi,est] (n2) at (-54:3.4cm and 2.1cm)   {Tomada de\\decisão};
-    \node[cxi,est] (n3) at (-126:3.4cm and 2.1cm)  {Implementação};
-    \node[cxl,est] (n4) at (162:4.4cm and 2.1cm)   {Avaliação};
+  \begin{tikzpicture}[scale=0.85,every node/.style={transform shape}]
+    \tikzset{est/.style={minimum width=2.6cm,minimum height=0.9cm,font=\footnotesize\bfseries}}
+    \node[cxi,est] (n0) at (90:1.9cm and 1.9cm)    {Formação da\\agenda};
+    \node[cxi,est] (n1) at (18:4.0cm and 1.9cm)    {Formulação};
+    \node[cxi,est] (n2) at (-54:3.0cm and 1.9cm)   {Tomada de\\decisão};
+    \node[cxi,est] (n3) at (-126:3.0cm and 1.9cm)  {Implementação};
+    \node[cxl,est] (n4) at (162:4.0cm and 1.9cm)   {Avaliação};
     \foreach \a/\b in {0/1,1/2,2/3,3/4} { \draw[seta] (n\a) to[bend left=15] (n\b); }
     \draw[setal] (n4) to[bend left=15] (n0);
-    \node[font=\scriptsize,text=cinza,align=center] at (0,0) {Anderson (1974):\\ciclo organizado\\em estágios};
   \end{tikzpicture}
-  \vspace{0.1cm}\par
-  {\small Uma vez que o problema social é identificado, a política é formulada, aprovada e implementada --- e então é preciso identificar \destaque{se os resultados de fato ocorreram}.}
-  \fonte{Batista e Domingos (2017), pp.~1--3, a partir de Anderson (1974).}
+  \vspace{0.2cm}\par
+  \small A avaliação \destaque{renova o ciclo}: informa se a política deve ser mantida, reformulada ou interrompida (políticas baseadas em evidências).
 \end{frame}
 
-% ---- Tipos de avaliação ---------------------------------------------------------------
-\begin{frame}{Há várias formas de classificar uma avaliação}
-  \begin{columns}[T]
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Quanto ao \textit{tempo}}
-        \small
-        \begin{itemize}
-          \item \textbf{Ex-ante}: antes da implementação (desenho, viabilidade)
-          \item \textbf{Ex-post}: depois (efeitos observados)
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Quanto a \textit{quem avalia}}
-        \small
-        \begin{itemize}
-          \item \textbf{Interna}: gestores do programa
-          \item \textbf{Externa}: avaliadores independentes
-          \item \textbf{Participativa}: beneficiários contribuem com seu \emph{input}
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Quanto ao \textit{objeto}}
-        \small
-        \begin{itemize}
-          \item \textbf{Processos}
-          \item \textbf{Resultados}
-          \item \textbf{Impactos}
-          \item \textbf{Eficiência}
-        \end{itemize}
-      \end{block}
-    \end{column}
-  \end{columns}
-  \vspace{0.4cm}
-  \begin{center}
-    \destaque{Nosso foco hoje: avaliação de impacto ex-post} (e como pensá-la desde o desenho da política).
-  \end{center}
-  \fonte{Batista e Domingos (2017), p.~2, citando Cohen e Franco (2013) e Rossi, Lipsey e Freeman (2004).}
-\end{frame}
-
-% ---- Processo, resultado, impacto ----------------------------------------------------------
-\begin{frame}{Processo, resultados e impacto}
+\begin{frame}{Tipos de avaliação}
   \footnotesize
   \renewcommand{\arraystretch}{1.25}
-  \begin{tabularx}{\textwidth}{@{}p{2.1cm}XX@{}}
+  \begin{tabularx}{\textwidth}{@{}p{1.9cm}XX@{}}
     \toprule
     & \textbf{Pergunta} & \textbf{No programa Qualifica} \\ \midrule
-    \ind{Processo} & As atividades foram realizadas e os serviços chegaram ao público-alvo? (cobertura, vieses na entrega) & Quantos foram inscritos? Os cursos aconteceram? \\
-    \ind{Resultados} (\emph{outcome}) & A situação do público-alvo mudou? (metas pré-estabelecidas) & A renda dos participantes aumentou entre antes e depois? \\
+    \ind{Processo} & As atividades aconteceram e os serviços chegaram ao público-alvo? & Quantos se inscreveram? Os cursos ocorreram? \\
+    \ind{Resultados} & A situação do público-alvo mudou? & A renda dos participantes aumentou entre antes e depois? \\
     \rowcolor{laranjaclaro}
-    \destaque{Impacto} & A mudança \textbf{é causada} pelo programa? Qual seria o resultado \emph{sem} ele? & Quanto da variação de renda existe \emph{por causa} do treinamento? \\ \bottomrule
+    \destaque{Impacto} & A mudança \textbf{é causada} pelo programa? & Quanto da variação de renda existe \emph{por causa} do treinamento? \\ \bottomrule
   \end{tabularx}
-  \vspace{0.15cm}
-  \begin{block}{Atenção}
-    \footnotesize Resultado (``a renda subiu'') \textbf{não é} impacto (``a renda subiu por causa do programa''): é preciso isolar o efeito do programa de outros fatores.
-  \end{block}
-  \fonte{Batista e Domingos (2017), p.~3; Rossi, Lipsey e Freeman (2004).}
-\end{frame}
-
-% ---- Cadeia de resultados --------------------------------------------------------------
-\begin{frame}{A cadeia de resultados: teoria do programa}
-  \centering
-  \begin{tikzpicture}[node distance=0.25cm, every node/.style={font=\scriptsize}]
-    \node[cxi,minimum width=2.3cm,minimum height=0.8cm,font=\small\bfseries] (a1) {Insumos};
-    \node[cxi,minimum width=2.3cm,minimum height=0.8cm,font=\small\bfseries,right=0.3cm of a1] (a2) {Atividades};
-    \node[cxi,minimum width=2.3cm,minimum height=0.8cm,font=\small\bfseries,right=0.3cm of a2] (a3) {Produtos};
-    \node[cxl,minimum width=2.3cm,minimum height=0.8cm,font=\small\bfseries,right=0.3cm of a3] (a4) {Resultados};
-    \node[cxl,minimum width=2.3cm,minimum height=0.8cm,font=\small\bfseries,right=0.3cm of a4] (a5) {Resultados finais};
-    \foreach \i/\t in {1/{Recursos fiscais,\\humanos e outros\\mobilizados},2/{Ações para\\transformar insumos\\em produtos},3/{Bens e serviços\\entregues ao\\público-alvo},4/{Utilização dos\\produtos pelo\\público-alvo},5/{Objetivos finais:\\metas de\\longo prazo}} {
-      \node[align=center,below=0.15cm of a\i,text width=2.3cm] (d\i) {\t};
-    }
-    \foreach \i/\t in {1/{Orçamento,\\instrutores,\\salas},2/{Cursos de\\qualificação\\profissional},3/{Trabalhadores\\treinados e\\certificados},4/{Uso das novas\\competências;\\busca de vaga},5/{Renda e\\emprego\\formal}} {
-      \node[align=center,text width=2.3cm,text=indigo,font=\scriptsize\bfseries] at ($(a\i)+(0,-2.55)$) {\t};
-    }
-    \node[anchor=east,font=\scriptsize,text=cinza] at ($(a1.west)+(-0.1,-2.55)$) {Qualifica:};
-    \draw[decorate,decoration={brace,amplitude=5pt,mirror},thick,indigo] ($(a1.west)+(0,-3.4)$) -- ($(a3.east)+(0,-3.4)$) node[midway,below=6pt,font=\small] {Implementação (lado da oferta)};
-    \draw[decorate,decoration={brace,amplitude=5pt,mirror},thick,laranja] ($(a4.west)+(0,-3.4)$) -- ($(a5.east)+(0,-3.4)$) node[midway,below=6pt,font=\small] {Resultados (oferta + demanda)};
-  \end{tikzpicture}
-  \fonte{Batista e Domingos (2017), Figura 1, adaptada de Gertler et al.~(2011); exemplo ``Qualifica'' nosso.}
-\end{frame}
-
-\begin{frame}{Por que a cadeia importa para a avaliação de impacto}
-  \begin{itemize}
-    \item Formular bem a pergunta exige dizer \ind{quais resultados} o programa busca e \ind{por quais canais} (a ``teoria da mudança'');
-    \item O que está sob o controle da agência (insumos $\to$ produtos) é \textbf{implementação};
-    \item Os resultados dependem da interação entre o produto e o \destaque{contexto e as particularidades dos beneficiários} --- fora do controle direto do gestor;
-    \item A avaliação de impacto \alert{isola o efeito do programa} de outros fatores: flutuações econômicas, mudanças nas características dos beneficiários.
-  \end{itemize}
   \vspace{0.3cm}
-  \begin{block}{A pergunta causal}
-    \small Afirmar que o resultado final observado ``deve-se ao programa'' é afirmar que, \emph{sem o programa, o resultado não teria sido observado}. Precisamos, portanto, do \destaque{contrafactual}.
-  \end{block}
-  \fonte{Batista e Domingos (2017), pp.~3--4.}
+
+  \small Também se classificam por \textbf{tempo} (\emph{ex-ante} e \emph{ex-post}) e por \textbf{quem avalia} (interna, externa, participativa).
+\end{frame}
+
+\begin{frame}{Cadeia de resultados (teoria do programa)}
+  \centering
+  \begin{tikzpicture}[scale=0.82,every node/.style={transform shape}]
+    \foreach \i/\t/\ex/\sty in {0/Insumos/{Orçamento,\\instrutores}/cxi,1/Atividades/{Cursos de\\qualificação}/cxi,2/Produtos/{Trabalhadores\\treinados}/cxi,3/Resultados/{Uso das\\competências}/cxl,4/{Resultados\\finais}/{Renda e\\emprego}/cxl} {
+      \node[\sty,minimum width=2.1cm,minimum height=0.9cm,font=\footnotesize\bfseries] (b\i) at (2.5*\i,0) {\t};
+      \node[align=center,font=\scriptsize,text=azul] at (2.5*\i,-1.3) {\ex};
+    }
+    \foreach \i/\j in {0/1,1/2,2/3,3/4} { \draw[seta] (b\i) -- (b\j); }
+    \draw[decorate,decoration={brace,amplitude=4pt,mirror},thick,azul] (-1,-2.1) -- (6,-2.1) node[midway,below=4pt,font=\footnotesize] {Implementação (sob controle do gestor)};
+    \draw[decorate,decoration={brace,amplitude=4pt,mirror},thick,laranja] (6.2,-2.1) -- (11,-2.1) node[midway,below=4pt,font=\footnotesize] {Resultados (contexto e beneficiários)};
+  \end{tikzpicture}
+  \vspace{0.2cm}\par
+  \small Avaliar impacto exige dizer \ind{quais resultados} o programa busca e \ind{por quais canais}.
 \end{frame}

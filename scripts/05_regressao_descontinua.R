@@ -2,7 +2,6 @@
 # 05_regressao_descontinua.R
 # -----------------------------------------------------------------------------
 # TEMA: Regressão Descontínua (RDD - Regression Discontinuity Design)
-#       (Batista e Domingos, 2017, pp. 12-13; Figura 7)
 #
 # IDEIA: muitos programas têm uma REGRA DE ELEGIBILIDADE com ponto de corte
 #        (cutoff). Ex.: recebe a transferência de renda quem tem renda per
@@ -11,7 +10,7 @@
 #        Perto do corte, é como se houvesse um "sorteio natural".
 #        O IMPACTO é o tamanho do "salto" (descontinuidade) no corte.
 #
-# PRÉ-REQUISITOS (artigo): (1) índice de elegibilidade CONTÍNUO;
+# PRÉ-REQUISITOS: (1) índice de elegibilidade CONTÍNUO;
 #                          (2) valor de corte CLARAMENTE definido.
 # LIMITAÇÕES: (1) efeito LOCAL (só vale perto do corte);
 #             (2) precisa de MUITAS observações perto do corte.
@@ -26,10 +25,10 @@
 source("scripts/00_setup.R")
 
 # -----------------------------------------------------------------------------
-# PASSO 1 — O mundo simulado: transferência de renda e frequência escolar
+# PASSO 1: O mundo simulado: transferência de renda e frequência escolar
 # -----------------------------------------------------------------------------
 # Programa fictício inspirado no PTCR da Figura 7 e em Buddelmeyer e Skoufias
-# (2004), citado no artigo. Elegível: renda per capita da família <= R$ 77.
+# (2004). Elegível: renda per capita da família <= R$ 77.
 # Resultado: % de dias de aula frequentados pelas crianças da família.
 # EFEITO VERDADEIRO do programa: +6 pontos percentuais.
 # (a função gerar_rdd() está em scripts/funcoes_dgp.R - vale a pena ler!)
@@ -39,7 +38,7 @@ head(d)
 cat("\nElegíveis:", sum(d$elegivel), "| Não elegíveis:", sum(d$elegivel == 0), "\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 2 — Visualizar a descontinuidade
+# PASSO 2: Visualizar a descontinuidade
 # -----------------------------------------------------------------------------
 # Média da frequência em faixas de R$ 4 de renda ("binned means") + o corte.
 d$faixa <- floor(d$renda / 4) * 4 + 2                       # centro de cada faixa
@@ -62,7 +61,7 @@ print(g_rdd)
 salvar_fig(g_rdd, "05_rdd_dispersao")
 
 # -----------------------------------------------------------------------------
-# PASSO 3 — Estimativas ingênuas (e por que erram)
+# PASSO 3: Estimativas ingênuas (e por que erram)
 # -----------------------------------------------------------------------------
 naive <- mean(d$freq[d$elegivel == 1]) - mean(d$freq[d$elegivel == 0])
 cat("\nElegíveis x não elegíveis (comparação simples):", round(naive, 1), "p.p. | verdade: +6\n")
@@ -77,7 +76,7 @@ reg_quad <- lm(freq ~ elegivel * (x + I(x^2)), data = d)
 cat("Regressão global quadrática:                ", round(coef(reg_quad)["elegivel"], 1), "p.p.\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 4 — Regressão LOCAL: só usamos quem está perto do corte (janela h)
+# PASSO 4: Regressão LOCAL: só usamos quem está perto do corte (janela h)
 # -----------------------------------------------------------------------------
 # Para uma janela de largura h (em R$), usamos apenas famílias com |renda - 77| <= h
 # e ajustamos retas diferentes dos dois lados. O coeficiente de 'elegivel' é o
@@ -110,7 +109,7 @@ print(g_local)
 salvar_fig(g_local, "05_rdd_local")
 
 # -----------------------------------------------------------------------------
-# PASSO 5 — Sensibilidade à janela (bandwidth): o dilema viés x variância
+# PASSO 5: Sensibilidade à janela (bandwidth): o dilema viés x variância
 # -----------------------------------------------------------------------------
 # Janela ESTREITA: observações mais comparáveis (menos viés), mas poucas (mais ruído).
 # Janela LARGA: mais observações (menos ruído), mas menos comparáveis (mais viés).
@@ -132,7 +131,7 @@ print(g_sens)
 salvar_fig(g_sens, "05_rdd_janelas")
 
 # -----------------------------------------------------------------------------
-# PASSO 6 — Testes de VALIDADE do desenho
+# PASSO 6: Testes de VALIDADE do desenho
 # -----------------------------------------------------------------------------
 # (a) COVARIÁVEL pré-tratamento não deve "pular" no corte (balanceamento local).
 #     Usamos a idade da mãe como "resultado": o salto deve ser ~0.
@@ -170,10 +169,10 @@ g_manip <- ggplot(densidade[densidade$renda > 50 & densidade$renda < 110, ], aes
        subtitle = "À direita, famílias deslocaram a renda declarada para logo abaixo de R$ 77",
        x = "Renda per capita (R$)", y = "Nº de famílias")
 print(g_manip)
-salvar_fig(g_manip, "05_rdd_manipulacao", largura = 10)
+salvar_fig(g_manip, "05_rdd_manipulacao", largura = 6, altura = 3.2)
 
 # -----------------------------------------------------------------------------
-# PASSO 7 — RDD "fuzzy" (aderência imperfeita) - apenas a ideia
+# PASSO 7: RDD "fuzzy" (aderência imperfeita) - apenas a ideia
 # -----------------------------------------------------------------------------
 # Se nem todos os elegíveis recebem (ou alguns inelegíveis recebem), o corte não
 # determina totalmente o tratamento. Estimamos (salto no resultado) / (salto na
@@ -189,7 +188,7 @@ Fuzzy RDD: salto no resultado =", round(salto_resultado, 2),
 ")
 
 # -----------------------------------------------------------------------------
-# PASSO 8 (OPCIONAL) — A versão "profissional": pacote rdrobust
+# PASSO 8 (OPCIONAL): A versão "profissional": pacote rdrobust
 # -----------------------------------------------------------------------------
 # rdrobust escolhe a janela ótima automaticamente e calcula erros-padrão robustos.
 if (tem_pacote("rdrobust")) {
@@ -206,4 +205,10 @@ if (tem_pacote("rdrobust")) {
 #   - A que população o resultado se aplica? (Efeito LOCAL: famílias com renda
 #     ~R$ 77. Vale para quem ganha R$ 30? Não necessariamente.)
 #   - Em que situações reais as pessoas poderiam manipular o corte?
+# -----------------------------------------------------------------------------
+#
+# PARA EXPLORAR (mude e rode de novo)
+#   - gerar_rdd(corte = 70): refaça a estimação (lembre que 'x' é centrada no corte).
+#   - Use janelas h = 5, 15 e 40 e compare o erro-padrão (ep) e o número de famílias.
+#   - gerar_rdd(manipulacao = TRUE): o que acontece com a estimativa e com o histograma da renda?
 # -----------------------------------------------------------------------------

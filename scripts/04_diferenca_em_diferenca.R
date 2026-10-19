@@ -2,7 +2,6 @@
 # 04_diferenca_em_diferenca.R
 # -----------------------------------------------------------------------------
 # TEMA: Diferença-em-Diferenças (DiD / DD)
-#       (Batista e Domingos, 2017, pp. 11-12; Figura 6)
 #
 # IDEIA: comparar a MUDANÇA (depois - antes) do grupo tratado com a MUDANÇA do
 #        grupo de controle. A segunda mudança é o "contrafactual" da tendência:
@@ -16,7 +15,7 @@
 #           teriam evoluído de forma paralela.
 #
 # OBJETIVOS DE APRENDIZAGEM
-#   1. Reproduzir à mão o exemplo da Figura 6 do artigo (DD = 15);
+#   1. Reproduzir à mão um exemplo clássico (DD = 15);
 #   2. Ver por que os dois "falsos contrafactuais" erram e o DD acerta;
 #   3. Estimar o DD por regressão (coeficiente da interação);
 #   4. Checar tendências paralelas (estudo de eventos e placebo);
@@ -26,10 +25,10 @@
 source("scripts/00_setup.R")
 
 # -----------------------------------------------------------------------------
-# PARTE A — O exemplo da Figura 6 do artigo, "na calculadora"
+# PARTE A: um exemplo clássico, "na calculadora"
 # -----------------------------------------------------------------------------
 # Renda de participantes e não participantes, antes e depois da intervenção
-# (adaptado de Khandker, Koolwal e Samad, 2010, citado no artigo):
+# (adaptado de Khandker, Koolwal e Samad, 2010):
 renda_part_antes   <- 80
 renda_part_depois  <- 125
 renda_nao_antes    <- 90
@@ -44,7 +43,7 @@ mudanca_part <- renda_part_depois - renda_part_antes     # 45
 mudanca_nao  <- renda_nao_depois  - renda_nao_antes      # 30  <- a "tendência"
 dd           <- mudanca_part - mudanca_nao               # 15
 
-titulo("PARTE A: exemplo da Figura 6 (Batista e Domingos, 2017)")
+titulo("PARTE A: exemplo clássico (Khandker, Koolwal e Samad, 2010)")
 cat("Antes x depois:            ", antes_depois, " (superestima)\n")
 cat("Participantes x não part.: ", part_vs_nao,  " (subestima)\n")
 cat("Diferença-em-diferenças:   ", dd, "\n")
@@ -67,14 +66,14 @@ g_fig6 <- ggplot(fig6, aes(momento, renda, colour = grupo, group = grupo)) +
            label = paste0("DD = ", dd), colour = cor_verde, hjust = 0, fontface = "bold", size = 5.5) +
   scale_colour_manual(values = c("Participantes" = cor_laranja, "Não participantes" = cor_indigo), name = NULL) +
   scale_x_discrete(expand = expansion(add = c(0.3, 0.7))) +
-  labs(title = "Diferença-em-diferenças: o exemplo do artigo",
+  labs(title = "Diferença-em-diferenças: um exemplo clássico",
        subtitle = "Tracejado = contrafactual dos participantes (segue a tendência dos não participantes)",
        x = NULL, y = "Renda")
 print(g_fig6)
 salvar_fig(g_fig6, "04_figura6")
 
 # -----------------------------------------------------------------------------
-# PARTE B — Simulação em PAINEL: o mesmo mundo do "Qualifica", agora com
+# PARTE B: Simulação em PAINEL: o mesmo mundo do "Qualifica", agora com
 #           acompanhamento ao longo de 6 trimestres
 # -----------------------------------------------------------------------------
 # - 1.000 trabalhadores observados em 6 trimestres;
@@ -131,7 +130,7 @@ if (tem_pacote("fixest")) {
 }
 
 # -----------------------------------------------------------------------------
-# PARTE C — Testando o pressuposto: ESTUDO DE EVENTOS e PLACEBO
+# PARTE C: Testando o pressuposto: ESTUDO DE EVENTOS e PLACEBO
 # -----------------------------------------------------------------------------
 # Estimamos o efeito em CADA trimestre em relação ao trimestre 3 (o último
 # antes da política). Se as tendências são paralelas, os coeficientes ANTES do
@@ -168,7 +167,7 @@ placebo <- coef(lm(renda ~ tratado * pos_falso, data = pre))["tratado:pos_falso"
 cat("\nDD placebo (deve ser ~0):", round(placebo, 1), "\n")
 
 # -----------------------------------------------------------------------------
-# PARTE D — Quando as tendências NÃO são paralelas
+# PARTE D: Quando as tendências NÃO são paralelas
 # -----------------------------------------------------------------------------
 # Imagine que os tratados já vinham crescendo mais rápido (+R$ 40 extra por
 # trimestre), com ou sem política. O DD atribuirá esse crescimento extra ao programa.
@@ -200,10 +199,13 @@ placebo_ruim <- coef(lm(renda ~ tratado * pos_falso, data = pre_r))["tratado:pos
 cat("DD placebo no cenário ruim:", round(placebo_ruim, 1), "(longe de zero = alerta!)\n")
 
 # -----------------------------------------------------------------------------
-# DISCUSSÃO: O exemplo da Lei Maria da Penha (Cerqueira et al., 2015, no artigo)
+# DISCUSSÃO: O exemplo da Lei Maria da Penha (Cerqueira et al., 2015)
 #   Tratamento: mulheres | Controle: homens (sujeitos às mesmas causas gerais
 #   de violência, mas NÃO beneficiários da lei). Resultado: taxa de homicídios.
 #   Pergunta: o que seriam "tendências paralelas" nesse caso? Que choques
 #   (ex.: crise econômica, armas) poderiam afetar mulheres e homens de forma
 #   diferente e violar o pressuposto?
 # -----------------------------------------------------------------------------
+#
+# PARA EXPLORAR: o Exercício 2 (atividades/exercicio_02_diferenca_em_diferenca.R)
+# parte deste script.

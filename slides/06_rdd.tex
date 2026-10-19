@@ -1,175 +1,80 @@
 % =============================================================================
-% BLOCO 5 — REGRESSÃO DESCONTÍNUA  (16:40–17:05)   [Script 05 | Atividade 5]
+% REGRESSÃO DESCONTÍNUA (16:25 a 16:45)   [Script 05]
 % =============================================================================
-\secao{Bloco 5}{Regressão descontínua}{16:40 -- 17:05 \,$\cdot$\, Script 05 \,$\cdot$\, Atividade 5}
+\section[RDD]{Regressão descontínua}
 
-\begin{frame}{Regressão descontínua (RDD): um ``experimento natural''}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \begin{itemize}
-        \item Muitos programas têm uma \ind{regra de elegibilidade}: um índice e um \textbf{ponto de corte} (\emph{cutoff});
-        \item Quem está \emph{logo abaixo} e \emph{logo acima} do corte é muito semelhante, mas só um grupo recebe a política;
-        \item Perto do corte, é \destaque{como se houvesse um sorteio} --- que não está sob controle do avaliador;
-        \item O impacto é o tamanho do \ind{salto} (descontinuidade) no corte.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      \begin{block}{Dois pré-requisitos}
-        \small
-        \begin{enumerate}
-          \item Um índice de elegibilidade \textbf{contínuo};
-          \item Um valor de corte \textbf{claramente definido}.
-        \end{enumerate}
-      \end{block}
-      \vspace{0.1cm}
-      \footnotesize Duas limitações: efeito \textbf{local} (só perto do corte) e necessidade de \textbf{muitas observações} perto do corte.
-    \end{column}
-  \end{columns}
-  \fonte{Batista e Domingos (2017), pp.~12--13.}
-\end{frame}
-
-\begin{frame}{Exemplo: transferência de renda com corte de pobreza}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{itemize}
-        \item Programa de transferência de renda: \textbf{elegível} quem tem renda per capita \textbf{até R\$ 77} (linha de extrema pobreza, exemplo do artigo);
-        \item Uma família com R\$ 77 recebe; outra com R\$ 78 \emph{não}. Que diferença real existe entre elas?
-        \item Dentro dessa faixa estreita, podemos tratar as famílias como \emph{distribuídas aleatoriamente} entre tratamento e controle.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Nosso mundo simulado}
-        \small
-        \begin{itemize}
-          \item 4.000 famílias; resultado = \textbf{frequência escolar (\%)};
-          \item Efeito verdadeiro: \destaque{+6 pontos percentuais};
-          \item A frequência cresce com a renda: elegíveis são mais pobres e, sem programa, teriam frequência \emph{menor}.
-        \end{itemize}
-      \end{block}
-    \end{column}
-  \end{columns}
-  \fonte{Batista e Domingos (2017), pp.~12--13; Figura 7.}
+\begin{frame}{A ideia: um ``experimento natural'' no corte}
+  \begin{itemize}
+    \item Muitos programas têm uma \ind{regra de elegibilidade}: um índice contínuo e um \textbf{ponto de corte};
+    \item Ex.: transferência de renda para quem tem renda per capita \textbf{até R\$ 77}. Uma família com R\$ 77 recebe; outra com R\$ 78, não;
+    \item Perto do corte, as famílias são muito parecidas: é \destaque{como se houvesse um sorteio};
+    \item O impacto é o tamanho do \ind{salto} no corte.
+  \end{itemize}
+  \vspace{0.2cm}
+  \small Cuidados: o efeito é \textbf{local} (só perto do corte) e exige \textbf{muitas observações} ali.
 \end{frame}
 
 \begin{frame}{A descontinuidade no corte}
-  \begin{columns}[T]
-    \begin{column}{0.64\textwidth}
-      \includegraphics[width=\textwidth]{05_rdd_dispersao.png}
-    \end{column}
-    \begin{column}{0.36\textwidth}
-      \footnotesize
-      \begin{itemize}
-        \item Os pontos grandes são médias por faixa de R\$ 4 de renda;
-        \item Há um \ind{salto} em R\$ 77: elegíveis (laranja) têm frequência maior logo abaixo do corte do que não elegíveis (índigo) logo acima;
-        \item Longe do corte, a relação com a renda é \emph{suave}: o salto só vem do programa.
-      \end{itemize}
-    \end{column}
-  \end{columns}
+  \centering
+  \includegraphics[height=4.2cm]{05_rdd_dispersao.png}\par
+  \footnotesize Pontos grandes: médias por faixa de R\$ 4. Elegíveis (laranja) têm frequência escolar maior logo abaixo do corte.
 \end{frame}
 
-\begin{frame}{Estimando: regressão linear \textit{local}}
+\begin{frame}{Estimando: regressão linear local}
   \begin{columns}[T]
-    \begin{column}{0.58\textwidth}
-      \includegraphics[width=\textwidth]{05_rdd_local.png}
+    \begin{column}{0.55\textwidth}
+      \includegraphics[width=\textwidth]{05_rdd_local.png}\par
+      {\tiny Janela de $\pm$ R\$ 15 em torno do corte.}
     \end{column}
-    \begin{column}{0.42\textwidth}
-      \footnotesize
-      \begin{itemize}
-        \item Uma reta de cada lado, \emph{só} com famílias numa janela em torno do corte (aqui, $\pm$ R\$ 15);
-        \item O coeficiente de \cod{elegivel} é o salto: \destaque{6,2 p.p.} (EP = 0,9; verdade: 6);
-      \end{itemize}
-      \vspace{0.1cm}
-      \begin{center}
+    \begin{column}{0.45\textwidth}
+      \scriptsize
+      \renewcommand{\arraystretch}{1.2}
       \begin{tabular}{@{}lr@{}}
         \toprule
         \textbf{Método} & \textbf{Efeito (p.p.)} \\ \midrule
         Comparação simples & 1,8 \\
         Reta global & 4,7 \\
         Quadrática global & 6,1 \\
-        \rowcolor{verde!15} \textbf{Local $\pm$15} & \textbf{6,2} \\ \bottomrule
-      \end{tabular}
-      \end{center}
+        \rowcolor{verde!15} \textbf{Local, $\pm$15} & \textbf{6,2} \\ \bottomrule
+      \end{tabular}\par
+      \vspace{0.2cm}
+      Verdade: \destaque{6 p.p.}\\
+      A \textbf{janela} é um dilema entre viés (larga) e variância (estreita): mostre que o resultado não depende dela.
     \end{column}
   \end{columns}
-  \fonte{Batista e Domingos (2017), p.~13; simulação nossa (script 05).}
 \end{frame}
 
-\begin{frame}{A escolha da janela: viés $\times$ variância}
+\begin{frame}{Testes de validade}
   \begin{columns}[T]
-    \begin{column}{0.6\textwidth}
-      \includegraphics[width=\textwidth]{05_rdd_janelas.png}
-    \end{column}
-    \begin{column}{0.4\textwidth}
+    \begin{column}{0.48\textwidth}
       \footnotesize
-      \begin{itemize}
-        \item \textbf{Janela estreita}: famílias mais comparáveis (menos viés), mas \emph{poucas} (EP maior);
-        \item \textbf{Janela larga}: mais observações (EP menor), mas menos comparáveis (mais viés);
-        \item Boa prática: mostrar que o resultado \ind{não depende} muito da janela. Pacote \cod{rdrobust} escolhe uma janela ótima.
-      \end{itemize}
+      \begin{enumerate}
+        \item \textbf{Covariáveis} pré-tratamento não devem ``pular'' no corte;
+        \item \textbf{Placebo}: cortes falsos não devem gerar salto;
+        \item \textbf{Manipulação}: as famílias conseguem ajustar a renda para entrar? Procure acúmulo logo abaixo do corte.
+      \end{enumerate}
     \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Testes de validade do desenho}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Três checagens}
-        \small
-        \begin{enumerate}
-          \item \textbf{Covariáveis}: variáveis \emph{pré-tratamento} (ex.: idade da mãe) não devem ``pular'' no corte (aqui: salto de $0{,}07$, EP = 0,77);
-          \item \textbf{Placebo}: cortes \emph{falsos} (R\$ 55, 65, 105) não devem gerar salto (aqui: $\approx 0$);
-          \item \textbf{Manipulação}: as famílias conseguem ajustar a renda para entrar? Procure um \emph{acúmulo} logo abaixo do corte.
-        \end{enumerate}
-      \end{block}
-    \end{column}
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.52\textwidth}
       \includegraphics[width=\textwidth]{05_rdd_manipulacao.png}
     \end{column}
   \end{columns}
-  \fonte{Simulação nossa (script 05).}
-\end{frame}
-
-\begin{frame}{Limites e variações do RDD}
-  \begin{itemize}
-    \item \textbf{Efeito local}: o resultado vale para famílias \emph{próximas do corte} (R\$ 77), não necessariamente para quem ganha R\$ 30;
-    \item \textbf{Muitas observações} perto do corte são necessárias;
-    \item \textbf{RDD ``fuzzy''}: quando nem todos os elegíveis recebem, usa-se (salto no resultado) $\div$ (salto na participação). Na simulação: $5{,}4\div0{,}78\approx 7{,}0$ (verdade: 6);
-    \item \textbf{Não precisa ser ``regressão''}: o essencial é verificar se as observações acima e abaixo do corte estão \emph{balanceadas}.
-  \end{itemize}
-  \vspace{0.3cm}
-  \begin{block}{Exemplo no artigo: Progresa (México)}
-    \small Buddelmeyer e Skoufias (2004) comparam famílias elegíveis e inelegíveis no corte para avaliar o impacto na educação: aumento de \textbf{8,9\%} (1998) e \textbf{9,9\%} (1999) na presença escolar das \textbf{meninas}; para os meninos, +5\% sem significância.
-  \end{block}
-  \fonte{Batista e Domingos (2017), pp.~12--13.}
+  \vspace{0.2cm}
+  \scriptsize Exemplo real: Progresa, no México (Buddelmeyer e Skoufias, 2004).
 \end{frame}
 
 \begin{frame}[fragile]{Hora do R: \texttt{05\_regressao\_descontinua.R}}
-  \begin{horaR}{scripts/05\_regressao\_descontinua.R}
 \begin{lstlisting}
-d <- gerar_rdd()               # corte em R$ 77; x = renda - 77
+d <- gerar_rdd()           # corte em R$ 77; x = renda - 77
 
-# Regressao local: janela de +/- R$ 15, retas diferentes de cada lado
+# Regressao local: janela de +/- R$ 15, retas diferentes por lado
 janela <- d[abs(d$x) <= 15, ]
 m <- lm(freq ~ elegivel * x, data = janela)
-coef(m)["elegivel"]                  # salto no corte: 6,2 p.p.
+coef(m)["elegivel"]                     # salto no corte: 6,2 p.p.
 
 # Sensibilidade a janela
 sapply(c(5, 15, 40), function(h) rdd_local(d, h)$efeito)
 
-# Placebo: corte falso e teste de manipulacao (densidade da renda)
+# Teste de manipulacao: histograma da renda em torno do corte
 hist(d$renda, breaks = 60); abline(v = 77)
 \end{lstlisting}
-  \end{horaR}
-\end{frame}
-
-\begin{frame}{Atividade 5 \,$\cdot$\, Regressão descontínua (8 min)}
-  \begin{atividadebox}{Arquivo: \texttt{atividades/atividade\_05\_regressao\_descontinua.R}}
-    \begin{enumerate}
-      \item \textbf{Tarefa 1.} Estime o efeito com janelas de $\pm5$, $\pm15$ e $\pm40$: compare o EP e o nº de famílias;
-      \item \textbf{Tarefa 2.} Mude o corte para R\$ 70 e reestime;
-      \item \textbf{Tarefa 3.} Gere dados com \emph{manipulação} da renda declarada: o que muda na estimativa? E nas contagens em torno do corte?
-    \end{enumerate}
-  \end{atividadebox}
-  \vspace{0.2cm}
-  \textbf{Para discutir:} o efeito estimado vale para uma família com R\$ 30 per capita? Por quê?
 \end{frame}

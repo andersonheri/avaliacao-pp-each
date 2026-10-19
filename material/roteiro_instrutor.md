@@ -1,120 +1,114 @@
-# Roteiro do instrutor — minuto a minuto
+# Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula/atividades + 30 min de intervalo. Slides: `slides/main.pdf` (86 páginas; os "slides de seção" e a capa não contam na numeração).
-**Dica de ritmo:** o bloco que mais costuma estourar é o PSM. Se atrasar, corte os slides "Pressupostos e críticas" e "PSM: dois exemplos" (estão no artigo) e fale deles em 1 min.
+**Total:** 240 min = 210 min de aula e exercícios + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 66 páginas).
+**Ritmo:** as técnicas quase-experimentais são só apresentadas (a profundidade fica nas leituras). Se o tempo apertar, corte os slides de exemplos e deixe mais tempo para o bloco qualitativo.
 
-## Antes de começar (13h30–14h00)
+## Antes de começar (13h30 às 14h00)
 
-- [ ] Sala virtual aberta, gravação (se autorizada), chat visível; salas simultâneas (*breakout rooms*) habilitadas para a Atividade 6.
-- [ ] RStudio com `avaliacao-pp.Rproj` aberto, tela compartilhada em modo "janela" (RStudio) alternando com os slides.
-- [ ] Rode **todos** os scripts uma vez antes (`Rscript scripts/99_gerar_todas_figuras.R`) para garantir pacotes e figuras.
-- [ ] Enquete do slide 4 pronta (chat ou enquete da plataforma).
-- [ ] Gabaritos **fechados** (não compartilhar a pasta `gabaritos/` até depois de cada atividade; se o repositório é público, avise que os gabaritos estão lá e peça que só os abram após as atividades).
+- [ ] Sala virtual aberta, chat visível, salas simultâneas habilitadas (Exercício 3).
+- [ ] RStudio com `avaliacao-pp.Rproj` aberto; alternar entre slides e RStudio.
+- [ ] Rodar uma vez `Rscript scripts/99_gerar_todas_figuras.R` para garantir pacotes e figuras.
+- [ ] Enquete do slide "Para começar" pronta.
+- [ ] Avisar que `gabaritos/` está no repositório e deve ser aberta só após cada exercício.
 
-## Bloco 0 — Abertura (14:00–14:15, 15 min)
+## Abertura (14:00 a 14:15, 15 min)
+
+| Min | O que fazer |
+|---|---|
+| 0 a 3 | Boas-vindas, programa, o que vamos fazer |
+| 3 a 6 | **Enquete**: "o programa aumentou a renda em R$ 587?" (guardar respostas) |
+| 6 a 15 | Ciclo de políticas; tipos de avaliação (processo, resultados, impacto); cadeia de resultados |
+
+## Contrafactual (14:15 a 14:35, 20 min) · script 01
+
+| Min | O que fazer |
+|---|---|
+| 0 a 6 | Problema fundamental (tabela com "?"); contrafactual; dois falsos contrafactuais |
+| 6 a 14 | **Hora do R**: script 01 ao vivo (verdade = 300; ingênua = 587; antes-depois = 402) |
+| 14 a 17 | **Revelar a enquete**: resposta (b) |
+| 17 a 20 | Mapa das técnicas |
+
+## Experimento (14:35 a 15:05, 30 min) · script 02 · Exercício 1
+
+| Min | O que fazer |
+|---|---|
+| 0 a 6 | Aleatorização; balanço; Monte Carlo (rodar o laço do script) |
+| 6 a 10 | Exemplos reais, problemas de campo, poder |
+| 10 a 14 | **Hora do R**: sorteio, diferença de médias, `power.t.test` |
+| 14 a 27 | **Exercício 1** (12 min) |
+| 27 a 30 | Correção rápida e discussão |
+
+## Pareamento (15:05 a 15:25, 20 min) · script 03 (apenas demonstração)
+
+| Min | O que fazer |
+|---|---|
+| 0 a 8 | Ideia do pareamento; maldição da dimensionalidade; PSM em 3 passos |
+| 8 a 18 | **Hora do R**: escore, região comum, pareamento "na unha", resumo (PSM acerta quando o essencial é observável) |
+| 18 a 20 | Pressuposto: sem confundidores não observados |
+
+O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 30`.
+
+## Diferença-em-diferenças (15:25 a 15:55, 30 min) · script 04 · Exercício 2
+
+| Min | O que fazer |
+|---|---|
+| 0 a 6 | Ideia, fórmula, exemplo numérico (80/125 e 90/120: DD = 15) |
+| 6 a 14 | **Hora do R**: painel, DD na mão e por regressão, tendências paralelas e não paralelas (placebo) |
+| 14 a 17 | Caso real: Lei Maria da Penha |
+| 17 a 28 | **Exercício 2** (10 min) |
+| 28 a 30 | Correção |
+
+## ☕ Intervalo (15:55 a 16:25, 30 min)
+
+## Regressão descontínua (16:25 a 16:45, 20 min) · script 05 (apenas demonstração)
+
+| Min | O que fazer |
+|---|---|
+| 0 a 6 | Ideia do corte (R$ 77 e R$ 78); pré-requisitos e limites |
+| 6 a 16 | **Hora do R**: dispersão, regressão local, janela, testes de validade |
+| 16 a 20 | Manipulação, RDD fuzzy; efeito local |
+
+## Outras técnicas e como escolher (16:45 a 16:55, 10 min)
+
+| Min | O que fazer |
+|---|---|
+| 0 a 4 | Variáveis instrumentais e controle sintético (só a ideia; indicar leituras) |
+| 4 a 10 | Árvore de decisão e quadro lado a lado |
+
+## Avaliação qualitativa e métodos mistos (16:55 a 17:50, 55 min) · Exercício 3
 
 | Min | O que fazer | Slides |
 |---|---|---|
-| 0–3 | Boas-vindas, programa, objetivos, como vamos trabalhar | Capa → "Como vamos trabalhar" |
-| 3–6 | **Enquete**: "o programa aumentou a renda em R$ 587?" Colher respostas no chat (não revelar) | "Para começar" |
-| 6–10 | Por que avaliar; ciclo; tipos de avaliação; processo × resultado × impacto | 5–8 |
-| 10–15 | Cadeia de resultados; pergunta causal → contrafactual | 9–10 |
+| 0 a 4 | **Gancho**: o que os números não mostram (3 quebra-cabeças do Qualifica) | 1 a 2 |
+| 4 a 9 | Para que serve; em cada etapa da avaliação | 3 a 4 |
+| 9 a 13 | Desenho da pesquisa qualitativa; visão geral das técnicas | 5 a 6 |
+| 13 a 20 | Observação (Adato); entrevistas e roteiro; grupos focais | 7 a 9 |
+| 20 a 24 | Documentos, estudos de caso e *process tracing*; análise (trecho, código, categoria, tema) | 10 a 11 |
+| 24 a 27 | Rigor e críticas | 12 |
+| 27 a 30 | Métodos mistos: por que combinar; desenhos; exemplos | 13 a 15 |
+| 30 a 50 | **Exercício 3** em salas simultâneas (20 min): codificar os 8 trechos | 16 a 18 |
+| 50 a 55 | Plenária: temas, divergências entre grupos, quem mais entrevistar | |
 
-**Pergunta para a turma:** "Se a renda dos participantes subiu, o programa funcionou?"
+**Perguntas para a plenária:** os grupos chegaram aos mesmos temas? Onde divergiram? O que as entrevistas *não* podem dizer? Como voltam ao desenho quantitativo?
+O gabarito comentado do Exercício 3 (`gabaritos/gabarito_03_codificacao.md`) é um exemplo, não uma resposta única.
 
-## Bloco 1 — Contrafactual (14:15–14:35, 20 min) · Script 01 · Atividade 1
-
-| Min | O que fazer |
-|---|---|
-| 0–5 | Problema fundamental (tabela "?"), contrafactual, falsos contrafactuais 1 e 2 |
-| 5–9 | **Hora do R:** rodar `01_...R` ao vivo. Passo 2 (a verdade = 300), Passo 3 (587), Passo 4 (402). Mostrar os gráficos. **Revelar a enquete** |
-| 9–10 | Mapa das técnicas (o que vem pela frente) |
-| 10–18 | **Atividade 1** (6–8 min, individual) + 1 min de discussão |
-| 18–20 | Correção rápida (mostrar `gabarito_01`) |
-
-**Armadilha frequente:** participantes acham que o viés vem só da motivação. A tarefa 1 mostra que mesmo com `forca_motivacao = 0` sobra viés (escolaridade, idade).
-
-## Bloco 2 — Experimento (14:35–15:05, 30 min) · Script 02 · Atividade 2
+## Encerramento (17:50 a 18:00, 10 min)
 
 | Min | O que fazer |
 |---|---|
-| 0–8 | Aleatorização, diagrama, balanceamento (love plot) |
-| 8–14 | **Hora do R** (script 02): sorteio, balanço, diferença de médias, regressão; Monte Carlo (esperar o *loop*, ~3 s) |
-| 14–19 | Exemplos (Quênia, Seguro Popular), implementação em fases, problemas de campo |
-| 19–21 | Poder estatístico (34 vs 291 por grupo) |
-| 21–29 | **Atividade 2** (10 min) |
-| 29–30 | Fecho: ITT × efeito sobre aderentes |
+| 0 a 3 | Cinco perguntas antes de confiar em uma estimativa; o que levar |
+| 3 a 6 | Leituras (inclui IV e controle sintético, e a parte qualitativa) |
+| 6 a 10 | Repositório, feedback, agradecimentos |
 
-**Pergunta para a turma:** "Se vocês fossem gestores, aceitariam sortear quem recebe o programa? Em que condições?"
+## Respostas esperadas
 
-## Bloco 3 — Pareamento / PSM (15:05–15:40, 35 min) · Script 03 · Atividade 3
-
-| Min | O que fazer |
-|---|---|
-| 0–5 | Quando não dá para sortear; ideia do pareamento; maldição da dimensionalidade (rodar só o Passo 2 do script) |
-| 5–15 | PSM em 3 passos; **Hora do R**: logit, região comum, pareamento "na unha" (explicar o laço `for`), balanceamento |
-| 15–20 | Resultado (comparação de especificações), pressupostos, críticas (King e Nielsen) |
-| 20–22 | Exemplos: Trabajar e Bolsa Família |
-| 22–33 | **Atividade 3** (10–12 min) |
-| 33–35 | Recapitular: "PSM só iguala o que está no modelo" |
-
-**Atenção:** o bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se rodar com `B = 30`.
-**Intervalo logo após** — avisar que voltamos às 16h10.
-
-## ☕ Intervalo (15:40–16:10, 30 min)
-
-## Bloco 4 — Diferença-em-diferenças (16:10–16:40, 30 min) · Script 04 · Atividade 4
-
-| Min | O que fazer |
-|---|---|
-| 0–2 | Reconectar: "e se tivermos dados ao longo do tempo?" |
-| 2–9 | Ideia; **tabela da Figura 6 do artigo** (calcular juntos: 45 − 30 = 15); falsos contrafactuais (45 × 5 × 15) |
-| 9–17 | **Hora do R** (script 04): Parte A (calculadora), Parte B (painel, regressão com interação) |
-| 17–21 | Estudo de eventos, placebo, tendências não paralelas (R$ 420) |
-| 21–22 | Lei Maria da Penha |
-| 22–30 | **Atividade 4** (10 min) |
-
-**Pergunta para a turma:** "Que choque poderia afetar mulheres e homens de forma diferente?"
-
-## Bloco 5 — Regressão descontínua (16:40–17:05, 25 min) · Script 05 · Atividade 5
-
-| Min | O que fazer |
-|---|---|
-| 0–5 | Ideia do corte, exemplo R$ 77/R$ 78, pré-requisitos, limitações |
-| 5–12 | **Hora do R** (script 05): dispersão, regressão local, sensibilidade à janela |
-| 12–15 | Testes de validade (covariável, placebo, manipulação); fuzzy; Progresa |
-| 15–23 | **Atividade 5** (8 min) |
-| 23–25 | Fecho: efeito local; validade externa |
-
-## Bloco 6 — Qualitativo e métodos mistos (17:05–17:50, 45 min) · Atividade 6
-
-| Min | O que fazer | Slides |
-|---|---|---|
-| 0–3 | Transição: "até aqui, *quanto*; agora, *como e por quê*" | "Quantificar × compreender" |
-| 3–8 | 4 razões para o qualitativo; observação/etnografia (Adato) | 2 slides |
-| 8–15 | Entrevistas (Patton: 77% satisfeitos) e grupos focais (Hunter e Sugiyama) | 2 slides |
-| 15–18 | Críticas e cuidados | 1 slide |
-| 18–25 | Métodos mistos: ganhos; coordenado × integrado; exemplos (Chile, Uruguai, Índia) | 3 slides |
-| 25–40 | **Atividade 6** em salas simultâneas (15 min) — enviar o `.md` no chat | Cenário Qualifica |
-| 40–45 | Plenária: 2–3 grupos apresentam; discutir os riscos (reflexividade, amostra, viés do entrevistador) | |
-
-## Encerramento (17:50–18:00, 10 min)
-
-| Min | O que fazer |
-|---|---|
-| 0–4 | Tabela comparativa e árvore de decisão: "qual técnica usar?" |
-| 4–6 | As 5 perguntas antes de confiar em uma estimativa; mensagem final do artigo |
-| 6–8 | Leituras, repositório, tarefa para casa |
-| 8–10 | Feedback (chat/e-mail), agradecimentos |
-
-## Respostas esperadas às enquetes e perguntas
-
-- **Enquete do início:** (b) o efeito é menor — são R$ 300, não R$ 587; viés de seleção de ~R$ 287.
+- **Enquete do início:** (b) o efeito é menor: R$ 300, não R$ 587 (viés de seleção de ~R$ 287).
 - **Antes-depois:** erra por ~R$ 102 (tendência).
-- **Poder:** n = 34/grupo para R$ 300; 291/grupo para R$ 100; 390/grupo para R$ 100 com poder de 90%.
-- **PSM:** R$ 297 com renda antes no modelo; R$ 476 sem ela (viés de motivação omitida).
-- **DiD:** R$ 300; tendências não paralelas → R$ 420 (placebo +47).
-- **RDD:** 6,2 p.p. (verdade 6); janela ±15; reta global linear subestima (4,7).
+- **Experimento:** ~R$ 295 (EP 11); com covariáveis ~R$ 302 (EP 3,4).
+- **Poder:** 34 por grupo para R$ 300; 291 para R$ 100 (poder de 80%); 390 para R$ 100 com poder de 90%.
+- **PSM:** R$ 297 com renda antes no modelo; R$ 476 sem ela.
+- **DiD:** R$ 300; com tendências não paralelas, R$ 420 (placebo +47).
+- **RDD:** 6,2 p.p. (verdade 6); janela ±15.
 
 ## Se algo der errado
 
@@ -123,4 +117,4 @@
 | Participante sem R instalado | Compartilhar tela e acompanhar; ou Posit Cloud |
 | Script lento | Reduzir `n_rep` (script 02) para 300 e `B` (script 03) para 30 |
 | Gráfico não aparece | Aba *Plots*; ou abrir as imagens em `figuras/` |
-| Atraso no cronograma | Cortar: slides de exemplos (Quênia/Seguro Popular; Trabajar/Bolsa Família), "Limites do experimento"; encurtar Atividade 5 para 5 min |
+| Atraso | Pular "Experimentos reais" e "Região comum e resultado"; ampliar o tempo do bloco qualitativo |

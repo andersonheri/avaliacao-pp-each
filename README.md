@@ -1,50 +1,54 @@
-# Técnicas de Avaliação de Políticas Públicas — Workshop com simulações em R
+# Técnicas de Avaliação de Políticas Públicas: minicurso com simulações em R
 
-Minicurso do **Seminário Discente 2026**, Programa de Pós-Graduação em Gestão de Políticas Públicas (PPGGP) — EACH/USP.
-**20 de outubro de 2026 · 14h às 18h · online** (4 horas, com intervalo de 30 min).
+Minicurso do **Seminário Discente 2026**, Programa de Pós-Graduação em Gestão de Políticas Públicas (PPGGP), EACH/USP.
+**20 de outubro de 2026, 14h às 18h, online** (4 horas, com intervalo de 30 min).
 
 Público: pós-graduandos e graduandos em Gestão de Políticas Públicas e Ciência Política.
-Texto-base: BATISTA, Mariana; DOMINGOS, Amanda (2017). *Mais que boas intenções: técnicas quantitativas e qualitativas na avaliação de impacto de políticas públicas.* Revista Brasileira de Ciências Sociais, 32(94), e329414. [doi:10.17666/329414/2017](https://doi.org/10.17666/329414/2017)
+Leitura-base: BATISTA, Mariana; DOMINGOS, Amanda (2017). *Mais que boas intenções: técnicas quantitativas e qualitativas na avaliação de impacto de políticas públicas.* Revista Brasileira de Ciências Sociais, 32(94). [doi:10.17666/329414/2017](https://doi.org/10.17666/329414/2017)
+
+**Instrutor:** Anderson Henrique, cientista político, doutor pela UFPE (2025), pós-doutorando no CEM/USP (FAPESP/CEPid), pesquisador do INCT-QualiGov e pesquisador convidado no IPEA. Contato: andersonheri@gmail.com
 
 ## A ideia
 
-Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la:
+Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Os **scripts** são demonstrações comentadas passo a passo, para os alunos entenderem e se basearem. Os **exercícios** são poucos e curtos (três).
 
-| Técnica | Como constrói o contrafactual | Script | Atividade |
-|---|---|---|---|
-| Problema do contrafactual e viés de seleção | — | `01_contrafactual_vies_selecao.R` | `atividade_01` |
-| Experimento controlado (RCT) | sorteio | `02_experimento_rct.R` | `atividade_02` |
-| Pareamento / Propensity Score (PSM) | "gêmeos" nas características observadas | `03_pareamento_psm.R` | `atividade_03` |
-| Diferença-em-diferenças (DiD) | tendência do grupo de controle | `04_diferenca_em_diferenca.R` | `atividade_04` |
-| Regressão descontínua (RDD) | corte de elegibilidade | `05_regressao_descontinua.R` | `atividade_05` |
-| Técnicas qualitativas e métodos mistos | — | — (discussão em grupos) | `atividade_06` (.md) |
-
-## Programa (14h–18h)
-
-| Horário | Bloco | Atividade |
+| Bloco | Script (demonstração) | Exercício |
 |---|---|---|
-| 14:00–14:15 | Abertura: por que avaliar, tipos de avaliação, cadeia de resultados | enquete |
-| 14:15–14:35 | O problema do contrafactual (script 01) | Atividade 1 |
-| 14:35–15:05 | Experimento controlado (script 02) | Atividade 2 |
-| 15:05–15:40 | Pareamento e propensity score (script 03) | Atividade 3 |
-| 15:40–16:10 | **Intervalo** | |
-| 16:10–16:40 | Diferença-em-diferenças (script 04) | Atividade 4 |
-| 16:40–17:05 | Regressão descontínua (script 05) | Atividade 5 |
-| 17:05–17:50 | Técnicas qualitativas e métodos mistos | Atividade 6 (grupos) |
-| 17:50–18:00 | Síntese, escolha da técnica, encerramento | feedback |
+| Problema do contrafactual e viés de seleção | `01_contrafactual_vies_selecao.R` | |
+| Experimento controlado (RCT) | `02_experimento_rct.R` | **Exercício 1** (R) |
+| Pareamento / propensity score (PSM) | `03_pareamento_psm.R` | |
+| Diferença-em-diferenças (DiD) | `04_diferenca_em_diferenca.R` | **Exercício 2** (R) |
+| Regressão descontínua (RDD) | `05_regressao_descontinua.R` | |
+| Outras técnicas (IV, controle sintético) e como escolher | (apenas slides e leituras) | |
+| Avaliação qualitativa e métodos mistos | (slides) | **Exercício 3** (grupos, sem R) |
+
+## Programa (14h às 18h)
+
+| Horário | Bloco |
+|---|---|
+| 14:00 a 14:15 | Abertura: por que avaliar? |
+| 14:15 a 14:35 | O problema do contrafactual |
+| 14:35 a 15:05 | Experimento controlado + **Exercício 1** |
+| 15:05 a 15:25 | Pareamento (PSM) |
+| 15:25 a 15:55 | Diferença-em-diferenças + **Exercício 2** |
+| 15:55 a 16:25 | **Intervalo** |
+| 16:25 a 16:45 | Regressão descontínua |
+| 16:45 a 16:55 | Outras técnicas e como escolher |
+| 16:55 a 17:50 | Avaliação qualitativa e métodos mistos + **Exercício 3** |
+| 17:50 a 18:00 | Encerramento |
 
 O roteiro minuto a minuto está em [`material/roteiro_instrutor.md`](material/roteiro_instrutor.md).
 
 ## Como usar (participantes)
 
 1. Instale o **R** e o **RStudio** (veja [`material/preparacao_participantes.md`](material/preparacao_participantes.md)).
-2. Baixe este repositório (**Code → Download ZIP**) e descompacte.
+2. Baixe este repositório (**Code, Download ZIP**) e descompacte.
 3. Abra o arquivo **`avaliacao-pp.Rproj`** no RStudio (isso define a pasta raiz certa).
 4. Abra `scripts/00_setup.R` e rode (instala o único pacote obrigatório, `ggplot2`).
-5. Abra o script do bloco (ex.: `scripts/02_experimento_rct.R`) e rode **linha a linha** com `Ctrl+Enter` (`Cmd+Enter` no Mac). Cada passo está comentado.
-6. Nas atividades (`atividades/`), troque cada `COMPLETE` pelo código que falta e responda às perguntas em comentários.
+5. Abra o script do bloco (ex.: `scripts/02_experimento_rct.R`) e rode **linha a linha** com `Ctrl+Enter`. Cada passo está comentado; no fim há uma seção "PARA EXPLORAR".
+6. Nos exercícios (`atividades/`), troque cada `COMPLETE` pelo código que falta e responda às perguntas em comentários.
 
-Pacotes **opcionais** (deixam a análise mais "profissional", mas nada depende deles): `MatchIt`, `rdrobust`, `fixest`.
+Pacotes **opcionais**: `MatchIt`, `rdrobust`, `fixest` (nada depende deles).
 
 ## Estrutura do repositório
 
@@ -54,21 +58,20 @@ Pacotes **opcionais** (deixam a análise mais "profissional", mas nada depende d
 ├── scripts/
 │   ├── 00_setup.R              # pacotes, cores, funções de apoio
 │   ├── funcoes_dgp.R           # O "MUNDO SIMULADO": onde a verdade é escrita (comentado)
-│   ├── funcoes_metodos.R       # psm_att() e rdd_local(), usadas nas atividades
 │   ├── 01_...R a 05_...R       # um script por técnica, passo a passo
 │   ├── 06_exportar_dados.R     # (opcional) exporta os dados simulados para CSV
 │   └── 99_gerar_todas_figuras.R# (instrutor) regenera as figuras dos slides
-├── atividades/                 # exercícios (R com lacunas + atividade 6 em .md)
-├── gabaritos/                  # soluções comentadas (liberar após cada atividade)
-├── slides/                     # Beamer/LaTeX: main.tex + um arquivo por bloco; main.pdf pronto
+├── atividades/                 # exercício 1 e 2 (R com lacunas) e exercício 3 (.md)
+├── gabaritos/                  # soluções comentadas (liberar após cada exercício)
+├── slides/                     # Beamer (tema Berlin): main.tex + um arquivo por bloco; main.pdf pronto
 ├── figuras/                    # gráficos dos slides (gerados pelos scripts)
-├── dados/                      # CSVs simulados (após rodar 06_exportar_dados.R)
+├── dados/                      # CSVs simulados
 └── material/                   # roteiro do instrutor, preparação dos participantes
 ```
 
 ## Recompilar os slides
 
-Requer LaTeX com `beamer`, `tikz`/`pgf`, `listings` (MiKTeX, TeX Live ou TinyTeX).
+Requer LaTeX com `beamer` e `tikz` (MiKTeX, TeX Live ou TinyTeX).
 
 ```bash
 # a partir da pasta slides/
@@ -80,14 +83,12 @@ Para regenerar as figuras antes: `Rscript scripts/99_gerar_todas_figuras.R` (na 
 
 ## Reprodutibilidade
 
-- Todos os scripts usam **sementes fixas**: todos os participantes veem os mesmos números.
-- Testado com R 4.6.1. Os scripts funcionam só com `ggplot2` instalado; levam poucos segundos (o bootstrap do script 03 demora ~10 s).
-- Os dados são **100% simulados**. Os exemplos de políticas reais (PSDP/Quênia, Seguro Popular, Trabajar, Bolsa Família, Progresa, Lei Maria da Penha, Adato etc.) são citados a partir do artigo-base, com os resultados que ele reporta.
+- Todos os scripts usam **sementes fixas**: todos veem os mesmos números.
+- Testado com R 4.6.1. Funciona só com `ggplot2` instalado e roda em segundos (o bootstrap do script 03 leva ~10 s).
+- Os dados são **100% simulados**. Os exemplos de políticas reais citados nos slides vêm da literatura indicada nas leituras finais.
 
 ## Licença e citação
 
-Código e materiais sob licença MIT (ver `LICENSE`). Ao reutilizar, cite o artigo-base e este repositório:
+Código e materiais sob licença MIT (ver `LICENSE`). Ao reutilizar, cite este repositório:
 
-> Henrique, A. (2026). *Técnicas de Avaliação de Políticas Públicas: workshop com simulações em R.* Seminário Discente PPGGP EACH/USP.
-
-Contato: andersonheri@gmail.com
+> Henrique, A. (2026). *Técnicas de Avaliação de Políticas Públicas: minicurso com simulações em R.* Seminário Discente PPGGP EACH/USP.

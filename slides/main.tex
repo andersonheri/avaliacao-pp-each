@@ -1,17 +1,26 @@
 % =============================================================================
-% main.tex  |  Slides do workshop "Técnicas de Avaliação de Políticas Públicas"
-% Compilar (a partir da pasta slides/):  pdflatex main.tex  (2x)   ou   latexmk -pdf main.tex
-% As figuras vêm de ../figuras (geradas pelos scripts R: ver README).
+% main.tex  |  Slides do minicurso "Técnicas de Avaliação de Políticas Públicas"
+% Compilar (a partir de slides/):  pdflatex main.tex  (2x)
+% As figuras vêm de ../figuras (geradas pelos scripts R; ver README).
 % =============================================================================
-\documentclass[aspectratio=169,11pt,table]{beamer}
+\documentclass[xcolor=dvipsnames,table]{beamer}
 \input{00_preambulo}
 
 \title{Técnicas de Avaliação de Políticas Públicas}
-\author{Anderson Henrique}
-\institute{Seminário Discente 2026 \,$\cdot$\, PPGGP EACH/USP}
-\date{20 de outubro de 2026}
+\subtitle{Minicurso do Seminário Discente 2026}
+\author[Anderson Henrique]{Anderson Henrique\\[3pt]
+  {\footnotesize Cientista político, doutor pela UFPE (2025)}\\
+  {\footnotesize Pós-doutorando no CEM/USP (FAPESP/CEPid)}\\
+  {\footnotesize Pesquisador do INCT-QualiGov e pesquisador convidado no IPEA}\\[2pt]
+  {\footnotesize andersonheri@gmail.com}}
+\institute[PPGGP EACH/USP]{Programa de Pós-Graduação em Gestão de Políticas Públicas\\EACH/USP}
+\date[20/10/2026]{20 de outubro de 2026}
 
 \begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
 
 \input{01_abertura}
 \input{02_contrafactual}
@@ -19,7 +28,8 @@
 \input{04_pareamento}
 \input{05_did}
 \input{06_rdd}
-\input{07_qualitativo}
-\input{08_sintese}
+\input{07_outras_tecnicas}
+\input{08_qualitativo}
+\input{09_encerramento}
 
 \end{document}

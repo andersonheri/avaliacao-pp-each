@@ -2,7 +2,6 @@
 # 03_pareamento_psm.R
 # -----------------------------------------------------------------------------
 # TEMA: Pareamento (matching) e Propensity Score Matching (PSM)
-#       (Batista e Domingos, 2017, pp. 8-11; Figuras 4 e 5)
 #
 # SITUAÇÃO: o programa JÁ aconteceu, as pessoas se autosselecionaram e não
 #           houve sorteio. Só temos dados observacionais.
@@ -26,14 +25,14 @@ dados <- gerar_populacao(n = 5000, efeito = 300)
 att_verdadeiro <- 300          # sabemos porque simulamos: efeito constante
 
 # -----------------------------------------------------------------------------
-# PASSO 1 — Ponto de partida: a comparação ingênua (viesada)
+# PASSO 1: Ponto de partida: a comparação ingênua (viesada)
 # -----------------------------------------------------------------------------
 naive <- mean(dados$renda_depois[dados$participa == 1]) -
          mean(dados$renda_depois[dados$participa == 0])
 cat("Estimativa ingênua (participantes x não participantes):", round(naive, 1), "\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 2 — Pareamento EXATO e a "maldição da dimensionalidade"
+# PASSO 2: Pareamento EXATO e a "maldição da dimensionalidade"
 # -----------------------------------------------------------------------------
 # Pareamento exato: achar controles com EXATAMENTE as mesmas características.
 # Quantos participantes têm um "gêmeo" exato entre os não participantes
@@ -79,7 +78,7 @@ salvar_fig(g_maldicao, "03_maldicao")
 # número - a probabilidade de participar (propensity score) - e parear por ele.
 
 # -----------------------------------------------------------------------------
-# PASSO 3 — Estimar o propensity score (regressão logística)
+# PASSO 3: Estimar o propensity score (regressão logística)
 # -----------------------------------------------------------------------------
 # Modelamos P(participa = 1 | características). Usamos só o que o avaliador
 # consegue observar: escolaridade, idade, sexo e a renda ANTES do programa.
@@ -91,7 +90,7 @@ dados$ps  <- predict(modelo_ps, type = "response")   # probabilidade prevista (0
 dados$lps <- qlogis(dados$ps)                         # mesma info, em escala logit (melhor p/ parear)
 
 # -----------------------------------------------------------------------------
-# PASSO 4 — REGIÃO COMUM (suporte comum): Figura 5 do artigo
+# PASSO 4: REGIÃO COMUM (suporte comum)
 # -----------------------------------------------------------------------------
 # Só dá para comparar quem tem "semelhantes" do outro grupo.
 limite_inf <- max(min(dados$ps[dados$participa == 1]), min(dados$ps[dados$participa == 0]))
@@ -110,7 +109,7 @@ print(g_overlap)
 salvar_fig(g_overlap, "03_regiao_comum")
 
 # -----------------------------------------------------------------------------
-# PASSO 5 — Parear "na unha": vizinho mais próximo com caliper
+# PASSO 5: Parear "na unha": vizinho mais próximo com caliper
 # -----------------------------------------------------------------------------
 # Para cada participante: achamos o NÃO participante com propensity score mais
 # próximo. O "caliper" descarta pares muito distantes (evita mau pareamento).
@@ -136,7 +135,7 @@ att_psm <- mean(dif_pares)
 cat("ATT estimado por PSM:", round(att_psm, 1), "| verdade:", att_verdadeiro, "\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 6 — BALANCEAMENTO: o pareamento "igualou" os grupos?
+# PASSO 6: BALANCEAMENTO: o pareamento "igualou" os grupos?
 # -----------------------------------------------------------------------------
 # Peso de cada controle = quantas vezes foi usado como par.
 peso <- rep(0, nrow(dados))
@@ -175,7 +174,7 @@ print(g_love)
 salvar_fig(g_love, "03_love_plot")
 
 # -----------------------------------------------------------------------------
-# PASSO 7 — Empacotar numa FUNÇÃO e calcular incerteza (bootstrap)
+# PASSO 7: Empacotar numa FUNÇÃO e calcular incerteza (bootstrap)
 # -----------------------------------------------------------------------------
 # Repetimos os passos 3 e 5 dentro de uma função, para poder (a) trocar as
 # variáveis do modelo e (b) reamostrar os dados (bootstrap) para obter o
@@ -212,7 +211,7 @@ cat("IC 95% aproximado: [", round(att_a - 1.96 * sd(boot_a)), ",",
     round(att_a + 1.96 * sd(boot_a)), "]\n")
 
 # -----------------------------------------------------------------------------
-# PASSO 8 — O PRESSUPOSTO CRÍTICO: confundidores NÃO observados
+# PASSO 8: O PRESSUPOSTO CRÍTICO: confundidores NÃO observados
 # -----------------------------------------------------------------------------
 # O PSM só "iguala" o que está no modelo. Se algo que afeta a renda e a
 # participação NÃO é observado (aqui, a motivação), o viés permanece.
@@ -230,9 +229,11 @@ resumo <- data.frame(
   Metodo = c("Verdade",
              "Comparação ingênua",
              "Regressão com controles",
-             "PSM - com renda antes (baseline)",
-             "PSM - SEM renda antes (motivação omitida)",
-             "PSM - sem renda antes, mas motivação irrelevante p/ adesão"),
+             "PSM com renda antes",
+             "PSM sem renda antes
+(motivação omitida)",
+             "PSM sem renda antes,
+motivação irrelevante"),
   Estimativa = round(c(att_verdadeiro, naive, reg, att_a, att_b, att_c), 1)
 )
 resumo$Erro <- round(resumo$Estimativa - att_verdadeiro, 1)
@@ -247,10 +248,10 @@ g_resumo <- ggplot(resumo, aes(Estimativa, reorder(Metodo, Estimativa))) +
   labs(title = "PSM funciona... quando o que importa é observável",
        subtitle = "Linha verde = verdade (R$ 300)", x = "Impacto estimado (R$/mês)", y = NULL)
 print(g_resumo)
-salvar_fig(g_resumo, "03_resumo", largura = 10.5)
+salvar_fig(g_resumo, "03_resumo", largura = 6, altura = 3.6)
 
 # -----------------------------------------------------------------------------
-# PASSO 9 (OPCIONAL) — A versão "profissional": pacote MatchIt
+# PASSO 9 (OPCIONAL): A versão "profissional": pacote MatchIt
 # -----------------------------------------------------------------------------
 # Se o MatchIt estiver instalado (install.packages("MatchIt")), ele faz tudo
 # acima em poucas linhas, com diagnósticos prontos.
@@ -268,8 +269,14 @@ if (tem_pacote("MatchIt")) {
 }
 
 # -----------------------------------------------------------------------------
-# DISCUSSÃO (artigo, p. 10-11): CRÍTICAS AO PSM
+# DISCUSSÃO: CRÍTICAS AO PSM
 #   King e Nielsen (2016): parear pelo propensity score pode AUMENTAR o
 #   desbalanceamento; alternativas: Coarsened Exact Matching (CEM).
 #   Sempre: (1) mostre o balanceamento; (2) discuta o que NÃO foi observado.
+# -----------------------------------------------------------------------------
+#
+# PARA EXPLORAR (mude e rode de novo)
+#   - Troque o caliper (0.2) por 0.01 e por 1: quantos tratados ficam sem par?
+#   - Retire 'idade' ou 'escolaridade' do modelo do propensity score.
+#   - Aumente 'forca_motivacao' em gerar_populacao(): o viés do PSM sem a renda antes cresce?
 # -----------------------------------------------------------------------------

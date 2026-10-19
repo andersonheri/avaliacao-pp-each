@@ -2,7 +2,6 @@
 # 00_setup.R  |  Configuração comum a todos os scripts do workshop
 # -----------------------------------------------------------------------------
 # Workshop: Técnicas de Avaliação de Políticas Públicas (EACH/USP, 2026)
-# Base: Batista e Domingos (2017), "Mais que boas intenções", RBCS 32(94).
 #
 # O QUE ESTE ARQUIVO FAZ
 #   1. Verifica/instala os pacotes necessários;
@@ -50,7 +49,7 @@ tema_curso <- function(tamanho = 14) {
       plot.caption     = element_text(colour = "grey40", size = tamanho - 4)
     )
 }
-theme_set(tema_curso())
+theme_set(tema_curso(13))
 
 # ---- 3. O "mundo simulado" ---------------------------------------------------
 # Todas as funções que GERAM os dados estão em um arquivo à parte, bem
@@ -58,20 +57,19 @@ theme_set(tema_curso())
 # técnicas tentarão recuperar.
 source("scripts/funcoes_dgp.R")
 
-# Versões prontas dos estimadores (pareamento e RDD local), usadas nas atividades.
-source("scripts/funcoes_metodos.R")
-
 # ---- 4. Funções de apoio -----------------------------------------------------
 
 # 4a. Salvar figuras (usado pelo instrutor para montar os slides).
 #     Só salva se a variável de ambiente SALVAR_FIGURAS estiver igual a "1".
 #     Para os participantes, nada é salvo (a figura só aparece no painel Plots).
 SALVAR_FIGURAS <- identical(Sys.getenv("SALVAR_FIGURAS"), "1")
-salvar_fig <- function(grafico, nome, largura = 9, altura = 5.2) {
+salvar_fig <- function(grafico, nome, largura = 5.6, altura = 3.4) {
   if (SALVAR_FIGURAS) {
     dir.create("figuras", showWarnings = FALSE)
-    ggsave(file.path("figuras", paste0(nome, ".png")), grafico,
-           width = largura, height = altura, dpi = 200, bg = "white")
+    # nas figuras dos slides, o título fica no próprio slide: removemos título e subtítulo
+    ggsave(file.path("figuras", paste0(nome, ".png")),
+           grafico + labs(title = NULL, subtitle = NULL),
+           width = largura, height = altura, dpi = 250, bg = "white")
   }
   invisible(grafico)
 }

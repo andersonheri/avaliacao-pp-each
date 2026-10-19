@@ -1,179 +1,66 @@
 % =============================================================================
-% BLOCO 3 — PAREAMENTO / PSM  (15:05–15:40)   [Script 03 | Atividade 3]
+% PAREAMENTO / PSM (15:05 a 15:25)   [Script 03]
 % =============================================================================
-\secao{Bloco 3}{Pareamento e propensity score}{15:05 -- 15:40 \,$\cdot$\, Script 03 \,$\cdot$\, Atividade 3}
+\section[Pareamento]{Pareamento (PSM)}
 
-\begin{frame}{E quando o experimento não é possível?}
-  \begin{itemize}
-    \item A política \alert{já foi implementada}, de forma não aleatória: não há separação \emph{ex-ante} entre tratamento e controle;
-    \item O que temos são \ind{dados observacionais}: quem participou, quem não participou, e características de ambos;
-    \item As \ind{técnicas quase-experimentais} usam estatística para \destaque{emular} um grupo de controle.
-  \end{itemize}
-  \vspace{0.3cm}
-  \begin{block}{Três técnicas que veremos}
-    \small
-    \begin{enumerate}
-      \item \textbf{Pareamento} (\emph{matching}) e \emph{propensity score}: compara indivíduos \emph{parecidos};
-      \item \textbf{Diferença-em-diferenças}: compara \emph{variações} ao longo do tempo;
-      \item \textbf{Regressão descontínua}: explora uma \emph{regra de elegibilidade}.
-    \end{enumerate}
-  \end{block}
-  \fonte{Batista e Domingos (2017), p.~8.}
-\end{frame}
-
-\begin{frame}{Pareamento: a ideia}
+\begin{frame}{Quando não dá para sortear: pareamento}
   \centering
-  \begin{tikzpicture}[scale=0.92,every node/.style={transform shape}]
-    \node[font=\small\bfseries,text=laranja] at (0,3.4) {Participantes};
-    \node[font=\small\bfseries,text=indigo] at (8,3.4) {Não participantes (pool de controles)};
-    \foreach \i/\ida/\esc in {1/24/12,2/41/9,3/35/14} {
-      \node[cxl,minimum width=2.8cm] (t\i) at (0,3-\i*1.1+0.4) {Idade \ida, \esc\ anos de estudo};
-    }
-    \foreach \j/\ida/\esc in {1/58/6,2/24/12,3/40/9,4/33/11,5/35/14} {
-      \node[cxi,minimum width=2.8cm] (c\j) at (8,3.4-\j*0.75) {Idade \ida, \esc\ anos de estudo};
-    }
-    \draw[seta] (t1) -- (c2); \draw[seta] (t2) -- (c3); \draw[seta] (t3) -- (c5);
+  \begin{tikzpicture}[scale=0.85,every node/.style={transform shape}]
+    \node[font=\footnotesize\bfseries,text=laranja] at (0,2.2) {Participantes};
+    \node[font=\footnotesize\bfseries,text=azul] at (6.2,2.2) {Não participantes};
+    \node[cxl,minimum width=3cm] (t1) at (0,1.4) {24 anos, 12 de estudo};
+    \node[cxl,minimum width=3cm] (t2) at (0,0.2) {41 anos, 9 de estudo};
+    \node[cxl,minimum width=3cm] (t3) at (0,-1.0) {35 anos, 14 de estudo};
+    \node[cxi,minimum width=3cm] (c1) at (6.2,1.4) {58 anos, 6 de estudo};
+    \node[cxi,minimum width=3cm] (c2) at (6.2,0.5) {24 anos, 12 de estudo};
+    \node[cxi,minimum width=3cm] (c3) at (6.2,-0.4) {40 anos, 9 de estudo};
+    \node[cxi,minimum width=3cm] (c4) at (6.2,-1.3) {35 anos, 14 de estudo};
+    \draw[seta] (t1) -- (c2); \draw[seta] (t2) -- (c3); \draw[seta] (t3) -- (c4);
   \end{tikzpicture}
   \vspace{0.2cm}
   \begin{itemize}
-    \item Para cada participante, encontrar não participantes \ind{semelhantes nas características observadas};
-    \item Se, após igualar o que observamos, só o programa distingue os grupos, a diferença \emph{ex-post} entre eles é atribuída à política.
+    \item Para cada participante, buscar não participantes \ind{parecidos nas características observadas};
+    \item Se só o programa os distingue, a diferença \emph{depois} é atribuída à política.
   \end{itemize}
-  \fonte{Batista e Domingos (2017), pp.~8--9; Figura 4.}
 \end{frame}
 
-\begin{frame}{Pareamento exato e a maldição da dimensionalidade}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \includegraphics[width=\textwidth]{03_maldicao.png}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \small
-      \begin{itemize}
-        \item \textbf{Pareamento exato}: o controle tem \emph{exatamente} os mesmos atributos;
-        \item Parece ideal, mas com muitas variáveis (ou variáveis quase contínuas) \alert{quase ninguém tem gêmeo exato};
-        \item Na simulação: de 100\% (com 2 variáveis) a \destaque{3\%} (renda medida em dezenas de reais).
-      \end{itemize}
-      \vspace{0.2cm}
-      \begin{block}{Solução (Rosenbaum e Rubin, 1983)}
-        \footnotesize Resumir tudo em \textbf{um número}: a \emph{probabilidade de participar}.
-      \end{block}
-    \end{column}
-  \end{columns}
-  \fonte{Batista e Domingos (2017), pp.~8--9; simulação nossa (script 03).}
-\end{frame}
-
-\begin{frame}{Propensity Score Matching (PSM) em 3 passos}
+\begin{frame}{A maldição da dimensionalidade}
   \centering
-  \begin{tikzpicture}[node distance=0.7cm,scale=0.82,every node/.style={transform shape}]
-    \node[cxi,text width=4.6cm] (p1) {\textbf{1. Estimar o propensity score}\\[2pt]\scriptsize Regressão logística: $P(\text{participar}\mid \text{características})$};
-    \node[cxi,right=0.7cm of p1,text width=4.6cm] (p2) {\textbf{2. Checar a região comum}\\[2pt]\scriptsize Há participantes e não participantes com escores parecidos?};
-    \node[cxi,right=0.7cm of p2,text width=4.6cm] (p3) {\textbf{3. Parear e comparar}\\[2pt]\scriptsize Vizinho mais próximo (com \emph{caliper}); efeito = diferença nos pares};
+  \includegraphics[height=4.1cm]{03_maldicao.png}\par
+  \footnotesize Pareamento exato: cada nova variável derruba a chance de achar um ``gêmeo''. \textbf{Solução}: resumir tudo em um número, o \ind{propensity score} (probabilidade de participar).
+\end{frame}
+
+\begin{frame}{Propensity Score Matching em 3 passos}
+  \centering
+  \begin{tikzpicture}[scale=0.86,every node/.style={transform shape}]
+    \node[cxi,text width=3.1cm] (p1) at (0,0) {\textbf{1. Estimar o escore}\\{\scriptsize Regressão logística: $P(\text{participar}\mid\text{características})$}};
+    \node[cxi,text width=3.1cm] (p2) at (4.2,0) {\textbf{2. Checar a região comum}\\{\scriptsize Há participantes e não participantes com escores parecidos?}};
+    \node[cxi,text width=3.1cm] (p3) at (8.4,0) {\textbf{3. Parear e comparar}\\{\scriptsize Vizinho mais próximo (com \emph{caliper})}};
     \draw[seta] (p1) -- (p2); \draw[seta] (p2) -- (p3);
   \end{tikzpicture}
   \vspace{0.4cm}
   \begin{itemize}
-    \item O pesquisador não encontra dois indivíduos idênticos, mas indivíduos \ind{semelhantes o suficiente} na propensão de participar;
-    \item Depois do pareamento, é obrigatório \destaque{checar o balanceamento} das covariáveis.
+    \item Depois de parear, é obrigatório \destaque{checar o balanceamento} das covariáveis.
+    \item Pressuposto central: \ind{sem confundidores não observados}.
   \end{itemize}
-  \fonte{Batista e Domingos (2017), pp.~9--10.}
 \end{frame}
 
-\begin{frame}{Região comum (suporte comum)}
+\begin{frame}{Região comum e resultado}
   \begin{columns}[T]
-    \begin{column}{0.62\textwidth}
-      \includegraphics[width=\textwidth]{03_regiao_comum.png}
+    \begin{column}{0.48\textwidth}
+      \includegraphics[width=\textwidth]{03_regiao_comum.png}\par
+      {\tiny Faixa verde: onde há controles comparáveis.}
     \end{column}
-    \begin{column}{0.38\textwidth}
-      \footnotesize
-      \begin{itemize}
-        \item Só dá para comparar quem tem ``semelhantes'' do outro grupo: é a \ind{região comum};
-        \item Fora dela, tratados ficam sem par e saem da análise;
-        \item Aqui a sobreposição é \emph{boa}: 1.630 de 1.631 participantes encontram par.
-      \end{itemize}
+    \begin{column}{0.52\textwidth}
+      \includegraphics[width=\textwidth]{03_resumo.png}\par
+      {\tiny Linha verde: verdade (R\$ 300).}
     \end{column}
   \end{columns}
-  \fonte{Batista e Domingos (2017), Figura 5 (p.~10); simulação nossa.}
-\end{frame}
-
-\begin{frame}{Checando o balanceamento (\textit{love plot})}
-  \begin{columns}[T]
-    \begin{column}{0.6\textwidth}
-      \includegraphics[width=\textwidth]{03_love_plot.png}
-    \end{column}
-    \begin{column}{0.4\textwidth}
-      \footnotesize
-      \begin{itemize}
-        \item Antes: participantes eram muito mais escolarizados e com maior renda anterior (SMD $\approx 0{,}5$ e $0{,}8$);
-        \item Depois do pareamento, $|\text{SMD}|<0{,}10$ nas variáveis do modelo;
-        \item A \ind{motivação} (não observada) melhora, mas \alert{continua desbalanceada} (SMD $=0{,}30$): o PSM só iguala o que está no modelo.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Resultado: quando o PSM acerta}
-  \begin{columns}[T]
-    \begin{column}{0.62\textwidth}
-      \includegraphics[width=\textwidth]{03_resumo.png}
-    \end{column}
-    \begin{column}{0.38\textwidth}
-      \footnotesize
-      \begin{itemize}
-        \item Com a renda \emph{antes} do programa no modelo: \destaque{R\$ 297} (EP bootstrap = 8,8; IC 95\%: 280--315);
-        \item Sem ela, a motivação omitida contamina: \alert{R\$ 476};
-        \item Quando a motivação não influencia a adesão, o PSM volta a acertar: R\$ 310.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-  \fonte{Simulação nossa (script 03). Verdade = R\$ 300.}
-\end{frame}
-
-\begin{frame}{Pressupostos e críticas ao PSM}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Pressupostos}
-        \small
-        \begin{enumerate}
-          \item \textbf{Sem confundidores não observados}: fatores não medidos (ex.: autoestima, motivação) \emph{não} afetam a participação nem o resultado;
-          \item \textbf{Região comum grande}: há indivíduos semelhantes participando e não participando.
-        \end{enumerate}
-      \end{block}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Críticas}
-        \small
-        \begin{itemize}
-          \item King e Nielsen (2016): o PSM pode \alert{aumentar} o desbalanceamento, que cresce com o nº de variáveis;
-          \item Alternativa: \textbf{Coarsened Exact Matching} (CEM; Iacus, King e Porro, 2011/2012), que \emph{garante} um desbalanceamento máximo escolhido \emph{ex-ante};
-          \item Sempre: \ind{mostre o balanceamento}.
-        \end{itemize}
-      \end{block}
-    \end{column}
-  \end{columns}
-  \fonte{Batista e Domingos (2017), pp.~9--11.}
-\end{frame}
-
-\begin{frame}{PSM na avaliação de políticas: dois exemplos}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Trabajar (Argentina, 1997)}
-        \footnotesize
-        Jalan e Ravallion (2003) analisam o programa argentino durante a crise econômica de 1997 e examinam os \textbf{ganhos de renda} dos beneficiários. O PSM usa variáveis socioeconômicas, do domicílio, demográficas e de histórico educacional. Com os escores estimados, separam tratamento e controle e \alert{não encontram efeitos positivos} do programa.
-      \end{block}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Bolsa Família (Brasil)}
-        \footnotesize
-        MDS (2007): impacto sobre gasto de consumo, educação, trabalho infantil, antropometria, saúde e poder de barganha das mulheres. Dois grupos de comparação: elegíveis que recebem \emph{outros} programas e não elegíveis; os participantes tiveram \textbf{melhor desempenho}.
-      \end{block}
-    \end{column}
-  \end{columns}
-  \fonte{Batista e Domingos (2017), p.~10.}
+  \vspace{0.1cm}
+  \footnotesize O PSM só iguala o que está no modelo: sem a renda anterior, a motivação omitida contamina (R\$ 476).
 \end{frame}
 
 \begin{frame}[fragile]{Hora do R: \texttt{03\_pareamento\_psm.R}}
-  \begin{horaR}{scripts/03\_pareamento\_psm.R}
 \begin{lstlisting}
 # 1. Propensity score (regressao logistica)
 m <- glm(participa ~ escolaridade + idade + mulher + renda_antes,
@@ -187,20 +74,7 @@ for (k in seq_along(tratados)) {
   if (min(d) <= caliper) par_controle[k] <- controles[which.min(d)]
 }
 
-# 3. Efeito sobre os tratados (ATT) e balanceamento (SMD)
-mean(renda_tratados - renda_pares)                 # 297
+# 3. Efeito sobre os tratados (ATT)
+mean(renda_tratados - renda_pares)             # ~ 297
 \end{lstlisting}
-  \end{horaR}
-\end{frame}
-
-\begin{frame}{Atividade 3 \,$\cdot$\, Pareamento (10 min)}
-  \begin{atividadebox}{Arquivo: \texttt{atividades/atividade\_03\_pareamento.R}}
-    \begin{enumerate}
-      \item \textbf{Tarefa 1.} Varie o \emph{caliper} (0,01; 0,05; 0,2; 1) e observe o ATT e o nº de pareados;
-      \item \textbf{Tarefa 2.} Compare três especificações do propensity score: completa, sem renda antes, só renda antes;
-      \item \textbf{Tarefa 3.} Aumente a força da motivação (0, 0,9, 1,5): como evolui o erro do PSM sem a renda antes?
-    \end{enumerate}
-  \end{atividadebox}
-  \vspace{0.2cm}
-  \textbf{Para discutir:} que pressuposto do PSM a Tarefa 3 ilustra? Que variável ``tipo motivação'' existe nas políticas que vocês conhecem?
 \end{frame}

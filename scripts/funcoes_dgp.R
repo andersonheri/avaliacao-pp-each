@@ -105,7 +105,7 @@ gerar_painel <- function(efeito = 300, tendencia = 80, extra_tendencia_trat = 0,
 # =============================================================================
 # MUNDO 3 (script 05): Transferência de renda com corte de elegibilidade - RDD
 # -----------------------------------------------------------------------------
-# Programa fictício inspirado no PTCR da Figura 7 do artigo e em Buddelmeyer e
+# Programa fictício inspirado em programas de transferência condicionada (PTCR) e em Buddelmeyer e
 # Skoufias (2004). Elegível: renda per capita da família <= R$ 77.
 # Resultado: % de dias de aula frequentados pelas crianças da família.
 # EFEITO VERDADEIRO: +6 pontos percentuais.
