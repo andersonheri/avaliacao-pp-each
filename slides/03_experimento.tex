@@ -1,5 +1,5 @@
 % =============================================================================
-% EXPERIMENTO CONTROLADO (14:35 a 15:05)   [Script 02 | Exercício 1]
+% EXPERIMENTO CONTROLADO (14:25 a 14:50)   [Script 02 | Exercício 1]
 % =============================================================================
 \section[Experimento]{Experimento controlado}
 
@@ -22,6 +22,23 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Experimento: características e exemplos}
+  \carac{grupo de \textbf{controle sorteado}}
+        {sorteio bem executado; sem contaminação (\emph{spillovers}); atrito não seletivo}
+        {efeito médio (ATE); ITT se a adesão é imperfeita}
+        {desenho \textbf{antes} da política; amostra com poder estatístico}
+        {recursos escassos, pilotos, expansão em fases}
+  \vspace{0.15cm}
+  \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
+    \scriptsize
+    \begin{itemize}
+      \item \textbf{Quênia:} desparasitação em escolas, entrada sorteada por fases; mais frequência escolar (Miguel e Kremer, 2004).
+      \item \textbf{México:} Progresa, localidades sorteadas para entrar primeiro (Gertler, 2004; Schultz, 2004); Seguro Popular, gastos com saúde caíram 23\% (King et al., 2009).
+      \item \textbf{Hipotético (nosso Qualifica):} sorteio das vagas excedentes de um curso de qualificação municipal.
+    \end{itemize}
+  
+\end{frame}
+
 \begin{frame}{Por que funciona? Os grupos ficam equilibrados}
   \centering
   \includegraphics[height=4.4cm]{02_balanco.png}\par
@@ -34,62 +51,26 @@
   \footnotesize O sorteio acerta \emph{em média} (301); a autosseleção erra \alert{sempre para o mesmo lado} (587). Verdade: 300.
 \end{frame}
 
-\begin{frame}{Experimentos reais}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Desparasitação no Quênia}
-        \scriptsize
-        75 escolas, 3 grupos de 25 (1998 a 2001), \textbf{implementação em fases}: todos recebem, em ordem sorteada.\\[2pt]
-        Crianças tratadas: \ind{melhor saúde} e \ind{maior frequência escolar}.
-      \end{block}
-      {\tiny Miguel e Kremer (2004).}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Seguro Popular (México)}
-        \scriptsize
-        100 \emph{clusters} sorteados.\\[2pt]
-        Gastos com saúde \ind{caíram 23\%} no grupo de tratamento, mas \alert{sem efeito substantivo} no uso de serviços médicos.
-      \end{block}
-      {\tiny King et al.\ (2009).}
-    \end{column}
-  \end{columns}
-  \vspace{0.3cm}
-  \small Sortear pode parecer arbitrário ou antiético, mas com recursos escassos a \textbf{loteria} costuma ser a regra mais justa.
+\begin{frame}{Passo a passo: experimento (1 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{1}{Compare tratados e controles \textbf{antes} do programa (SMD)}{idade 0,05\newline mulher 0,01\newline escolaridade 0,01\newline renda antes $-0{,}02$}{Todos $|\text{SMD}|<0{,}10$: o sorteio equilibrou os grupos. \textbf{Siga.} Se não, revise o sorteio.}
+    \linha{2}{Estime o efeito: diferença de médias (\cod{t.test}) ou regressão}{efeito = 295,2\newline EP = 11,4\newline IC 95\%: 273 a 318}{Participantes ganham ${\approx}$ R\$ 295 a mais. O IC não inclui zero: efeito \textbf{significativo}.}
+    \ultimalinha{3}{Reestime com covariáveis (só para ganhar precisão)}{efeito = 302,1\newline EP = 3,4}{Mesma magnitude, EP três vezes menor. O viés já estava resolvido pelo sorteio.}
+  \end{tabular}}
+  \caixaconclusao{o Qualifica aumenta a renda em cerca de R\$ 300 (IC 273 a 318). Dados simulados do script 02.}
 \end{frame}
 
-\begin{frame}{Problemas no campo e poder estatístico}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \footnotesize
-      \begin{itemize}
-        \item \textbf{\emph{Compliance}}: sorteados não aderem. Na simulação (70\% de adesão): ITT = R\$ 193 (efeito da \emph{oferta}).
-        \item \textbf{Atrito}: se saem \emph{os que não melhoraram}, o viés volta (R\$ 345).
-        \item \textbf{\emph{Spillovers}}: o tratamento ``transborda'' para o controle.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \includegraphics[width=\textwidth]{02_poder.png}\par
-      \tiny Poder: precisamos de 34 pessoas por grupo para detectar R\$ 300, mas 291 para R\$ 100.
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Hora do R: \texttt{02\_experimento\_rct.R}}
-\begin{lstlisting}
-dados <- gerar_populacao(n = 5000, efeito = 300)
-
-# 1. Sorteio: metade tratamento, metade controle
-dados$tratamento <- sample(rep(0:1, length.out = nrow(dados)))
-dados$renda_exp <- ifelse(dados$tratamento == 1,
-                          dados$renda_depois_Y1, dados$renda_depois_Y0)
-
-# 2. Impacto: diferenca de medias e regressao
-t.test(renda_exp ~ tratamento, data = dados)
-lm(renda_exp ~ tratamento, data = dados)       # ~ 295
-
-# 3. Pessoas por grupo para detectar R$ 300 (poder 80%)?
-power.t.test(delta = 300, sd = 430, power = 0.80)
-\end{lstlisting}
+\begin{frame}{Passo a passo: experimento (2 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{4}{Cheque a \textbf{adesão} (\emph{compliance})}{adesão de 70\%\newline ITT = 193\newline efeito sobre aderentes = 293}{Relate o \textbf{ITT} (efeito da \emph{oferta}) e o efeito sobre quem aderiu.}
+    \linha{5}{Cheque o \textbf{atrito}}{3,6\% saíram\newline se saem só os piores: 345}{Compare quem saiu em cada grupo. Atrito seletivo faz o viés voltar.}
+    \ultimalinha{6}{Confira o \textbf{poder} (\cod{power.t.test})}{R\$ 300: 34 por grupo\newline R\$ 100: 291 por grupo}{Efeitos pequenos exigem amostras grandes. Calcule \textbf{antes} do experimento.}
+  \end{tabular}}
+  \caixaconclusao{adesão incompleta e atrito mudam \emph{o que} o número significa.}
 \end{frame}
 
 \begin{frame}{Exercício 1: viés de seleção e sorteio (12 min)}
@@ -101,5 +82,5 @@ power.t.test(delta = 300, sd = 430, power = 0.80)
     \end{enumerate}
   \end{exerciciobox}
   \vspace{0.2cm}
-  \textbf{Discutam:} por que o sorteio recupera ~R\$ 300 mesmo quando a motivação pesa muito na inscrição?
+  \textbf{Discutam:} por que o sorteio recupera ${\approx}$ R\$ 300 mesmo quando a motivação pesa muito na inscrição?
 \end{frame}

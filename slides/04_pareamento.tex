@@ -1,5 +1,5 @@
 % =============================================================================
-% PAREAMENTO / PSM (15:05 a 15:25)   [Script 03]
+% PAREAMENTO / PSM (14:50 a 15:10)   [Script 03]
 % =============================================================================
 \section[Pareamento]{Pareamento (PSM)}
 
@@ -24,57 +24,60 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{A maldição da dimensionalidade}
+\begin{frame}{A maldição da dimensionalidade e o escore de propensão}
   \centering
-  \includegraphics[height=4.1cm]{03_maldicao.png}\par
-  \footnotesize Pareamento exato: cada nova variável derruba a chance de achar um ``gêmeo''. \textbf{Solução}: resumir tudo em um número, o \ind{propensity score} (probabilidade de participar).
+  \includegraphics[height=3.9cm]{03_maldicao.png}\par
+  \footnotesize Pareamento exato: cada nova variável derruba a chance de achar um ``gêmeo''. \textbf{Solução}: resumir tudo em um número, o \ind{propensity score} (probabilidade de participar), e parear por ele.
 \end{frame}
 
-\begin{frame}{Propensity Score Matching em 3 passos}
-  \centering
-  \begin{tikzpicture}[scale=0.86,every node/.style={transform shape}]
-    \node[cxi,text width=3.1cm] (p1) at (0,0) {\textbf{1. Estimar o escore}\\{\scriptsize Regressão logística: $P(\text{participar}\mid\text{características})$}};
-    \node[cxi,text width=3.1cm] (p2) at (4.2,0) {\textbf{2. Checar a região comum}\\{\scriptsize Há participantes e não participantes com escores parecidos?}};
-    \node[cxi,text width=3.1cm] (p3) at (8.4,0) {\textbf{3. Parear e comparar}\\{\scriptsize Vizinho mais próximo (com \emph{caliper})}};
-    \draw[seta] (p1) -- (p2); \draw[seta] (p2) -- (p3);
-  \end{tikzpicture}
-  \vspace{0.4cm}
-  \begin{itemize}
-    \item Depois de parear, é obrigatório \destaque{checar o balanceamento} das covariáveis.
-    \item Pressuposto central: \ind{sem confundidores não observados}.
-  \end{itemize}
+\begin{frame}{Pareamento: características e exemplos}
+  \carac{não participantes \textbf{parecidos} (mesmo escore de propensão)}
+        {\textbf{sem confundidores não observados}; região comum (há semelhantes nos dois grupos)}
+        {efeito sobre os tratados (ATT)}
+        {muitas covariáveis \textbf{anteriores} ao programa (idealmente o resultado antes)}
+        {política já implementada, sem sorteio, corte ou painel}
+  \vspace{0.15cm}
+  \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
+    \scriptsize
+    \begin{itemize}
+      \item \textbf{Argentina:} programa de emprego Trabajar durante a crise de 1997 (Jalan e Ravallion, 2003).
+      \item \textbf{Brasil:} Bolsa Família, efeitos sobre consumo, educação e saúde (MDS, 2007).
+      \item \textbf{EUA:} programa de treinamento profissional reanalisado com PSM (LaLonde, 1986; Dehejia e Wahba, 1999).
+      \item \textbf{Hipotético (nosso Qualifica):} programa já implementado, sem sorteio.
+    \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Passo a passo: pareamento (1 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{1}{Compare os grupos \textbf{antes}: diferença simples e balanço (SMD)}{diferença = 587\newline SMD: escolaridade 0,50\newline renda antes 0,80\newline idade $-0{,}17$}{Grupos muito diferentes: a comparação simples \textbf{não vale}. É preciso ajustar.}
+    \linha{2}{Estime o escore (logit) e olhe a \textbf{região comum}}{região comum:\newline 0,05 a 0,90}{Ampla sobreposição: há controles para quase todos. Se fosse estreita, o efeito valeria só para poucos.}
+    \ultimalinha{3}{Pareie: vizinho mais próximo, \emph{caliper} de 0,2 dp}{1.630 de 1.631 tratados pareados}{Quase todos têm par. Muitos sem par $\Rightarrow$ o efeito vale só para os pareados.}
+  \end{tabular}}
+\end{frame}
+
+\begin{frame}{Passo a passo: pareamento (2 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{4}{\textbf{Balanço depois} do pareamento}{SMD: escolaridade $-0{,}03$\newline idade 0,01; renda antes 0,00\newline motivação 0,30}{Observáveis equilibradas ($<$ 0,10). A \textbf{motivação} (não observada) ainda difere.}
+    \linha{5}{Estime o \textbf{ATT} e o intervalo (\emph{bootstrap})}{ATT = 297\newline EP = 8,8\newline IC 95\%: 280 a 315}{Participantes ganham ${\approx}$ R\$ 297 a mais por causa do programa (verdade: 300).}
+    \ultimalinha{6}{\textbf{Robustez}: refaça sem a renda antes}{ATT = 476}{Muda muito: depende de uma covariável-chave. Relate e discuta o que pode estar omitido.}
+  \end{tabular}}
+  \caixaconclusao{o PSM só iguala o que está no modelo.}
 \end{frame}
 
 \begin{frame}{Região comum e resultado}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \includegraphics[width=\textwidth]{03_regiao_comum.png}\par
+      \includegraphics[height=3.2cm]{03_regiao_comum.png}\par
       {\tiny Faixa verde: onde há controles comparáveis.}
     \end{column}
     \begin{column}{0.52\textwidth}
-      \includegraphics[width=\textwidth]{03_resumo.png}\par
+      \includegraphics[height=3.2cm]{03_resumo.png}\par
       {\tiny Linha verde: verdade (R\$ 300).}
     \end{column}
   \end{columns}
-  \vspace{0.1cm}
-  \footnotesize O PSM só iguala o que está no modelo: sem a renda anterior, a motivação omitida contamina (R\$ 476).
-\end{frame}
-
-\begin{frame}[fragile]{Hora do R: \texttt{03\_pareamento\_psm.R}}
-\begin{lstlisting}
-# 1. Propensity score (regressao logistica)
-m <- glm(participa ~ escolaridade + idade + mulher + renda_antes,
-         data = dados, family = binomial)
-dados$lps <- qlogis(predict(m, type = "response"))
-
-# 2. Para cada tratado, o controle mais proximo (com caliper)
-caliper <- 0.2 * sd(dados$lps)
-for (k in seq_along(tratados)) {
-  d <- abs(dados$lps[controles] - dados$lps[tratados[k]])
-  if (min(d) <= caliper) par_controle[k] <- controles[which.min(d)]
-}
-
-# 3. Efeito sobre os tratados (ATT)
-mean(renda_tratados - renda_pares)             # ~ 297
-\end{lstlisting}
 \end{frame}

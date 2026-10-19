@@ -1,5 +1,5 @@
 % =============================================================================
-% REGRESSÃO DESCONTÍNUA (16:25 a 16:45)   [Script 05]
+% REGRESSÃO DESCONTÍNUA (16:05 a 16:25)   [Script 05]
 % =============================================================================
 \section[RDD]{Regressão descontínua}
 
@@ -10,8 +10,24 @@
     \item Perto do corte, as famílias são muito parecidas: é \destaque{como se houvesse um sorteio};
     \item O impacto é o tamanho do \ind{salto} no corte.
   \end{itemize}
-  \vspace{0.2cm}
-  \small Cuidados: o efeito é \textbf{local} (só perto do corte) e exige \textbf{muitas observações} ali.
+\end{frame}
+
+\begin{frame}{Regressão descontínua: características e exemplos}
+  \carac{famílias \textbf{logo do outro lado do corte}}
+        {\textbf{continuidade}: sem manipulação do corte e sem outros saltos no mesmo ponto}
+        {efeito \textbf{local}, para quem está no corte}
+        {índice contínuo, corte claro e \textbf{muitas observações} perto dele}
+        {programas com elegibilidade por escore (renda, nota, idade, população)}
+  \vspace{0.15cm}
+  \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
+    \scriptsize
+    \begin{itemize}
+      \item \textbf{México:} elegibilidade do Progresa e frequência escolar (Buddelmeyer e Skoufias, 2004).
+      \item \textbf{Israel:} turmas divididas quando passam de 40 alunos (regra de Maimônides) e desempenho (Angrist e Lavy, 1999).
+      \item \textbf{Eleições:} candidatos eleitos por margem mínima (Lee, 2008).
+      \item \textbf{Hipotético:} transferência de renda com corte de R\$ 77 (script 05).
+    \end{itemize}
+  
 \end{frame}
 
 \begin{frame}{A descontinuidade no corte}
@@ -20,61 +36,29 @@
   \footnotesize Pontos grandes: médias por faixa de R\$ 4. Elegíveis (laranja) têm frequência escolar maior logo abaixo do corte.
 \end{frame}
 
-\begin{frame}{Estimando: regressão linear local}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \includegraphics[width=\textwidth]{05_rdd_local.png}\par
-      {\tiny Janela de $\pm$ R\$ 15 em torno do corte.}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      \scriptsize
-      \renewcommand{\arraystretch}{1.2}
-      \begin{tabular}{@{}lr@{}}
-        \toprule
-        \textbf{Método} & \textbf{Efeito (p.p.)} \\ \midrule
-        Comparação simples & 1,8 \\
-        Reta global & 4,7 \\
-        Quadrática global & 6,1 \\
-        \rowcolor{verde!15} \textbf{Local, $\pm$15} & \textbf{6,2} \\ \bottomrule
-      \end{tabular}\par
-      \vspace{0.2cm}
-      Verdade: \destaque{6 p.p.}\\
-      A \textbf{janela} é um dilema entre viés (larga) e variância (estreita): mostre que o resultado não depende dela.
-    \end{column}
-  \end{columns}
+\begin{frame}{Passo a passo: regressão descontínua (1 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{1}{\textbf{Gráfico}: médias por faixa da variável de corte}{perto do corte (${\pm}$ R\$ 5):\newline elegíveis 74,4\%\newline não elegíveis 68,2\%}{Há \textbf{salto} visível em R\$ 77: vale estimar. Sem salto, não há o que estimar.}
+    \linha{2}{Estime com \textbf{regressão local} (janela ${\pm}$ R\$ 15)}{efeito = 6,2 p.p.\newline EP = 0,9\newline 1.271 famílias}{Quem está no corte e recebe frequenta ${\approx}$ 6 p.p. mais (verdade: 6).}
+    \ultimalinha{3}{\textbf{Varie a janela}}{${\pm}$ 5: 6,6 (EP 1,6)\newline ${\pm}$ 15: 6,2 (EP 0,9)\newline ${\pm}$ 40: 5,6 (EP 0,6)}{Estável: o resultado \textbf{não depende} da janela. Se mudasse muito, desconfie.}
+  \end{tabular}}
 \end{frame}
 
-\begin{frame}{Testes de validade}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \footnotesize
-      \begin{enumerate}
-        \item \textbf{Covariáveis} pré-tratamento não devem ``pular'' no corte;
-        \item \textbf{Placebo}: cortes falsos não devem gerar salto;
-        \item \textbf{Manipulação}: as famílias conseguem ajustar a renda para entrar? Procure acúmulo logo abaixo do corte.
-      \end{enumerate}
-    \end{column}
-    \begin{column}{0.52\textwidth}
-      \includegraphics[width=\textwidth]{05_rdd_manipulacao.png}
-    \end{column}
-  \end{columns}
-  \vspace{0.2cm}
-  \scriptsize Exemplo real: Progresa, no México (Buddelmeyer e Skoufias, 2004).
+\begin{frame}{Passo a passo: regressão descontínua (2 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{4}{Teste uma \textbf{covariável} pré-programa (idade da mãe)}{salto = 0,07\newline EP = 0,77}{Sem salto: famílias dos dois lados são \textbf{comparáveis}.}
+    \linha{5}{\textbf{Placebo}: cortes falsos (R\$ 55, 65 e 105)}{1,0\newline $-0{,}1$\newline $-1{,}1$}{Perto de zero: o salto só aparece no corte verdadeiro.}
+    \ultimalinha{6}{Teste de \textbf{manipulação}: histograma da renda}{sem acúmulo logo abaixo de R\$ 77}{Acúmulo = famílias ajustaram a renda para entrar: RDD \textbf{inválido}.}
+  \end{tabular}}
+  \caixaconclusao{efeito local de ${\approx}$ +6 p.p. de frequência para famílias na linha de corte; não extrapolar para quem ganha R\$ 30.}
 \end{frame}
 
-\begin{frame}[fragile]{Hora do R: \texttt{05\_regressao\_descontinua.R}}
-\begin{lstlisting}
-d <- gerar_rdd()           # corte em R$ 77; x = renda - 77
-
-# Regressao local: janela de +/- R$ 15, retas diferentes por lado
-janela <- d[abs(d$x) <= 15, ]
-m <- lm(freq ~ elegivel * x, data = janela)
-coef(m)["elegivel"]                     # salto no corte: 6,2 p.p.
-
-# Sensibilidade a janela
-sapply(c(5, 15, 40), function(h) rdd_local(d, h)$efeito)
-
-# Teste de manipulacao: histograma da renda em torno do corte
-hist(d$renda, breaks = 60); abline(v = 77)
-\end{lstlisting}
+\begin{frame}{Teste de manipulação}
+  \centering
+  \includegraphics[height=3.7cm]{05_rdd_manipulacao.png}\par
+  \footnotesize À esquerda, famílias deslocaram a renda declarada para logo abaixo de R\$ 77: o RDD perde a validade.
 \end{frame}

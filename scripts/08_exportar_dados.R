@@ -1,5 +1,5 @@
 # =============================================================================
-# 06_exportar_dados.R  |  (OPCIONAL) Exporta os dados simulados para CSV
+# 08_exportar_dados.R  |  (OPCIONAL) Exporta os dados simulados para CSV
 # -----------------------------------------------------------------------------
 # Para quem quiser explorar os dados fora do R (Excel, Stata, Python, Jamovi...).
 # Os arquivos são gravados na pasta dados/. Colunas marcadas como "só existem

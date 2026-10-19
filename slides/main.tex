@@ -10,17 +10,21 @@
 \subtitle{Minicurso do Seminário Discente 2026}
 \author[Anderson Henrique]{Anderson Henrique\\[3pt]
   {\footnotesize Cientista político, doutor pela UFPE (2025)}\\
-  {\footnotesize Pós-doutorando no CEM/USP (FAPESP/CEPid)}\\
+  {\footnotesize Pós-doutorando no CEM/USP/CEPix}\\
   {\footnotesize Pesquisador do INCT-QualiGov e pesquisador convidado no IPEA}\\[2pt]
   {\footnotesize andersonheri@gmail.com}}
-\institute[PPGGP EACH/USP]{Programa de Pós-Graduação em Gestão de Políticas Públicas\\EACH/USP}
+\institute[PPGGP EACH/USP]{PPGGP, EACH/USP}
 \date[20/10/2026]{20 de outubro de 2026}
 
 \begin{document}
 
+{\logo{}
 \begin{frame}
   \titlepage
-\end{frame}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south east] at ([xshift=-0.5cm,yshift=1.5cm]current page.south east) {\includegraphics[height=1.7cm]{logo_cem.png}};
+  \end{tikzpicture}
+\end{frame}}
 
 \input{01_abertura}
 \input{02_contrafactual}
@@ -28,8 +32,10 @@
 \input{04_pareamento}
 \input{05_did}
 \input{06_rdd}
-\input{07_outras_tecnicas}
-\input{08_qualitativo}
-\input{09_encerramento}
+\input{07_iv}
+\input{08_sintetico}
+\input{09_escolha}
+\input{10_qualitativo}
+\input{11_encerramento}
 
 \end{document}

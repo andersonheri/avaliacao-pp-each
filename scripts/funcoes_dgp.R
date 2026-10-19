@@ -134,3 +134,75 @@ gerar_rdd <- function(n = 4000, efeito = 6, corte = 77, semente = 5, manipulacao
 
   data.frame(renda, x, elegivel, recebe, freq, idade_mae)
 }
+
+
+# =============================================================================
+# MUNDO 4 (script 06): VARIÁVEIS INSTRUMENTAIS
+# -----------------------------------------------------------------------------
+# O Qualifica tem POUCAS VAGAS e o município faz um SORTEIO das vagas (a OFERTA).
+# Mas ir ou não ao curso continua sendo escolha da pessoa, e quem aceita tende a
+# ser mais MOTIVADO (não observado). Então:
+#   Z = oferta da vaga (sorteio)  ->  instrumento
+#   D = participou do curso       ->  tratamento (endógeno: depende da motivação)
+#   Y = renda depois              ->  resultado
+# O sorteio empurra a participação (relevância) e, como é aleatório, não tem
+# outro caminho até a renda (exclusão), exceto se 'efeito_direto_oferta' > 0
+# (por exemplo, a oferta de vaga já anima a pessoa a procurar emprego).
+# EFEITO VERDADEIRO da participação: + R$ 300 (igual para todos).
+# =============================================================================
+gerar_iv <- function(n = 5000, efeito = 300,
+                     forca_instrumento = 1.8,   # quanto a oferta aumenta a chance de participar
+                     efeito_direto_oferta = 0,  # > 0 VIOLA a exclusão
+                     semente = 2026) {
+  set.seed(semente)
+  escolaridade <- pmin(pmax(round(rnorm(n, 10, 3)), 4), 18)
+  motivacao    <- rnorm(n)                          # não observada
+  oferta       <- rbinom(n, 1, 0.5)                 # SORTEIO das vagas (instrumento)
+  # participar depende da oferta, da motivação e da escolaridade (+ ruído logístico)
+  d_latente    <- -0.6 + forca_instrumento * oferta + 0.9 * motivacao +
+                  0.15 * (escolaridade - 10) + rlogis(n)
+  participa    <- as.integer(d_latente > 0)
+  renda        <- 1800 + 90 * (escolaridade - 10) + 220 * motivacao +
+                  efeito * participa + efeito_direto_oferta * oferta + rnorm(n, 0, 300)
+  data.frame(id = seq_len(n), escolaridade, motivacao, oferta, participa, renda)
+}
+
+
+# =============================================================================
+# MUNDO 5 (script 07): CONTROLE SINTÉTICO
+# -----------------------------------------------------------------------------
+# UM estado (o "Estado T") adota, em 2010, um programa estadual de prevenção à
+# violência (FICTÍCIO). Outros 19 estados não adotam. Resultado: taxa de
+# homicídios por 100 mil habitantes, 1995-2019 (15 anos antes e 10 depois).
+# EFEITO VERDADEIRO: -5 homicídios por 100 mil a partir de 2010.
+# A trajetória de cada estado = nível próprio + tendência comum + fatores que
+# cada estado "carrega" de forma diferente + ruído. O Estado T tem uma mistura
+# dos fatores de alguns doadores: por isso um "sintético" consegue imitá-lo.
+# =============================================================================
+gerar_sc <- function(n_doadores = 19, efeito = -5, ano_politica = 2010,
+                     anos = 1995:2019, semente = 11) {
+  set.seed(semente)
+  Tn <- length(anos)
+  t  <- seq_len(Tn)
+  f1 <- sin(t / 3)                         # fator 1: ciclo (ex.: economia, mercado de drogas)
+  f2 <- (t - mean(t)) / 5                  # fator 2: tendência de longo prazo
+  tendencia_comum <- 26 - 0.15 * t
+  mu_doa <- cbind(rnorm(n_doadores), rnorm(n_doadores))      # cargas dos fatores
+  alfa   <- rnorm(n_doadores, 0, 4)
+  # Estado T: cargas = mistura de 3 doadores (peso 0.5, 0.3, 0.2) e nível idem
+  mu_T   <- 0.5 * mu_doa[2, ] + 0.3 * mu_doa[7, ] + 0.2 * mu_doa[13, ]
+  alfa_T <- 0.5 * alfa[2] + 0.3 * alfa[7] + 0.2 * alfa[13]
+  y_doa  <- sapply(seq_len(n_doadores), function(i)
+              alfa[i] + tendencia_comum + 2 * mu_doa[i, 1] * f1 + 2.5 * mu_doa[i, 2] * f2 +
+              rnorm(Tn, 0, 0.7))
+  y_T    <- alfa_T + tendencia_comum + 2 * mu_T[1] * f1 + 2.5 * mu_T[2] * f2 + rnorm(Tn, 0, 0.5)
+  y_T[anos >= ano_politica] <- y_T[anos >= ano_politica] + efeito
+  nomes <- c("Estado T", paste0("Doador ", seq_len(n_doadores)))
+  dados <- data.frame(
+    estado = rep(nomes, each = Tn),
+    ano    = rep(anos, times = n_doadores + 1),
+    taxa   = c(y_T, as.vector(y_doa))
+  )
+  dados$tratado <- as.integer(dados$estado == "Estado T")
+  dados
+}

@@ -1,5 +1,5 @@
 % =============================================================================
-% O PROBLEMA DO CONTRAFACTUAL (14:15 a 14:35)   [Script 01]
+% O PROBLEMA DO CONTRAFACTUAL (14:10 a 14:25)   [Script 01]
 % =============================================================================
 \section[Contrafactual]{O problema do contrafactual}
 
@@ -89,15 +89,16 @@
 
 \begin{frame}{Mapa das técnicas}
   \centering
-  \begin{tikzpicture}[scale=0.88,every node/.style={transform shape}]
+  \begin{tikzpicture}[scale=0.8,every node/.style={transform shape}]
     \node[cxl,minimum width=4.2cm,minimum height=0.8cm,font=\small\bfseries] (top) at (0,0) {Identificar o impacto causal};
-    \node[cxi,minimum width=3cm] (exp) at (-3,-1.7) {\textbf{Experimento}\\sorteio entre elegíveis};
-    \node[cx,minimum width=3.4cm] (qe) at (2.4,-1.7) {\textbf{Quase-experimentos}\\(dados observacionais)};
+    \node[cxi,minimum width=2.6cm] (exp) at (-4.3,-1.7) {\textbf{Experimento}\\sorteio entre\\elegíveis};
+    \node[cx,minimum width=3.6cm] (qe) at (1.8,-1.7) {\textbf{Quase-experimentos}\\(dados observacionais)};
     \draw[seta] (top) -- (exp); \draw[seta] (top) -- (qe);
-    \node[cxi,minimum width=2.4cm] (psm) at (-1.6,-3.9) {\textbf{Pareamento}\\``gêmeos'' observados};
-    \node[cxi,minimum width=2.4cm] (did) at (1.3,-3.9) {\textbf{Dif.-em-dif.}\\tendência do\\controle};
-    \node[cxi,minimum width=2.4cm] (rdd) at (4.2,-3.9) {\textbf{Reg. descontínua}\\corte de\\elegibilidade};
-    \draw[seta] (qe) -- (psm); \draw[seta] (qe) -- (did); \draw[seta] (qe) -- (rdd);
+    \node[cxi,minimum width=2.1cm] (psm) at (-2.9,-4.1) {\textbf{Pareamento}\\``gêmeos''\\observados};
+    \node[cxi,minimum width=2.1cm] (did) at (-0.4,-4.1) {\textbf{Dif.-em-dif.}\\tendência do\\controle};
+    \node[cxi,minimum width=2.1cm] (rdd) at (2.1,-4.1) {\textbf{Reg. descont.}\\corte de\\elegibilidade};
+    \node[cxi,minimum width=2.1cm] (iv) at (4.6,-4.1) {\textbf{Var. instr.}\\algo que\\``empurra''};
+    \node[cxi,minimum width=2.1cm] (sc) at (7.1,-4.1) {\textbf{Controle sint.}\\média pond.\\de controles};
+    \foreach \x in {psm,did,rdd,iv,sc} { \draw[seta] (qe) -- (\x); }
   \end{tikzpicture}
-  \par\vspace{0.1cm}\footnotesize Há ainda outras: variáveis instrumentais e controle sintético (mais adiante).
 \end{frame}

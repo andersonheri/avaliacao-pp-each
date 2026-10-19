@@ -1,24 +1,26 @@
 % =============================================================================
-% ABERTURA (14:00 a 14:15)
+% ABERTURA (14:00 a 14:10)
 % =============================================================================
 \section[Abertura]{Abertura}
 
 \begin{frame}{Programa do dia}
-  \footnotesize
-  \renewcommand{\arraystretch}{1.15}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.1}
   \begin{tabularx}{\textwidth}{@{}lX@{}}
     \toprule
     \textbf{Horário} & \textbf{Bloco} \\ \midrule
-    14:00 a 14:15 & Abertura: por que avaliar? \\
-    14:15 a 14:35 & O problema do contrafactual \\
-    14:35 a 15:05 & Experimento controlado \hfill \destaque{Exercício 1} \\
-    15:05 a 15:25 & Pareamento (PSM) \\
-    15:25 a 15:55 & Diferença-em-diferenças \hfill \destaque{Exercício 2} \\
+    14:00 a 14:10 & Abertura: por que avaliar? \\
+    14:10 a 14:25 & O problema do contrafactual \\
+    14:25 a 14:50 & Experimento controlado \hfill \destaque{Exercício 1} \\
+    14:50 a 15:10 & Pareamento (PSM) \\
+    15:10 a 15:35 & Diferença-em-diferenças \hfill \destaque{Exercício 2} \\
     \rowcolor{laranjaclaro}
-    15:55 a 16:25 & \textbf{Intervalo} \\
-    16:25 a 16:45 & Regressão descontínua \\
-    16:45 a 16:55 & Outras técnicas e como escolher \\
-    16:55 a 17:50 & Avaliação qualitativa e métodos mistos \hfill \destaque{Exercício 3} \\
+    15:35 a 16:05 & \textbf{Intervalo} \\
+    16:05 a 16:25 & Regressão descontínua \\
+    16:25 a 16:37 & Variáveis instrumentais \\
+    16:37 a 16:49 & Controle sintético \\
+    16:49 a 16:55 & Como escolher a técnica \\
+    16:55 a 17:50 & Avaliação qualitativa e métodos mistos \\
     17:50 a 18:00 & Encerramento \\ \bottomrule
   \end{tabularx}
 \end{frame}
@@ -26,13 +28,13 @@
 \begin{frame}{O que vamos fazer}
   \begin{itemize}
     \item Entender por que \destaque{comparar} participantes e não participantes (ou antes e depois) \destaque{engana};
-    \item Conhecer as principais técnicas quase-experimentais e o que cada uma assume;
+    \item Conhecer as técnicas de avaliação de impacto: \textbf{características}, \textbf{exemplos em políticas públicas} e um \ind{passo a passo} de como fazer e interpretar;
     \item \ind{Simular em R}: sabemos a \emph{verdade} do programa e testamos se a técnica a recupera;
     \item Ver o que a avaliação \ind{qualitativa} e os \ind{métodos mistos} acrescentam aos números.
   \end{itemize}
-  \vspace{0.3cm}
+  \vspace{0.2cm}
   \begin{block}{Como funciona}
-    \small Aula expositiva + scripts em R comentados (demonstração) + 3 exercícios curtos.
+    \small Aula expositiva + scripts em R comentados (demonstração) + 2 exercícios curtos.
   \end{block}
 \end{frame}
 

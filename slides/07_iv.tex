@@ -1,0 +1,79 @@
+% =============================================================================
+% VARIÁVEIS INSTRUMENTAIS (16:25 a 16:37)   [Script 06]
+% =============================================================================
+\section[IV]{Variáveis instrumentais}
+
+\begin{frame}{A ideia: um empurrão que não passa pela motivação}
+  \centering
+  \begin{tikzpicture}[scale=0.82,every node/.style={transform shape}]
+    \node[cxi,minimum width=2.4cm] (z) at (0,0) {\textbf{Instrumento $Z$}\\sorteio da vaga};
+    \node[cx,minimum width=2.4cm] (d) at (4,0) {\textbf{Participa $D$}\\fez o curso};
+    \node[cx,minimum width=2.4cm] (y) at (8,0) {\textbf{Resultado $Y$}\\renda};
+    \node[cxl,minimum width=2.8cm] (u) at (6,2.0) {\textbf{Motivação $U$}\\não observada};
+    \draw[seta] (z) -- node[above,font=\scriptsize]{1) empurra} (d);
+    \draw[seta] (d) -- node[above,font=\scriptsize]{efeito?} (y);
+    \draw[setal] (u) -- (d); \draw[setal] (u) -- (y);
+    \draw[seta,dashed,red] (z) to[bend right=35] node[below,font=\scriptsize]{2) sem caminho direto} (y);
+  \end{tikzpicture}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item Participar é escolha, e quem escolhe é mais motivado (\alert{endogeneidade});
+    \item O \textbf{sorteio de vagas} muda quem participa sem depender da motivação. O IV usa \emph{só essa parte} da participação.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Variáveis instrumentais: características e exemplos}
+  \carac{variação na participação \textbf{induzida pelo instrumento}}
+        {\textbf{relevância} (move a participação); \textbf{exogeneidade} (como aleatório); \textbf{exclusão} (só afeta $Y$ via $D$); monotonicidade}
+        {efeito local para os \textbf{\emph{compliers}} (LATE)}
+        {um instrumento válido e forte (primeiro estágio com $F>10$)}
+        {adesão imperfeita; participação endógena com sorteio, regra ou distância}
+  \vspace{0.15cm}
+  \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
+    \scriptsize
+    \begin{itemize}
+      \item \textbf{EUA:} sorteio para se inscrever no Medicaid em Oregon, para medir o efeito do seguro-saúde (Finkelstein et al., 2012).
+      \item \textbf{Colômbia:} sorteio de vouchers escolares, para o efeito de usar o voucher (Angrist et al., 2002).
+      \item \textbf{EUA:} loteria do alistamento militar e renda de veteranos (Angrist, 1990).
+      \item \textbf{Hipotético:} sorteio de vagas do Qualifica (script 06).
+    \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Passo a passo: variáveis instrumentais (1 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{1}{Estime \textbf{sem} instrumento (ingênua e com controles)}{ingênua = 525\newline com escolaridade = 448}{Muito acima de 300: a motivação não observada contamina. Precisamos do instrumento.}
+    \linha{2}{O instrumento é \textbf{como aleatório}? Balanço por oferta}{SMD escolaridade $-0{,}00$\newline SMD motivação 0,01}{Grupos com e sem oferta iguais: o sorteio funcionou. Cheque sempre.}
+    \ultimalinha{3}{\textbf{Primeiro estágio}: a oferta muda a participação?}{sem oferta: 38\%\newline com oferta: 75\%\newline efeito = 0,36; $F=767$}{Instrumento \textbf{forte} ($F>10$). Se $F$ for baixo, \textbf{pare}: o IV não serve.}
+  \end{tabular}}
+\end{frame}
+
+\begin{frame}{Passo a passo: variáveis instrumentais (2 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{4}{\textbf{Forma reduzida}: a oferta muda a renda? (ITT)}{efeito da oferta = 107,5}{Quem recebe a oferta ganha R\$ 107 a mais. É \textbf{diluído}: nem todos participam.}
+    \linha{5}{\textbf{IV} = forma reduzida / primeiro estágio}{107,5 / 0,362 = 297\newline IC 95\%: 229 a 366}{Participar aumenta a renda em ${\approx}$ R\$ 297 (verdade: 300). A ingênua dava 525.}
+    \ultimalinha{6}{Interprete: o efeito vale para \textbf{quem}?}{sempre participam: 38\%\newline \emph{compliers}: 36\%\newline nunca: 25\%}{Efeito para quem participa \textbf{só se for sorteado} (LATE). Não é, necessariamente, o de todos.}
+  \end{tabular}}
+  \caixaconclusao{é a mesma lógica do ITT e da adesão no experimento (script 02), agora usada para corrigir a seleção.}
+\end{frame}
+
+\begin{frame}{Quando o IV falha}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \includegraphics[width=\textwidth]{06_iv_resumo.png}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \scriptsize
+      \begin{itemize}
+        \item \textbf{Instrumento fraco} (primeiro estágio 0,02; $F=1{,}8$): IV de 245, mas IC de $-3.665$ a 2.468. Inútil.
+        \item \textbf{Exclusão violada} (a oferta anima a procurar emprego, +R\$ 100 direto): IV = 574. Viés = efeito direto / primeiro estágio.
+      \end{itemize}
+      \vspace{0.1cm}
+      \tiny A exclusão \textbf{não se testa}: defende-se com argumento e conhecimento da política.
+    \end{column}
+  \end{columns}
+\end{frame}

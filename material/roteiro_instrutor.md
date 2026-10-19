@@ -1,103 +1,112 @@
 # Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula e exercícios + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 66 páginas).
-**Ritmo:** as técnicas quase-experimentais são só apresentadas (a profundidade fica nas leituras). Se o tempo apertar, corte os slides de exemplos e deixe mais tempo para o bloco qualitativo.
+**Total:** 240 min = 210 min de aula e exercícios + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 78 páginas).
+**Formato de cada técnica:** ideia, *características e exemplos em políticas públicas*, *passo a passo* (2 slides: o que fazer, output, como ler) e, quando houver, exercício. No passo a passo, leia a tabela **da esquerda para a direita**: "o que eu faço, o que aparece, o que concluo".
+**Ritmo:** se atrasar, pule "Região comum e resultado" (PSM) e "Teste de manipulação" (RDD), e use os passo a passo como síntese.
 
 ## Antes de começar (13h30 às 14h00)
 
-- [ ] Sala virtual aberta, chat visível, salas simultâneas habilitadas (Exercício 3).
+- [ ] Sala virtual aberta, chat visível, salas simultâneas habilitadas (opcional na plenária qualitativa).
 - [ ] RStudio com `avaliacao-pp.Rproj` aberto; alternar entre slides e RStudio.
 - [ ] Rodar uma vez `Rscript scripts/99_gerar_todas_figuras.R` para garantir pacotes e figuras.
 - [ ] Enquete do slide "Para começar" pronta.
 - [ ] Avisar que `gabaritos/` está no repositório e deve ser aberta só após cada exercício.
 
-## Abertura (14:00 a 14:15, 15 min)
+## Abertura (14:00 a 14:10, 10 min)
 
 | Min | O que fazer |
 |---|---|
-| 0 a 3 | Boas-vindas, programa, o que vamos fazer |
-| 3 a 6 | **Enquete**: "o programa aumentou a renda em R$ 587?" (guardar respostas) |
-| 6 a 15 | Ciclo de políticas; tipos de avaliação (processo, resultados, impacto); cadeia de resultados |
+| 0 a 2 | Boas-vindas, programa, o que vamos fazer |
+| 2 a 4 | **Enquete**: "o programa aumentou a renda em R$ 587?" (guardar respostas) |
+| 4 a 10 | Ciclo de políticas; tipos de avaliação; cadeia de resultados |
 
-## Contrafactual (14:15 a 14:35, 20 min) · script 01
-
-| Min | O que fazer |
-|---|---|
-| 0 a 6 | Problema fundamental (tabela com "?"); contrafactual; dois falsos contrafactuais |
-| 6 a 14 | **Hora do R**: script 01 ao vivo (verdade = 300; ingênua = 587; antes-depois = 402) |
-| 14 a 17 | **Revelar a enquete**: resposta (b) |
-| 17 a 20 | Mapa das técnicas |
-
-## Experimento (14:35 a 15:05, 30 min) · script 02 · Exercício 1
+## Contrafactual (14:10 a 14:25, 15 min) · script 01
 
 | Min | O que fazer |
 |---|---|
-| 0 a 6 | Aleatorização; balanço; Monte Carlo (rodar o laço do script) |
-| 6 a 10 | Exemplos reais, problemas de campo, poder |
-| 10 a 14 | **Hora do R**: sorteio, diferença de médias, `power.t.test` |
-| 14 a 27 | **Exercício 1** (12 min) |
-| 27 a 30 | Correção rápida e discussão |
+| 0 a 5 | Problema fundamental (tabela com "?"); falsos contrafactuais |
+| 5 a 11 | **Hora do R**: script 01 ao vivo (verdade = 300; ingênua = 587; antes-depois = 402) |
+| 11 a 13 | **Revelar a enquete**: resposta (b) |
+| 13 a 15 | Mapa das técnicas (as 5 técnicas quase-experimentais) |
 
-## Pareamento (15:05 a 15:25, 20 min) · script 03 (apenas demonstração)
+## Experimento (14:25 a 14:50, 25 min) · script 02 · Exercício 1
 
 | Min | O que fazer |
 |---|---|
-| 0 a 8 | Ideia do pareamento; maldição da dimensionalidade; PSM em 3 passos |
-| 8 a 18 | **Hora do R**: escore, região comum, pareamento "na unha", resumo (PSM acerta quando o essencial é observável) |
-| 18 a 20 | Pressuposto: sem confundidores não observados |
+| 0 a 5 | Aleatorização; **características e exemplos**; balanço e Monte Carlo |
+| 5 a 12 | **Passo a passo** (2 slides) com o script 02 aberto: balanço, efeito, precisão; adesão, atrito, poder |
+| 12 a 23 | **Exercício 1** (10 min) |
+| 23 a 25 | Correção rápida |
+
+## Pareamento (14:50 a 15:10, 20 min) · script 03 (demonstração)
+
+| Min | O que fazer |
+|---|---|
+| 0 a 6 | Ideia; maldição da dimensionalidade; **características e exemplos** |
+| 6 a 18 | **Passo a passo** (2 slides) com o script 03: balanço antes, região comum, pareamento, balanço depois, ATT, robustez |
+| 18 a 20 | Região comum e resultado (figuras); pressuposto |
 
 O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 30`.
 
-## Diferença-em-diferenças (15:25 a 15:55, 30 min) · script 04 · Exercício 2
+## Diferença-em-diferenças (15:10 a 15:35, 25 min) · script 04 · Exercício 2
 
 | Min | O que fazer |
 |---|---|
-| 0 a 6 | Ideia, fórmula, exemplo numérico (80/125 e 90/120: DD = 15) |
-| 6 a 14 | **Hora do R**: painel, DD na mão e por regressão, tendências paralelas e não paralelas (placebo) |
-| 14 a 17 | Caso real: Lei Maria da Penha |
-| 17 a 28 | **Exercício 2** (10 min) |
-| 28 a 30 | Correção |
+| 0 a 5 | Ideia, fórmula, exemplo numérico (80/125 e 90/120: DD = 15); **características e exemplos** (Maria da Penha, Card e Krueger) |
+| 5 a 13 | **Passo a passo** (2 slides) com o script 04: tendências, quatro médias, DD, regressão, estudo de eventos, placebo; tendências não paralelas |
+| 13 a 23 | **Exercício 2** (8 a 10 min) |
+| 23 a 25 | Correção; pergunta sobre a Lei Maria da Penha |
 
-## ☕ Intervalo (15:55 a 16:25, 30 min)
+## ☕ Intervalo (15:35 a 16:05, 30 min)
 
-## Regressão descontínua (16:25 a 16:45, 20 min) · script 05 (apenas demonstração)
-
-| Min | O que fazer |
-|---|---|
-| 0 a 6 | Ideia do corte (R$ 77 e R$ 78); pré-requisitos e limites |
-| 6 a 16 | **Hora do R**: dispersão, regressão local, janela, testes de validade |
-| 16 a 20 | Manipulação, RDD fuzzy; efeito local |
-
-## Outras técnicas e como escolher (16:45 a 16:55, 10 min)
+## Regressão descontínua (16:05 a 16:25, 20 min) · script 05 (demonstração)
 
 | Min | O que fazer |
 |---|---|
-| 0 a 4 | Variáveis instrumentais e controle sintético (só a ideia; indicar leituras) |
-| 4 a 10 | Árvore de decisão e quadro lado a lado |
+| 0 a 5 | Ideia do corte (R$ 77 e R$ 78); **características e exemplos** |
+| 5 a 18 | **Passo a passo** (2 slides) com o script 05: gráfico, regressão local, janela; covariável, placebo, manipulação |
+| 18 a 20 | Efeito local: não extrapolar |
 
-## Avaliação qualitativa e métodos mistos (16:55 a 17:50, 55 min) · Exercício 3
+## Variáveis instrumentais (16:25 a 16:37, 12 min) · script 06
+
+| Min | O que fazer |
+|---|---|
+| 0 a 3 | Ideia: o esquema Z, D, Y e a motivação não observada |
+| 3 a 5 | **Características e exemplos** (Oregon, Colômbia, loteria do alistamento) |
+| 5 a 10 | **Passo a passo** (2 slides): sem instrumento, balanço, primeiro estágio, forma reduzida, IV, compliers |
+| 10 a 12 | Quando falha: instrumento fraco e exclusão violada (figura) |
+
+## Controle sintético (16:37 a 16:49, 12 min) · script 07
+
+| Min | O que fazer |
+|---|---|
+| 0 a 3 | Ideia: uma unidade tratada; trajetórias |
+| 3 a 5 | **Características e exemplos** (Califórnia, País Basco) |
+| 5 a 11 | **Passo a passo** (2 slides): pesos, ajuste pré, lacuna, placebos |
+| 11 a 12 | Limites: ajuste pré ruim, poucos doadores, choques específicos |
+
+## Como escolher a técnica (16:49 a 16:55, 6 min)
+
+Árvore de decisão e quadro lado a lado. Pergunta à turma: "qual técnica vocês usariam para uma política que conhecem?"
+
+## Avaliação qualitativa e métodos mistos (16:55 a 17:50, 55 min)
 
 | Min | O que fazer | Slides |
 |---|---|---|
 | 0 a 4 | **Gancho**: o que os números não mostram (3 quebra-cabeças do Qualifica) | 1 a 2 |
-| 4 a 9 | Para que serve; em cada etapa da avaliação | 3 a 4 |
-| 9 a 13 | Desenho da pesquisa qualitativa; visão geral das técnicas | 5 a 6 |
-| 13 a 20 | Observação (Adato); entrevistas e roteiro; grupos focais | 7 a 9 |
-| 20 a 24 | Documentos, estudos de caso e *process tracing*; análise (trecho, código, categoria, tema) | 10 a 11 |
-| 24 a 27 | Rigor e críticas | 12 |
-| 27 a 30 | Métodos mistos: por que combinar; desenhos; exemplos | 13 a 15 |
-| 30 a 50 | **Exercício 3** em salas simultâneas (20 min): codificar os 8 trechos | 16 a 18 |
-| 50 a 55 | Plenária: temas, divergências entre grupos, quem mais entrevistar | |
-
-**Perguntas para a plenária:** os grupos chegaram aos mesmos temas? Onde divergiram? O que as entrevistas *não* podem dizer? Como voltam ao desenho quantitativo?
-O gabarito comentado do Exercício 3 (`gabaritos/gabarito_03_codificacao.md`) é um exemplo, não uma resposta única.
+| 4 a 10 | Para que serve; em cada etapa da avaliação; desenho da pesquisa | 3 a 5 |
+| 10 a 22 | Técnicas: visão geral; observação (Adato); entrevistas e roteiro; grupos focais; documentos, estudos de caso, *process tracing* | 6 a 10 |
+| 22 a 28 | Da fala ao tema (trecho, código, categoria, tema); rigor e críticas | 11 a 12 |
+| 28 a 36 | Métodos mistos: por que combinar; desenhos; exemplos (Patton, Chile, Índia) | 13 a 15 |
+| 36 a 48 | **Passo a passo** de uma avaliação qualitativa (2 slides): pergunta, amostra, instrumentos, campo, codificação, temas, integração, devolutiva | 16 a 17 |
+| 48 a 55 | **Plenária**: cada um pensa numa política que conhece (número, pergunta qualitativa, quem entrevistar) | 18 |
 
 ## Encerramento (17:50 a 18:00, 10 min)
 
 | Min | O que fazer |
 |---|---|
 | 0 a 3 | Cinco perguntas antes de confiar em uma estimativa; o que levar |
-| 3 a 6 | Leituras (inclui IV e controle sintético, e a parte qualitativa) |
+| 3 a 6 | Leituras (inclui IV, controle sintético e a parte qualitativa) |
 | 6 a 10 | Repositório, feedback, agradecimentos |
 
 ## Respostas esperadas
@@ -109,6 +118,8 @@ O gabarito comentado do Exercício 3 (`gabaritos/gabarito_03_codificacao.md`) é
 - **PSM:** R$ 297 com renda antes no modelo; R$ 476 sem ela.
 - **DiD:** R$ 300; com tendências não paralelas, R$ 420 (placebo +47).
 - **RDD:** 6,2 p.p. (verdade 6); janela ±15.
+- **IV:** ingênua 525; ITT 107; IV 297 (IC 229 a 366); com exclusão violada, 574.
+- **Controle sintético:** efeito médio −4,6 (verdade −5); p de permutação 0,05.
 
 ## Se algo der errado
 
@@ -117,4 +128,4 @@ O gabarito comentado do Exercício 3 (`gabaritos/gabarito_03_codificacao.md`) é
 | Participante sem R instalado | Compartilhar tela e acompanhar; ou Posit Cloud |
 | Script lento | Reduzir `n_rep` (script 02) para 300 e `B` (script 03) para 30 |
 | Gráfico não aparece | Aba *Plots*; ou abrir as imagens em `figuras/` |
-| Atraso | Pular "Experimentos reais" e "Região comum e resultado"; ampliar o tempo do bloco qualitativo |
+| Atraso | Pular os exemplos reais e as figuras extras; manter os passo a passo |

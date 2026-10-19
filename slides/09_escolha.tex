@@ -1,0 +1,40 @@
+% =============================================================================
+% COMO ESCOLHER A TÉCNICA (16:49 a 16:55)
+% =============================================================================
+\section[Escolha]{Como escolher a técnica}
+
+\begin{frame}{Como escolher a técnica?}
+  \centering
+  \begin{tikzpicture}[scale=0.8,every node/.style={transform shape},
+      dec/.style={draw=laranja,fill=laranjaclaro,rounded corners=3pt,thick,align=center,inner sep=3pt,font=\scriptsize,minimum width=4.6cm},
+      res/.style={draw=azul,fill=azulclaro,rounded corners=3pt,thick,align=center,inner sep=3pt,font=\scriptsize\bfseries,minimum width=3.2cm}]
+    \node[dec] (d1) at (0,3.6) {Dá para \textbf{sortear} antes da política?};
+    \node[dec] (d2) at (0,2.2) {Há \textbf{corte} de elegibilidade\\num índice contínuo?};
+    \node[dec] (d3) at (0,0.7) {Há um \textbf{instrumento} válido?};
+    \node[dec] (d4) at (0,-0.8) {Há dados \textbf{antes e depois}\\de tratados e controles?};
+    \node[dec] (d5) at (0,-2.4) {Os fatores da participação\\são \textbf{observáveis}?};
+    \node[res] (r1) at (6.2,3.6) {Experimento};
+    \node[res] (r2) at (6.2,2.2) {Regressão descontínua};
+    \node[res] (r3) at (6.2,0.7) {Variáveis instrumentais};
+    \node[res] (r4) at (6.2,-0.8) {Dif.-em-dif. (ou controle\\sintético se há 1 unidade tratada)};
+    \node[res] (r5) at (6.2,-2.4) {Pareamento (PSM)};
+    \foreach \i in {1,2,3,4,5} { \draw[setal] (d\i) -- node[above,font=\tiny]{sim} (r\i); }
+    \foreach \a/\b in {1/2,2/3,3/4,4/5} { \draw[seta] (d\a) -- node[right,font=\tiny]{não} (d\b); }
+    \node[font=\tiny\itshape,text=gray] at (0,-3.4) {nenhum: descrição e qualitativo, sem pretensão causal};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{As técnicas lado a lado}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\textwidth}{@{}p{1.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Técnica} & \textbf{O contrafactual vem de\ldots} & \textbf{Pressuposto-chave} \\ \midrule
+    Experimento & Sorteio entre elegíveis & Sorteio bem executado; sem atrito seletivo \\
+    Pareamento & Não participantes parecidos & Sem confundidores não observados; região comum \\
+    DiD & Tendência do grupo de controle & Tendências paralelas \\
+    RDD & Quem está do outro lado do corte & Sem manipulação do corte; efeito local \\
+    IV & Variação induzida pelo instrumento & Relevância e exclusão; efeito para \emph{compliers} \\
+    Sintético & Combinação ponderada de controles & Bom ajuste pré-tratamento \\ \bottomrule
+  \end{tabularx}
+\end{frame}

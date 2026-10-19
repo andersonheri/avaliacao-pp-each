@@ -15,12 +15,13 @@
 \usetikzlibrary{arrows.meta,positioning,calc,fit,decorations.pathreplacing}
 \usepackage{listings}
 
-\graphicspath{{../figuras/}}
+\graphicspath{{../figuras/}{img/}}
 \hyphenpenalty=10000 \exhyphenpenalty=10000
 
 \usetheme{Berlin}
 \useoutertheme{miniframes}
 \useinnertheme{circles}
+\logo{\includegraphics[height=0.75cm]{logo_cem.png}}
 
 % ---- Cores de apoio (destaques) -------------------------------------------------
 \definecolor{laranja}{HTML}{E8650F}
@@ -52,6 +53,25 @@
            {í}{{\'i}}1 {ó}{{\'o}}1 {ô}{{\^o}}1 {õ}{{\~o}}1 {ú}{{\'u}}1 {ç}{{\c c}}1
 }
 \lstset{style=R}
+
+% ---- Tabelas de "passo a passo" ----------------------------------------------------
+% Uso:  \begin{tabular}{\colspec} \cabecalho \linha{1}{o que fazer}{output}{como ler} ... \end{tabular}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\colspec}{@{}c>{\raggedright\arraybackslash}p{2.55cm}>{\raggedright\arraybackslash}p{2.75cm}>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\newcommand{\pn}[1]{\tikz[baseline=(c.base)]\node[circle,fill=laranja,text=white,inner sep=1.2pt,font=\tiny\bfseries] (c){#1};}
+\newcommand{\cabecalho}[1]{\textbf{}& \textbf{O que fazer} & \textbf{Output (exemplo)} & \textbf{#1} \\ \midrule}
+\newcommand{\linha}[4]{\pn{#1} & #2 & {\ttfamily\color{azul}#3} & #4 \\ \midrule}
+\newcommand{\ultimalinha}[4]{\pn{#1} & #2 & {\ttfamily\color{azul}#3} & #4 \\ \bottomrule}
+\newcommand{\caixaconclusao}[1]{\vspace{0.1cm}\par\begin{beamercolorbox}[wd=\textwidth,rounded=true,sep=3pt]{laranjabox}\scriptsize\textbf{Conclusão:} #1\end{beamercolorbox}}
+\setbeamercolor{laranjabox}{bg=laranjaclaro,fg=black}
+
+% Características de cada técnica (4 linhas)
+\newcommand{\carac}[5]{% contrafactual, pressuposto, estima, exige, boa para
+  {\scriptsize\renewcommand{\arraystretch}{1.1}\setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}>{\bfseries\color{azul}}lP{8.3cm}@{}}
+    \toprule
+    Contrafactual & #1 \\ Pressuposto-chave & #2 \\ Estima & #3 \\ Exige & #4 \\ Boa para & #5 \\ \bottomrule
+  \end{tabular}}}
 
 % Estilos TikZ
 \tikzset{

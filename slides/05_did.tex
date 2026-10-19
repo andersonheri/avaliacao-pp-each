@@ -1,5 +1,5 @@
 % =============================================================================
-% DIFERENÇA-EM-DIFERENÇAS (15:25 a 15:55)   [Script 04 | Exercício 2]
+% DIFERENÇA-EM-DIFERENÇAS (15:10 a 15:35)   [Script 04 | Exercício 2]
 % =============================================================================
 \section[DiD]{Diferença-em-diferenças}
 
@@ -39,55 +39,54 @@
   \fonte{Exemplo adaptado de Khandker, Koolwal e Samad (2010).}
 \end{frame}
 
-\begin{frame}{Simulação: tendências paralelas}
+\begin{frame}{Diferença-em-diferenças: características e exemplos}
+  \carac{a \textbf{tendência do grupo de controle} aplicada ao tratado}
+        {\textbf{tendências paralelas} na ausência da política; sem antecipação; sem contaminação}
+        {efeito sobre os tratados (ATT)}
+        {dados \textbf{antes e depois} de tratados e controles (painel ou cortes repetidos)}
+        {política implantada só em parte do território ou da população; leis}
+  \vspace{0.15cm}
+  \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
+    \scriptsize
+    \begin{itemize}
+      \item \textbf{Brasil:} Lei Maria da Penha. Mulheres (tratamento) $\times$ homens (controle), taxa de homicídios (Cerqueira et al., 2015).
+      \item \textbf{EUA:} aumento do salário mínimo em Nova Jersey, com lanchonetes da Pensilvânia como controle (Card e Krueger, 1994).
+      \item \textbf{Hipotético:} bolsa-permanência em algumas escolas (Exercício 2); Qualifica numa região (script 04).
+    \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Simulação: tendências paralelas antes do programa}
   \centering
-  \includegraphics[height=3.7cm]{04_tendencias.png}\par
-  \scriptsize
-  \renewcommand{\arraystretch}{1.1}
-  \begin{tabular}{lrrr}
+  \includegraphics[height=3.9cm]{04_tendencias.png}\par
+  \footnotesize Os tratados partem de um nível menor (mais pobres), mas \textbf{evoluem em paralelo} até o 4.º trimestre, quando começa o programa.
+\end{frame}
+
+\begin{frame}{Passo a passo: diferença-em-diferenças (1 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
     \toprule
-    & Antes $\times$ depois & Trat. $\times$ ctrl. (depois) & \textbf{DD} \\ \midrule
-    Estimativa (R\$) & 535 & $-2$ & \destaque{300} \\ \bottomrule
-  \end{tabular}\par
-  \vspace{0.1cm}
-  Os tratados são mais pobres (nível), mas evoluem em paralelo. Verdade: R\$ 300.
+    \cabecalho{Como ler e decidir}
+    \linha{1}{Olhe as tendências \textbf{antes} da política}{tratados: 1.789; 1.874; 1.942\newline controle: 2.083; 2.171; 2.259}{Sobem ${\approx}$ +80 por trimestre nos dois: \textbf{paralelas}.}
+    \linha{2}{Calcule as \textbf{4 médias} (antes/depois, tratado/controle)}{tratados: 1.868 $\to$ 2.403 (+534)\newline controle: 2.171 $\to$ 2.405 (+234)}{Os dois sobem. A variação do controle (+234) é a tendência.}
+    \ultimalinha{3}{\textbf{Dupla diferença}}{DD = 534 $-$ 234 = 300}{O programa elevou a renda em R\$ 300 \textbf{além da tendência}. (Antes-depois: 534.)}
+  \end{tabular}}
+\end{frame}
+
+\begin{frame}{Passo a passo: diferença-em-diferenças (2 de 2)}
+  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
+    \toprule
+    \cabecalho{Como ler e decidir}
+    \linha{4}{Regressão com \textbf{interação} e erro-padrão por \emph{cluster}}{tratado:pos = 300,2\newline EP = 7,8\newline IC 95\%: 285 a 315}{Mesmo número do passo 3, agora com incerteza.}
+    \linha{5}{\textbf{Estudo de eventos}: efeito por trimestre (ref.: 3.º)}{antes: +23 e +21 (EP 34)\newline depois: 317, 306, 321}{Antes ${\approx}$ 0 (sem pré-tendência). Depois ${\approx}$ 300, estável.}
+    \ultimalinha{6}{\textbf{Placebo}: finja o programa mais cedo}{DD placebo = $-13$}{Perto de zero: ok. Se fosse grande (no cenário ruim: +47), \textbf{desconfie}.}
+  \end{tabular}}
+  \caixaconclusao{DD = R\$ 300 (verdade: 300), com tendências paralelas confirmadas por dois testes.}
 \end{frame}
 
 \begin{frame}{Quando as tendências \textit{não} são paralelas}
   \centering
   \includegraphics[height=4.0cm]{04_nao_paralelas.png}\par
-  \footnotesize Os tratados já cresciam mais rápido: o DD estima \alert{R\$ 420} (verdade: 300). Um \textbf{placebo} (DD com um programa falso, antes da política) denuncia o problema: +47.
-\end{frame}
-
-\begin{frame}{Um caso real: Lei Maria da Penha}
-  \begin{itemize}
-    \item Benefícios para \emph{todas} as mulheres do país: como achar um controle?
-    \item Cerqueira et al.\ (2015): \textbf{homens} como controle, expostos às outras causas gerais de violência, mas \emph{não beneficiários};
-    \item Resultado: taxa de homicídios; DD = interação entre ser mulher e o período pós-lei. A lei mostrou-se \destaque{efetiva}.
-  \end{itemize}
-  \vspace{0.2cm}
-  \begin{exerciciobox}{Para pensar}
-    \small Que evento poderia afetar mulheres e homens de forma diferente e violar as tendências paralelas?
-  \end{exerciciobox}
-\end{frame}
-
-\begin{frame}[fragile]{Hora do R: \texttt{04\_diferenca\_em\_diferenca.R}}
-\begin{lstlisting}
-painel <- gerar_painel()      # 1.000 trabalhadores x 6 trimestres
-
-# DD "na mao": quatro medias
-m <- function(t, p) mean(painel$renda[painel$tratado == t &
-                                      painel$pos == p])
-(m(1, 1) - m(1, 0)) - (m(0, 1) - m(0, 0))      # 300
-
-# DD por regressao: coeficiente da interacao
-summary(lm(renda ~ tratado * pos, data = painel))
-
-# Efeitos fixos e erro-padrao por cluster
-library(fixest)
-feols(renda ~ tratado:pos | id + trimestre,
-      data = painel, cluster = ~id)
-\end{lstlisting}
+  \footnotesize Os tratados já cresciam mais rápido: o DD estima \alert{R\$ 420} (verdade: 300). O \textbf{placebo} denuncia o problema: +47.
 \end{frame}
 
 \begin{frame}{Exercício 2: diferença-em-diferenças (10 min)}
@@ -98,4 +97,6 @@ feols(renda ~ tratado:pos | id + trimestre,
       \item Gere um painel com tendência extra de R\$ 20/trimestre para os tratados: o DD acerta? O placebo avisa?
     \end{enumerate}
   \end{exerciciobox}
+  \vspace{0.2cm}
+  \textbf{Para pensar (Lei Maria da Penha):} que evento poderia afetar mulheres e homens de forma diferente e violar as tendências paralelas?
 \end{frame}
