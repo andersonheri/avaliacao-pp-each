@@ -1,0 +1,6 @@
+@@> round(summary(lm(idade_mae ~ elegivel * x, data = janela))$coefficients["elegivel", ], 3)
+  Estimate Std. Error    t value   Pr(>|t|)
+     0.066      0.773      0.085      0.932
+@@> table(cut(d$renda, breaks = c(62, 67, 72, 77, 82, 87, 92)))
+(62,67] (67,72] (72,77] (77,82] (82,87] (87,92]
+    197     206     213     227     190     238

@@ -6,18 +6,18 @@ Minicurso do **Seminário Discente 2026**, Programa de Pós-Graduação em Gest�
 Público: pós-graduandos e graduandos em Gestão de Políticas Públicas e Ciência Política.
 Leitura-base: BATISTA, Mariana; DOMINGOS, Amanda (2017). *Mais que boas intenções: técnicas quantitativas e qualitativas na avaliação de impacto de políticas públicas.* Revista Brasileira de Ciências Sociais, 32(94). [doi:10.17666/329414/2017](https://doi.org/10.17666/329414/2017)
 
-**Instrutor:** Anderson Henrique, cientista político, doutor pela UFPE (2025), pós-doutorando no CEM/USP/CEPix, pesquisador do INCT-QualiGov e pesquisador convidado no IPEA. Contato: andersonheri@gmail.com
+**Instrutor:** Prof. Dr. Anderson Henrique, Pós-Doutorando no CEM/USP/CEPix, pesquisador do INCT-QualiGov e pesquisador convidado no IPEA, Doutor em Ciência Política (UFPE). Contato: andersonheri@gmail.com
 
 ## A ideia
 
-Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Para cada técnica, os slides trazem as **características**, **exemplos em políticas públicas** e um **passo a passo** (o que fazer, o output que você vê e como interpretá-lo), com números dos scripts. Os **scripts** são demonstrações comentadas, para os alunos entenderem e se basearem. Os **exercícios** são só dois.
+Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevemos a verdade** (o programa fictício *Qualifica* aumenta a renda em R$ 300/mês) e testamos se cada técnica consegue recuperá-la. Para cada técnica, os slides trazem as **características**, **exemplos em políticas públicas** e um **passo a passo** com o 'print' do console do R e como lê-lo, com os cortes da literatura (RCT, PSM, DiD e RDD; IV e controle sintético têm o passo a passo completo nos scripts), com números dos scripts. Os **scripts** são demonstrações comentadas, para os alunos entenderem e se basearem. Há **um exercício** em R (experimento).
 
 | Bloco | Script (demonstração) | Exercício |
 |---|---|---|
 | Problema do contrafactual e viés de seleção | `01_contrafactual_vies_selecao.R` | |
 | Experimento controlado (RCT) | `02_experimento_rct.R` | **Exercício 1** |
 | Pareamento / propensity score (PSM) | `03_pareamento_psm.R` | |
-| Diferença-em-diferenças (DiD) | `04_diferenca_em_diferenca.R` | **Exercício 2** |
+| Diferença-em-diferenças (DiD) | `04_diferenca_em_diferenca.R` | |
 | Regressão descontínua (RDD) | `05_regressao_descontinua.R` | |
 | Variáveis instrumentais (IV) | `06_variaveis_instrumentais.R` | |
 | Controle sintético | `07_controle_sintetico.R` | |
@@ -31,7 +31,7 @@ Na vida real nunca sabemos o verdadeiro efeito de uma política. Aqui **escrevem
 | 14:10 a 14:25 | O problema do contrafactual |
 | 14:25 a 14:50 | Experimento controlado + **Exercício 1** |
 | 14:50 a 15:10 | Pareamento (PSM) |
-| 15:10 a 15:35 | Diferença-em-diferenças + **Exercício 2** |
+| 15:10 a 15:35 | Diferença-em-diferenças |
 | 15:35 a 16:05 | **Intervalo** |
 | 16:05 a 16:25 | Regressão descontínua |
 | 16:25 a 16:37 | Variáveis instrumentais |
@@ -64,7 +64,7 @@ Pacotes **opcionais**: `MatchIt`, `rdrobust`, `fixest` (nada depende deles).
 │   ├── 01_...R a 07_...R       # um script por técnica, passo a passo
 │   ├── 08_exportar_dados.R     # (opcional) exporta os dados simulados para CSV
 │   └── 99_gerar_todas_figuras.R# (instrutor) regenera as figuras dos slides
-├── atividades/                 # exercícios 1 e 2 (R com lacunas)
+├── atividades/                 # exercício 1 (R com lacunas)
 ├── gabaritos/                  # soluções comentadas (liberar após cada exercício)
 ├── slides/                     # Beamer (tema Berlin): main.tex + um arquivo por bloco; main.pdf pronto
 ├── figuras/                    # gráficos dos slides (gerados pelos scripts)

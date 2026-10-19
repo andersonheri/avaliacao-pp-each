@@ -1,5 +1,5 @@
 % =============================================================================
-% VARIÁVEIS INSTRUMENTAIS (16:25 a 16:37)   [Script 06]
+% VARIÁVEIS INSTRUMENTAIS (16:25 a 16:37)   [Script 06: exemplo completo]
 % =============================================================================
 \section[IV]{Variáveis instrumentais}
 
@@ -18,62 +18,38 @@
   \vspace{0.2cm}
   \begin{itemize}
     \item Participar é escolha, e quem escolhe é mais motivado (\alert{endogeneidade});
-    \item O \textbf{sorteio de vagas} muda quem participa sem depender da motivação. O IV usa \emph{só essa parte} da participação.
+    \item O \textbf{sorteio de vagas} muda quem participa sem depender da motivação. Efeito $=$ efeito da oferta $\div$ aumento da participação.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Variáveis instrumentais: características e exemplos}
   \carac{variação na participação \textbf{induzida pelo instrumento}}
-        {\textbf{relevância} (move a participação); \textbf{exogeneidade} (como aleatório); \textbf{exclusão} (só afeta $Y$ via $D$); monotonicidade}
+        {\textbf{relevância} (move a participação); \textbf{exogeneidade} (como aleatório); \textbf{exclusão} (só afeta $Y$ via $D$)}
         {efeito local para os \textbf{\emph{compliers}} (LATE)}
-        {um instrumento válido e forte (primeiro estágio com $F>10$)}
+        {um instrumento válido e forte (primeiro estágio com $F>10$; Staiger e Stock, 1997)}
         {adesão imperfeita; participação endógena com sorteio, regra ou distância}
-  \vspace{0.15cm}
+  \vspace{0.05cm}
   \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
     \scriptsize
     \begin{itemize}
       \item \textbf{EUA:} sorteio para se inscrever no Medicaid em Oregon, para medir o efeito do seguro-saúde (Finkelstein et al., 2012).
       \item \textbf{Colômbia:} sorteio de vouchers escolares, para o efeito de usar o voucher (Angrist et al., 2002).
       \item \textbf{EUA:} loteria do alistamento militar e renda de veteranos (Angrist, 1990).
-      \item \textbf{Hipotético:} sorteio de vagas do Qualifica (script 06).
+      \item \textbf{Hipotético:} sorteio de vagas do Qualifica (script 06, com o passo a passo completo).
     \end{itemize}
-  
 \end{frame}
 
-\begin{frame}{Passo a passo: variáveis instrumentais (1 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{1}{Estime \textbf{sem} instrumento (ingênua e com controles)}{ingênua = 525\newline com escolaridade = 448}{Muito acima de 300: a motivação não observada contamina. Precisamos do instrumento.}
-    \linha{2}{O instrumento é \textbf{como aleatório}? Balanço por oferta}{SMD escolaridade 0,00\newline SMD motivação 0,01}{Grupos com e sem oferta iguais: o sorteio funcionou. Cheque sempre.}
-    \ultimalinha{3}{\textbf{Primeiro estágio}: a oferta muda a participação?}{sem oferta: 38\%\newline com oferta: 75\%\newline efeito = 0,36; $F=767$}{Instrumento \textbf{forte} ($F>10$). Se $F$ for baixo, \textbf{pare}: o IV não serve.}
-  \end{tabular}}
-\end{frame}
-
-\begin{frame}{Passo a passo: variáveis instrumentais (2 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{4}{\textbf{Forma reduzida}: a oferta muda a renda? (ITT)}{efeito da oferta = 107,5}{Quem recebe a oferta ganha R\$ 107 a mais. É \textbf{diluído}: nem todos participam.}
-    \linha{5}{\textbf{IV} = forma reduzida / primeiro estágio}{107,5 / 0,362 = 297\newline IC 95\%: 229 a 366}{Participar aumenta a renda em ${\approx}$ R\$ 297 (verdade: 300). A ingênua dava 525.}
-    \ultimalinha{6}{Interprete: o efeito vale para \textbf{quem}?}{sempre participam: 38\%\newline \emph{compliers}: 36\%\newline nunca: 25\%}{Efeito para quem participa \textbf{só se for sorteado} (LATE). Não é, necessariamente, o de todos.}
-  \end{tabular}}
-  \caixaconclusao{é a mesma lógica do ITT e da adesão no experimento (script 02), agora usada para corrigir a seleção.}
-\end{frame}
-
-\begin{frame}{Quando o IV falha}
+\begin{frame}{IV em gráficos (script 06)}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      \includegraphics[width=\textwidth]{06_iv_resumo.png}
+    \begin{column}{0.42\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{06_iv_primeiro_estagio.png}\par
+      \tiny \textbf{Primeiro estágio:} a oferta eleva a participação de 38\% para 75\% (+36 p.p.; $F=767$).
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \scriptsize
-      \begin{itemize}
-        \item \textbf{Instrumento fraco} (primeiro estágio 0,02; $F=1{,}8$): IV de 245, mas IC de $-3.665$ a 2.468. Inútil.
-        \item \textbf{Exclusão violada} (a oferta anima a procurar emprego, +R\$ 100 direto): IV = 574. Viés = efeito direto / primeiro estágio.
-      \end{itemize}
-      \vspace{0.1cm}
-      \tiny A exclusão \textbf{não se testa}: defende-se com argumento e conhecimento da política.
+    \begin{column}{0.58\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{06_iv_resumo.png}\par
+      \tiny Oferta (ITT) $=107$; IV $=107/0{,}36\approx297$ (verdade: 300). Ingênua: 525. Se a oferta afetasse a renda por outro caminho, o IV iria a 574.
     \end{column}
   \end{columns}
 \end{frame}

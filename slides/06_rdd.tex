@@ -2,6 +2,7 @@
 % REGRESSÃO DESCONTÍNUA (16:05 a 16:25)   [Script 05]
 % =============================================================================
 \section[RDD]{Regressão descontínua}
+\subsection{Ideia e exemplos}
 
 \begin{frame}{A ideia: um ``experimento natural'' no corte}
   \begin{itemize}
@@ -18,7 +19,7 @@
         {efeito \textbf{local}, para quem está no corte}
         {índice contínuo, corte claro e \textbf{muitas observações} perto dele}
         {programas com elegibilidade por escore (renda, nota, idade, população)}
-  \vspace{0.15cm}
+  \vspace{0.05cm}
   \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
     \scriptsize
     \begin{itemize}
@@ -27,7 +28,6 @@
       \item \textbf{Eleições:} candidatos eleitos por margem mínima (Lee, 2008).
       \item \textbf{Hipotético:} transferência de renda com corte de R\$ 77 (script 05).
     \end{itemize}
-  
 \end{frame}
 
 \begin{frame}{A descontinuidade no corte}
@@ -36,25 +36,66 @@
   \footnotesize Pontos grandes: médias por faixa de R\$ 4. Elegíveis (laranja) têm frequência escolar maior logo abaixo do corte.
 \end{frame}
 
-\begin{frame}{Passo a passo: regressão descontínua (1 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{1}{\textbf{Gráfico}: médias por faixa da variável de corte}{perto do corte (${\pm}$ R\$ 5):\newline elegíveis 74,4\%\newline não elegíveis 68,2\%}{Há \textbf{salto} visível em R\$ 77: vale estimar. Sem salto, não há o que estimar.}
-    \linha{2}{Estime com \textbf{regressão local} (janela ${\pm}$ R\$ 15)}{efeito = 6,2 p.p.\newline EP = 0,9\newline 1.271 famílias}{Quem está no corte e recebe frequenta ${\approx}$ 6 p.p. mais (verdade: 6).}
-    \ultimalinha{3}{\textbf{Varie a janela}}{${\pm}$ 5: 6,6 (EP 1,6)\newline ${\pm}$ 15: 6,2 (EP 0,9)\newline ${\pm}$ 40: 5,6 (EP 0,6)}{Estável: o resultado \textbf{não depende} da janela. Se mudasse muito, desconfie.}
-  \end{tabular}}
+\subsection{Passo a passo}
+
+\begin{frame}[fragile]{RDD, passo 1: estimar o salto no corte}
+\fazer{regressão local na janela de $\pm$ R\$ 15, com retas diferentes de cada lado (\texttt{x} = renda $-$ 77).}
+\begin{consoleR}
+@@> janela <- d[abs(d$x) <= 15, ]
+@@> round(summary(lm(freq ~ elegivel * x, data = janela))$coefficients, 3)
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)   68.387      0.635 107.668    0.000
+elegivel       6.179      0.895   6.902    0.000
+x              0.054      0.072   0.750    0.454
+elegivel:x     0.150      0.103   1.450    0.147
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item \texttt{elegivel} $=6{,}18$ é o \textbf{salto no corte}: elegíveis no corte frequentam \destaque{6,2 p.p.} a mais (EP 0,90; $p<0{,}001$). Verdade: 6.
+    \item \texttt{x} e \texttt{elegivel:x} são as inclinações de cada lado: \textbf{não} são efeitos.
+    \item A janela é escolha do analista; em trabalho real, use a janela ótima de \texttt{rdrobust} (Calonico, Cattaneo e Titiunik, 2014).
+  \end{itemize}
+\end{leitura}
 \end{frame}
 
-\begin{frame}{Passo a passo: regressão descontínua (2 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{4}{Teste uma \textbf{covariável} pré-programa (idade da mãe)}{salto = 0,07\newline EP = 0,77}{Sem salto: famílias dos dois lados são \textbf{comparáveis}.}
-    \linha{5}{\textbf{Placebo}: cortes falsos (R\$ 55, 65 e 105)}{1,0\newline $-0{,}1$\newline $-1{,}1$}{Perto de zero: o salto só aparece no corte verdadeiro.}
-    \ultimalinha{6}{Teste de \textbf{manipulação}: histograma da renda}{sem acúmulo logo abaixo de R\$ 77}{Acúmulo = famílias ajustaram a renda para entrar: RDD \textbf{inválido}.}
-  \end{tabular}}
-  \caixaconclusao{efeito local de ${\approx}$ +6 p.p. de frequência para famílias na linha de corte; não extrapolar para quem ganha R\$ 30.}
+\begin{frame}[fragile]{RDD, passo 2: o resultado depende da janela?}
+\fazer{reestimar com várias janelas (\texttt{h}) e comparar efeito, erro-padrão e tamanho da amostra.}
+\begin{consoleR}
+@@> round(sens, 2)
+  h efeito   ep    n   li   ls
+  5   6.59 1.56  440 3.54 9.65
+ 10   7.11 1.12  836 4.92 9.29
+ 15   6.18 0.90 1271 4.42 7.93
+ 20   5.91 0.78 1641 4.38 7.45
+ 30   5.50 0.65 2271 4.22 6.78
+ 40   5.64 0.57 2833 4.52 6.77
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item O efeito fica entre 5,5 e 7,1; todos os IC (\texttt{li} a \texttt{ls}) excluem o zero: resultado \textbf{robusto}.
+    \item Janela estreita: menos viés, mais incerteza (EP 1,56 com 440 famílias). Janela larga: o inverso (EP 0,57 com 2.833).
+    \item \corte{relate várias janelas, incluindo metade e o dobro da escolhida (Lee e Lemieux, 2010).}
+  \end{itemize}
+\end{leitura}
+\end{frame}
+
+\begin{frame}[fragile]{RDD, passo 3: o desenho é válido?}
+\fazer{testar uma covariável pré-programa no corte e contar famílias perto do corte (manipulação).}
+\begin{consoleRpeq}
+@@> round(summary(lm(idade_mae ~ elegivel * x, data = janela))$coefficients["elegivel", ], 3)
+  Estimate Std. Error    t value   Pr(>|t|)
+     0.066      0.773      0.085      0.932
+@@> table(cut(d$renda, breaks = c(62, 67, 72, 77, 82, 87, 92)))
+(62,67] (67,72] (72,77] (77,82] (82,87] (87,92]
+    197     206     213     227     190     238
+\end{consoleRpeq}
+\begin{leitura}
+  \begin{itemize}
+    \item A idade da mãe \textbf{não salta} no corte ($p=0{,}93$): as famílias dos dois lados são comparáveis.
+    \item As contagens são parecidas dos dois lados de R\$ 77 (213 e 227): \textbf{sem acúmulo}. Com manipulação (simulada), seriam 413 e 116: RDD inválido.
+    \item \corte{covariáveis sem salto ($p>0{,}05$) e densidade contínua no corte (McCrary, 2008; \texttt{rddensity}: Cattaneo, Jansson e Ma, 2020).}
+  \end{itemize}
+\end{leitura}
 \end{frame}
 
 \begin{frame}{Teste de manipulação}

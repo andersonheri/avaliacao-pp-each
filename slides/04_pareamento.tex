@@ -2,6 +2,7 @@
 % PAREAMENTO / PSM (14:50 a 15:10)   [Script 03]
 % =============================================================================
 \section[Pareamento]{Pareamento (PSM)}
+\subsection{Ideia e exemplos}
 
 \begin{frame}{Quando não dá para sortear: pareamento}
   \centering
@@ -36,7 +37,7 @@
         {efeito sobre os tratados (ATT)}
         {muitas covariáveis \textbf{anteriores} ao programa (idealmente o resultado antes)}
         {política já implementada, sem sorteio, corte ou painel}
-  \vspace{0.15cm}
+  \vspace{0.05cm}
   \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
     \scriptsize
     \begin{itemize}
@@ -45,28 +46,90 @@
       \item \textbf{EUA:} programa de treinamento profissional reanalisado com PSM (LaLonde, 1986; Dehejia e Wahba, 1999).
       \item \textbf{Hipotético (nosso Qualifica):} programa já implementado, sem sorteio.
     \end{itemize}
-  
 \end{frame}
 
-\begin{frame}{Passo a passo: pareamento (1 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{1}{Compare os grupos \textbf{antes}: diferença simples e balanço (SMD)}{diferença = 587\newline SMD: escolaridade 0,50\newline renda antes 0,80\newline idade $-0{,}17$}{Grupos muito diferentes: a comparação simples \textbf{não vale}. É preciso ajustar.}
-    \linha{2}{Estime o escore (logit) e olhe a \textbf{região comum}}{região comum:\newline 0,05 a 0,90}{Ampla sobreposição: há controles para quase todos. Se fosse estreita, o efeito valeria só para poucos.}
-    \ultimalinha{3}{Pareie: vizinho mais próximo, \emph{caliper} de 0,2 dp}{1.630 de 1.631 tratados pareados}{Quase todos têm par. Muitos sem par $\Rightarrow$ o efeito vale só para os pareados.}
-  \end{tabular}}
+\subsection{Passo a passo}
+
+\begin{frame}[fragile]{Pareamento, passo 1: estimar o escore de propensão}
+\fazer{modelar a probabilidade de participar com covariáveis \textbf{pré-programa} (script 03).}
+\begin{consoleR}
+@@> m_ps <- glm(participa ~ escolaridade + idade + mulher + renda_antes,
+@@+             data = dados, family = binomial)
+@@> round(summary(m_ps)$coefficients, 4)
+             Estimate Std. Error  z value Pr(>|z|)
+(Intercept)   -4.6114     0.2185 -21.1034   0.0000
+escolaridade  -0.0480     0.0155  -3.1063   0.0019
+idade         -0.0235     0.0028  -8.4700   0.0000
+mulher         0.1883     0.0660   2.8522   0.0043
+renda_antes    0.0026     0.0001  19.5414   0.0000
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item O sinal diz quem tende a participar: quem tinha \textbf{renda antes} maior ($+$) e é mais jovem ($-$ idade).
+    \item O modelo serve para \textbf{balancear}, não para interpretar causas: não se lê esses coeficientes como efeitos (Rosenbaum e Rubin, 1983).
+    \item Só entram variáveis medidas \textbf{antes} do programa.
+  \end{itemize}
+\end{leitura}
 \end{frame}
 
-\begin{frame}{Passo a passo: pareamento (2 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{4}{\textbf{Balanço depois} do pareamento}{SMD: escolaridade $-0{,}03$\newline idade 0,01; renda antes 0,00\newline motivação 0,30}{Observáveis equilibradas ($<$ 0,10). A \textbf{motivação} (não observada) ainda difere.}
-    \linha{5}{Estime o \textbf{ATT} e o intervalo (\emph{bootstrap})}{ATT = 297\newline EP = 8,8\newline IC 95\%: 280 a 315}{Participantes ganham ${\approx}$ R\$ 297 a mais por causa do programa (verdade: 300).}
-    \ultimalinha{6}{\textbf{Robustez}: refaça sem a renda antes}{ATT = 476}{Muda muito: depende de uma covariável-chave. Relate e discuta o que pode estar omitido.}
-  \end{tabular}}
-  \caixaconclusao{o PSM só iguala o que está no modelo.}
+\begin{frame}[fragile]{Pareamento, passo 2: há região comum?}
+\fazer{comparar a distribuição do escore entre não participantes (0) e participantes (1).}
+\begin{consoleR}
+@@> dados$ps <- predict(m_ps, type = "response")
+@@> tapply(dados$ps, dados$participa, summary)
+$`0`
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+ 0.0103  0.1592  0.2524  0.2797  0.3752  0.9055
+$`1`
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+0.04621 0.28872 0.41042 0.42225 0.55083 0.89851
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item Participantes vão de 0,046 a 0,899; não participantes, de 0,010 a 0,906: as faixas se \textbf{sobrepõem} quase inteiras.
+    \item Os participantes têm escore médio maior (0,42 $\times$ 0,28): é o viés de seleção, que o pareamento vai corrigir.
+    \item \corte{com pouca sobreposição, descarte quem tem escore fora de [0,1; 0,9] (Crump et al., 2009).}
+  \end{itemize}
+\end{leitura}
+\end{frame}
+
+\begin{frame}[fragile]{Pareamento, passo 3: o pareamento equilibrou?}
+\fazer{parear (vizinho mais próximo, \emph{caliper} de 0,2 dp) e comparar o balanço antes e depois.}
+\begin{consoleR}
+@@> sum(!is.na(par_controle)); length(tratados)
+[1] 1630
+[1] 1631
+@@> round(balanco, 3)
+             smd_antes smd_depois razao_var
+escolaridade     0.502     -0.032     0.946
+idade           -0.170      0.008     1.010
+mulher           0.000      0.012     1.001
+renda_antes      0.801     -0.004     0.967
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item 1.630 dos 1.631 participantes acharam par (\emph{caliper} de 0,2 dp do logit do escore: Austin, 2011).
+    \item \corte{$|\text{SMD}|<0{,}10$ (Austin, 2009) e razão de variâncias entre 0,5 e 2 (Rubin, 2001).} Antes: 0,50 e 0,80 (desbalanceado). Depois: todos ${<}\,0{,}04$ e razões ${\approx}\,1$.
+  \end{itemize}
+\end{leitura}
+\end{frame}
+
+\begin{frame}[fragile]{Pareamento, passo 4: estimar o efeito (ATT)}
+\fazer{média das diferenças de renda dentro dos pares; incerteza por reamostragem.}
+\begin{consoleR}
+@@> att_psm
+[1] 297.3
+@@> c(EP = sd(boot), quantile(boot, c(0.025, 0.975)))
+   EP  2.5% 97.5%
+  8.8 282.4 314.2
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item Participantes ganham \destaque{R\$ 297} a mais por causa do programa (verdade: 300); IC 95\% de 282 a 314.
+    \item Atenção: o \emph{bootstrap} simples não é válido para vizinho mais próximo (Abadie e Imbens, 2008); em trabalho real, use o erro-padrão de Abadie e Imbens.
+    \item \textbf{Robustez:} sem a renda antes no escore, o ATT vira 476. O PSM só iguala o que está no modelo.
+  \end{itemize}
+\end{leitura}
 \end{frame}
 
 \begin{frame}{Região comum e resultado}

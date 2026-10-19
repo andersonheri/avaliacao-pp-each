@@ -207,5 +207,3 @@ cat("DD placebo no cenário ruim:", round(placebo_ruim, 1), "(longe de zero = al
 #   diferente e violar o pressuposto?
 # -----------------------------------------------------------------------------
 #
-# PARA EXPLORAR: o Exercício 2 (atividades/exercicio_02_diferenca_em_diferenca.R)
-# parte deste script.

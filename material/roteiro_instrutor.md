@@ -1,7 +1,7 @@
 # Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula e exercícios + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 78 páginas).
-**Formato de cada técnica:** ideia, *características e exemplos em políticas públicas*, *passo a passo* (2 slides: o que fazer, output, como ler) e, quando houver, exercício. No passo a passo, leia a tabela **da esquerda para a direita**: "o que eu faço, o que aparece, o que concluo".
+**Total:** 240 min = 210 min de aula e exercício + 30 min de intervalo. Slides: `slides/main.pdf` (tema Berlin, 80 páginas).
+**Formato de cada técnica:** ideia, *características e exemplos em políticas públicas* e *passo a passo*: um slide por passo, com o **print do console do R** (comando em azul + output real) e a caixa **Como ler**, com o **corte da literatura** quando existe (ex.: |SMD| < 0,10, Austin 2009; p < 0,05; poder de 80%, Cohen 1988). Leia de cima para baixo: "o que eu faço, o que aparece, o que concluo". IV e controle sintético: só ideia, características, exemplos e gráficos (o passo a passo completo está nos scripts 06 e 07).
 **Ritmo:** se atrasar, pule "Região comum e resultado" (PSM) e "Teste de manipulação" (RDD), e use os passo a passo como síntese.
 
 ## Antes de começar (13h30 às 14h00)
@@ -34,7 +34,7 @@
 | Min | O que fazer |
 |---|---|
 | 0 a 5 | Aleatorização; **características e exemplos**; balanço e Monte Carlo |
-| 5 a 12 | **Passo a passo** (2 slides) com o script 02 aberto: balanço, efeito, precisão; adesão, atrito, poder |
+| 5 a 12 | **Passo a passo** (4 slides): balanço (SMD), `t.test` (atenção ao sinal negativo), regressão com covariáveis (ler só a linha `tratamento`), `power.t.test` |
 | 12 a 23 | **Exercício 1** (10 min) |
 | 23 a 25 | Correção rápida |
 
@@ -43,19 +43,18 @@
 | Min | O que fazer |
 |---|---|
 | 0 a 6 | Ideia; maldição da dimensionalidade; **características e exemplos** |
-| 6 a 18 | **Passo a passo** (2 slides) com o script 03: balanço antes, região comum, pareamento, balanço depois, ATT, robustez |
+| 6 a 18 | **Passo a passo** (4 slides): `glm` do escore, região comum (`tapply`), balanço antes/depois com SMD e razão de variâncias, ATT e robustez |
 | 18 a 20 | Região comum e resultado (figuras); pressuposto |
 
 O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 30`.
 
-## Diferença-em-diferenças (15:10 a 15:35, 25 min) · script 04 · Exercício 2
+## Diferença-em-diferenças (15:10 a 15:35, 25 min) · script 04
 
 | Min | O que fazer |
 |---|---|
-| 0 a 5 | Ideia, fórmula, exemplo numérico (80/125 e 90/120: DD = 15); **características e exemplos** (Maria da Penha, Card e Krueger) |
-| 5 a 13 | **Passo a passo** (2 slides) com o script 04: tendências, quatro médias, DD, regressão, estudo de eventos, placebo; tendências não paralelas |
-| 13 a 23 | **Exercício 2** (8 a 10 min) |
-| 23 a 25 | Correção; pergunta sobre a Lei Maria da Penha |
+| 0 a 7 | Ideia, fórmula, exemplo numérico (80/125 e 90/120: DD = 15); **características e exemplos** (Maria da Penha, Card e Krueger); gráfico de tendências |
+| 7 a 20 | **Passo a passo** (4 slides): quatro médias (`aggregate`), regressão com interação, `feols` com cluster, estudo de eventos (pré com p > 0,05) |
+| 20 a 25 | Tendências não paralelas (R$ 420); pergunta sobre a Lei Maria da Penha |
 
 ## ☕ Intervalo (15:35 a 16:05, 30 min)
 
@@ -64,26 +63,24 @@ O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 
 | Min | O que fazer |
 |---|---|
 | 0 a 5 | Ideia do corte (R$ 77 e R$ 78); **características e exemplos** |
-| 5 a 18 | **Passo a passo** (2 slides) com o script 05: gráfico, regressão local, janela; covariável, placebo, manipulação |
+| 5 a 18 | **Passo a passo** (3 slides): regressão local (ler `elegivel`), tabela de janelas, covariável e contagens perto do corte |
 | 18 a 20 | Efeito local: não extrapolar |
 
 ## Variáveis instrumentais (16:25 a 16:37, 12 min) · script 06
 
 | Min | O que fazer |
 |---|---|
-| 0 a 3 | Ideia: o esquema Z, D, Y e a motivação não observada |
-| 3 a 5 | **Características e exemplos** (Oregon, Colômbia, loteria do alistamento) |
-| 5 a 10 | **Passo a passo** (2 slides): sem instrumento, balanço, primeiro estágio, forma reduzida, IV, compliers |
-| 10 a 12 | Quando falha: instrumento fraco e exclusão violada (figura) |
+| 0 a 4 | Ideia: o esquema Z, D, Y e a motivação não observada |
+| 4 a 7 | **Características e exemplos** (Oregon, Colômbia, loteria do alistamento) |
+| 7 a 12 | **Gráficos**: primeiro estágio (38% → 75%) e resumo (ITT 107, IV 297, ingênua 525, exclusão violada 574). Indicar o script 06 para o passo a passo |
 
 ## Controle sintético (16:37 a 16:49, 12 min) · script 07
 
 | Min | O que fazer |
 |---|---|
 | 0 a 3 | Ideia: uma unidade tratada; trajetórias |
-| 3 a 5 | **Características e exemplos** (Califórnia, País Basco) |
-| 5 a 11 | **Passo a passo** (2 slides): pesos, ajuste pré, lacuna, placebos |
-| 11 a 12 | Limites: ajuste pré ruim, poucos doadores, choques específicos |
+| 3 a 6 | **Características e exemplos** (Califórnia, País Basco) |
+| 6 a 12 | **Gráficos**: ajuste pré e lacuna (−4,6); placebos (p = 0,05). Indicar o script 07 para o passo a passo |
 
 ## Como escolher a técnica (16:49 a 16:55, 6 min)
 

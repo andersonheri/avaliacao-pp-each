@@ -2,6 +2,7 @@
 % EXPERIMENTO CONTROLADO (14:25 a 14:50)   [Script 02 | Exercício 1]
 % =============================================================================
 \section[Experimento]{Experimento controlado}
+\subsection{Ideia e exemplos}
 
 \begin{frame}{O ``padrão ouro'': a aleatorização}
   \centering
@@ -28,7 +29,7 @@
         {efeito médio (ATE); ITT se a adesão é imperfeita}
         {desenho \textbf{antes} da política; amostra com poder estatístico}
         {recursos escassos, pilotos, expansão em fases}
-  \vspace{0.15cm}
+  \vspace{0.05cm}
   \textbf{\footnotesize\color{azul}Exemplos em políticas públicas}\par
     \scriptsize
     \begin{itemize}
@@ -36,7 +37,6 @@
       \item \textbf{México:} Progresa, localidades sorteadas para entrar primeiro (Gertler, 2004; Schultz, 2004); Seguro Popular, gastos com saúde caíram 23\% (King et al., 2009).
       \item \textbf{Hipotético (nosso Qualifica):} sorteio das vagas excedentes de um curso de qualificação municipal.
     \end{itemize}
-  
 \end{frame}
 
 \begin{frame}{Por que funciona? Os grupos ficam equilibrados}
@@ -51,26 +51,89 @@
   \footnotesize O sorteio acerta \emph{em média} (301); a autosseleção erra \alert{sempre para o mesmo lado} (587). Verdade: 300.
 \end{frame}
 
-\begin{frame}{Passo a passo: experimento (1 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{1}{Compare tratados e controles \textbf{antes} do programa (SMD)}{idade 0,05\newline mulher 0,01\newline escolaridade 0,01\newline renda antes $-0{,}02$}{Todos $|\text{SMD}|<0{,}10$: o sorteio equilibrou os grupos. \textbf{Siga.} Se não, revise o sorteio.}
-    \linha{2}{Estime o efeito: diferença de médias (\cod{t.test}) ou regressão}{efeito = 295,2\newline EP = 11,4\newline IC 95\%: 273 a 318}{Participantes ganham ${\approx}$ R\$ 295 a mais. O IC não inclui zero: efeito \textbf{significativo}.}
-    \ultimalinha{3}{Reestime com covariáveis (só para ganhar precisão)}{efeito = 302,1\newline EP = 3,4}{Mesma magnitude, EP três vezes menor. O viés já estava resolvido pelo sorteio.}
-  \end{tabular}}
-  \caixaconclusao{o Qualifica aumenta a renda em cerca de R\$ 300 (IC 273 a 318). Dados simulados do script 02.}
+\subsection{Passo a passo}
+
+\begin{frame}[fragile]{Experimento, passo 1: o sorteio equilibrou os grupos?}
+\fazer{comparar tratamento e controle \textbf{antes} do programa (script 02).}
+\begin{consoleR}
+@@> sapply(c("idade", "mulher", "escolaridade", "renda_antes"),
+@@+        function(v) round(smd(dados[[v]], dados$tratamento), 3))
+       idade       mulher escolaridade  renda_antes
+       0.049        0.006        0.014       -0.018
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item Cada número é a \textbf{diferença padronizada de médias} (SMD) entre tratados e controles, em desvios-padrão.
+    \item \corte{$|\text{SMD}|<0{,}10$ indica balanço adequado (Austin, 2009).} Aqui, todos ${\le}\,0{,}05$.
+    \item Decisão: o sorteio funcionou, \textbf{siga} para a estimação. Se alguma passasse de 0,10, revise o sorteio ou controle por ela.
+  \end{itemize}
+\end{leitura}
 \end{frame}
 
-\begin{frame}{Passo a passo: experimento (2 de 2)}
-  \relax{\scriptsize\setlength{\tabcolsep}{2.5pt}\renewcommand{\arraystretch}{1.1}\begin{tabular}{@{}cP{2.55cm}P{2.75cm}P{3.6cm}@{}}
-    \toprule
-    \cabecalho{Como ler e decidir}
-    \linha{4}{Cheque a \textbf{adesão} (\emph{compliance})}{adesão de 70\%\newline ITT = 193\newline efeito sobre aderentes = 293}{Relate o \textbf{ITT} (efeito da \emph{oferta}) e o efeito sobre quem aderiu.}
-    \linha{5}{Cheque o \textbf{atrito}}{3,6\% saíram\newline se saem só os piores: 345}{Compare quem saiu em cada grupo. Atrito seletivo faz o viés voltar.}
-    \ultimalinha{6}{Confira o \textbf{poder} (\cod{power.t.test})}{R\$ 300: 34 por grupo\newline R\$ 100: 291 por grupo}{Efeitos pequenos exigem amostras grandes. Calcule \textbf{antes} do experimento.}
-  \end{tabular}}
-  \caixaconclusao{adesão incompleta e atrito mudam \emph{o que} o número significa.}
+\begin{frame}[fragile]{Experimento, passo 2: estimar o efeito}
+\fazer{comparar as médias de renda dos dois grupos (teste $t$).}
+\begin{consoleRpeq}
+@@> t.test(renda_exp ~ tratamento, data = dados)
+    Welch Two Sample t-test
+data:  renda_exp by tratamento
+t = -25.859, df = 4994.8, p-value < 2.2e-16
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -317.5637 -272.8064
+sample estimates:
+mean in group 0 mean in group 1
+       2032.597        2327.782
+\end{consoleRpeq}
+\begin{leitura}
+  \begin{itemize}
+    \item Efeito $=$ \texttt{mean in group 1} $-$ \texttt{mean in group 0} $=2.327{,}8-2.032{,}6=$ \destaque{R\$ 295}. O R calcula ``grupo 0 $-$ grupo 1'': por isso $t$ e IC saem \textbf{negativos}.
+    \item \corte{$p<0{,}05$ (equivale a $|t|>1{,}96$) e IC 95\% sem o zero.} Aqui $p<2{,}2\times10^{-16}$; IC de 273 a 318. Relate o tamanho e o IC, não só o $p$ (Wasserstein e Lazar, 2016).
+  \end{itemize}
+\end{leitura}
+\end{frame}
+
+\begin{frame}[fragile]{Experimento, passo 3: ganhar precisão com covariáveis}
+\fazer{regressão com o tratamento e as covariáveis medidas \textbf{antes} do programa.}
+\begin{consoleR}
+@@> m <- lm(renda_exp ~ tratamento + escolaridade + idade + mulher + renda_antes,
+@@+         data = dados)
+@@> round(summary(m)$coefficients, 3)
+             Estimate Std. Error t value Pr(>|t|)
+(Intercept)    83.452     10.431   8.000    0.000
+tratamento    302.068      3.413  88.506    0.000
+escolaridade   -0.853      0.815  -1.046    0.296
+idade           0.116      0.143   0.816    0.414
+mulher         -0.786      3.451  -0.228    0.820
+renda_antes     1.011      0.006 158.389    0.000
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item Leia \textbf{só a linha \texttt{tratamento}}: 302,1 (EP 3,4). Mesmo efeito do passo 2, com erro-padrão \textbf{3 vezes menor} (era 11,4).
+    \item As outras linhas são controles e \textbf{não} têm interpretação causal (a ``falácia da tabela 2'': Westreich e Greenland, 2013).
+    \item Nunca inclua variáveis medidas \emph{depois} do programa.
+  \end{itemize}
+\end{leitura}
+\end{frame}
+
+\begin{frame}[fragile]{Experimento, passo 4: quantas pessoas eu preciso?}
+\fazer{calcular, \textbf{antes} do experimento, o tamanho de amostra para detectar R\$ 100.}
+\begin{consoleR}
+@@> power.t.test(delta = 100, sd = 430, sig.level = 0.05, power = 0.80)
+     Two-sample t test power calculation
+              n = 291.2151
+          delta = 100
+             sd = 430
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+NOTE: n is number in *each* group
+\end{consoleR}
+\begin{leitura}
+  \begin{itemize}
+    \item \texttt{n = 291.2}: são \textbf{292 pessoas por grupo} (arredonde para cima), 584 no total. Para detectar R\$ 300, bastam 34 por grupo.
+    \item \corte{poder de 80\% e significância de 5\% (Cohen, 1988).} \texttt{sd} vem de dados anteriores ou de um piloto.
+  \end{itemize}
+\end{leitura}
 \end{frame}
 
 \begin{frame}{Exercício 1: viés de seleção e sorteio (12 min)}
