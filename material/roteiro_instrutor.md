@@ -1,6 +1,6 @@
 # Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula + 30 min de intervalo, divididos em **100 min de técnicas quantitativas** (14:00 a 15:40) e **100 min de avaliação qualitativa e métodos mistos** (16:10 a 17:50). Slides: `slides/main.pdf` (tema Berlin, 86 páginas). Não há exercícios: os scripts são demonstrações.
+**Total:** 240 min = 210 min de aula + 30 min de intervalo, divididos em **100 min de técnicas quantitativas** (14:00 a 15:40) e **100 min de avaliação qualitativa e métodos mistos** (16:10 a 17:50). Slides: `slides/main.pdf` (tema Berlin, 85 páginas). Não há exercícios: os scripts são demonstrações.
 **Formato de cada técnica quantitativa:** ideia, *características e exemplos em políticas públicas* e *passo a passo*: um slide por passo, com o **print do console do R** (comando em azul + output essencial) e, no mesmo slide, a caixa **Como ler** (onde olhar e o corte da literatura, ex.: |SMD| < 0,10, Austin 2009). O PSM tem também os gráficos da região comum, do *love plot* e do resumo.
 **Ritmo:** se atrasar, pule "Teste de manipulação" (RDD), "Resultado e robustez" (PSM) e os slides "Outras técnicas (3) a (5)".
 
@@ -81,8 +81,8 @@ O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 
 | 8 a 18 | O qualitativo em cada etapa; desenho da pesquisa; visão geral das técnicas | Desenho |
 | 18 a 42 | Observação (Adato); entrevistas e roteiro; grupos focais (Hunter e Sugiyama); documentos, estudos de caso e *process tracing* | Coleta |
 | 42 a 50 | **Ética**: TCLE, anonimato, LGPD, Resolução CNS 510/2016, relação de poder | Ética |
-| 50 a 70 | Da fala ao tema; **codificação na prática**; análise temática em seis fases; análise de conteúdo e software | Análise |
-| 70 a 78 | Rigor e críticas; critérios de qualidade (Lincoln e Guba) | Rigor |
+| 50 a 66 | **Análise temática em seis fases**; análise de conteúdo (Bardin) e software. Use o "Como relatar" e o passo a passo para voltar à codificação, se perguntarem | Análise |
+| 66 a 78 | Rigor e críticas; critérios de qualidade (Lincoln e Guba) | Rigor |
 | 78 a 92 | **Métodos mistos**: por que combinar; desenhos; quadro conjunto (*joint display*); exemplos (Patton, Chile, Índia) | Mistos |
 | 92 a 100 | **Passo a passo** de uma avaliação qualitativa (2 slides) e como relatar a avaliação | Prática |
 
