@@ -1,6 +1,6 @@
 # Roteiro do instrutor (minuto a minuto)
 
-**Total:** 240 min = 210 min de aula + 30 min de intervalo, divididos em **100 min de técnicas quantitativas** (14:00 a 15:40) e **100 min de avaliação qualitativa e métodos mistos** (16:10 a 17:50). Slides: `slides/main.pdf` (tema Berlin, 83 páginas). Não há exercícios: os scripts são demonstrações.
+**Total:** 240 min = 210 min de aula + 30 min de intervalo, divididos em **100 min de técnicas quantitativas** (14:00 a 15:40) e **100 min de avaliação qualitativa e métodos mistos** (16:10 a 17:50). Slides: `slides/main.pdf` (tema Berlin, 84 páginas). Não há exercícios: os scripts são demonstrações.
 **Formato de cada técnica quantitativa:** ideia, *características e exemplos em políticas públicas* e *passo a passo*: um slide por passo, com o **print do console do R** (comando em azul + output essencial) e, no mesmo slide, a caixa **Como ler** (onde olhar e o corte da literatura, ex.: |SMD| < 0,10, Austin 2009). O PSM tem também os gráficos da região comum, do *love plot* e do resumo.
 **Ritmo:** se atrasar, pule "Teste de manipulação" (RDD), "Resultado e robustez" (PSM) e os slides "Outras técnicas (3) a (5)".
 
@@ -43,7 +43,7 @@
 | Min | O que fazer |
 |---|---|
 | 0 a 4 | Ideia; maldição da dimensionalidade; **características e exemplos** |
-| 4 a 13 | **Passo a passo** (3 slides + gráficos): escore e sobreposição (região comum), balanço (SMD; *love plot*), ATT e IC |
+| 4 a 13 | **Passo a passo** (4 slides + gráficos): a logit e como ler os coeficientes (sinal), escore e sobreposição (região comum), balanço (SMD; *love plot*), ATT e IC |
 | 13 a 15 | Resultado e robustez; pressuposto |
 
 O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 30`.

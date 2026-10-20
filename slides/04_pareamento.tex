@@ -49,19 +49,33 @@
 
 \subsection{Passo a passo}
 
-\begin{frame}[fragile]{Pareamento, passo 1: existe com quem comparar?}
-\begin{consoleR}
+\begin{frame}[fragile]{Pareamento, passo 1: quem tende a participar? (a logit)}
+\begin{consoleRpeq}
 @@> modelo_ps <- glm(participa ~ escolaridade + idade + mulher +
 @@+                  renda_antes, data = dados, family = binomial)
+@@> round(coef(modelo_ps), 4)
+ (Intercept) escolaridade        idade       mulher  renda_antes
+     -4.6114      -0.0480      -0.0235       0.1883       0.0026
+\end{consoleRpeq}
+\begin{leitura}
+  \begin{itemize}\setlength{\itemsep}{1pt}
+    \item \rot{Por que logit:} \texttt{participa} só vale 0 ou 1; a logit mantém a previsão entre 0 e 1, como toda probabilidade.
+    \item \rot{Onde olhar:} o \textbf{sinal} de cada coeficiente. Positivo: aumenta a chance de participar (\texttt{renda\_antes}, \texttt{mulher}); negativo: diminui (\texttt{idade}, \texttt{escolaridade}). Todos com $p<0{,}05$. Não leia o tamanho: está na escala logit.
+  \end{itemize}
+\end{leitura}
+\end{frame}
+
+\begin{frame}[fragile]{Pareamento, passo 2: existe com quem comparar?}
+\begin{consoleRpeq}
 @@> dados$ps <- predict(modelo_ps, type = "response")
 @@> round(sapply(split(dados$ps, dados$participa), range), 2)
         0    1
 [1,] 0.01 0.05
 [2,] 0.91 0.90
-\end{consoleR}
+\end{consoleRpeq}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} o escore é a probabilidade de participar. Colunas: \texttt{0} não participantes, \texttt{1} participantes; linhas: mínimo e máximo. As faixas \textbf{se sobrepõem} (0,05 a 0,90 contra 0,01 a 0,91): há com quem comparar.
+    \item \rot{Onde olhar:} o \texttt{predict} converte a logit em probabilidade de participar: o \textbf{escore}. Colunas: \texttt{0} não participantes, \texttt{1} participantes; linhas: mínimo e máximo. As faixas \textbf{se sobrepõem} (0,05 a 0,90 contra 0,01 a 0,91): há com quem comparar.
     \item \rot{Corte:} excluir escores abaixo de 0,1 ou acima de 0,9 se faltar sobreposição (Crump et al., 2009).
   \end{itemize}
 \end{leitura}
@@ -73,7 +87,7 @@
   \footnotesize Faixa verde: onde há participantes \textbf{e} não participantes com o mesmo escore. É só nela que a comparação é confiável.
 \end{frame}
 
-\begin{frame}[fragile]{Pareamento, passo 2: os pares ficaram parecidos?}
+\begin{frame}[fragile]{Pareamento, passo 3: os pares ficaram parecidos?}
 \begin{consoleR}
 @@> balanco_psm[, 2:3]
               antes depois
@@ -97,7 +111,7 @@ motivacao     0.763  0.303
   \footnotesize Cada ponto é uma característica. \textbf{Antes} do pareamento (distante de zero) e \textbf{depois} (dentro da faixa de $\pm0{,}10$).
 \end{frame}
 
-\begin{frame}[fragile]{Pareamento, passo 3: qual o efeito e quão certo ele é?}
+\begin{frame}[fragile]{Pareamento, passo 4: qual o efeito e quão certo ele é?}
 \begin{consoleR}
 @@> round(att_a, 1)
 [1] 297.3
