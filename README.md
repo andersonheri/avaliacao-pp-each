@@ -85,6 +85,10 @@ Para regenerar as figuras antes: `Rscript scripts/99_gerar_todas_figuras.R` (na 
 - Testado com R 4.6.1. Funciona só com `ggplot2` instalado e roda em segundos (o bootstrap do script 03 leva ~10 s).
 - Os dados são **100% simulados**. Os exemplos de políticas reais citados nos slides vêm da literatura indicada nas leituras finais.
 
+## Referências e materiais de estudo
+
+Veja [`REFERENCIAS.md`](REFERENCIAS.md): leituras do básico ao avançado, textos aplicados (com foco no Brasil, Ciência Política e Administração Pública), cursos e vídeos. Cada item indica se foi conferido.
+
 ## Declaração de uso de inteligência artificial
 
 Este material foi elaborado com o apoio de uma ferramenta de inteligência artificial generativa (Claude, da Anthropic). A IA ajudou na construção dos **scripts em R e das simulações**, dos **exemplos** usados nos slides, das **imagens** dos slides (gráficos gerados pelos scripts) e na **checagem de gramática e de redação**. O conteúdo, as escolhas didáticas e a revisão final são do autor, que se responsabiliza pelo material. Recomenda-se conferir as referências citadas antes de reutilizá-las.
