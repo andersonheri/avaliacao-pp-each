@@ -39,55 +39,56 @@
 
 \begin{frame}[fragile]{RDD, passo 1: de quanto é o salto no corte?}
 \begin{consoleR}
-@@> janela <- d[abs(d$x) <= 15, ]
-@@> m <- lm(freq ~ elegivel * x, data = janela)
-@@> round(summary(m)$coefficients["elegivel", ], 2)
-  Estimate Std. Error    t value   Pr(>|t|)
-      6.18       0.90       6.90       0.00
+@@> rd <- rdrobust(y = d$freq, x = -d$x)
+@@> with(rd, round(data.frame(efeito = coef[1], ep = se[1],
+@@+       ic_inf = ci[3, 1], ic_sup = ci[3, 2],
+@@+       h = bws[1, 1]), 2))
+  efeito   ep ic_inf ic_sup     h
+1   6.75 0.93   5.03   9.19 16.78
 \end{consoleR}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} \texttt{x} é a renda menos 77 (o corte é $x=0$); \texttt{janela} usa famílias entre R\$ 62 e R\$ 92. \texttt{Estimate} é o salto: \destaque{6,2 pontos} de frequência escolar (verdade: 6), EP 0,9.
-    \item \rot{Corte:} $p<0{,}05$ ($t$ grande, $p\approx 0$).
+    \item \rot{Onde olhar:} o \texttt{rdrobust} escolhe a janela sozinho (\texttt{h} $=16{,}8$) e estima o salto: \destaque{6,75 pontos} de frequência escolar (verdade: 6), EP 0,93. Usamos \texttt{x = -d\$x} porque os elegíveis estão \emph{abaixo} do corte.
+    \item \rot{Corte:} IC robusto de 5,0 a 9,2, sem zero (Calonico, Cattaneo e Titiunik, 2014).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
 \begin{frame}[fragile]{RDD, passo 2: o resultado depende da janela?}
 \begin{consoleRpeq}
-@@> round(sens[sens$h %in% c(5, 15, 40), ], 2)
-   h efeito   ep    n   li   ls
-2  5   6.59 1.56  440 3.54 9.65
-5 15   6.18 0.90 1271 4.42 7.93
-8 40   5.64 0.57 2833 4.52 6.77
-@@> sapply(c(h5 = 5, h15 = 15, h40 = 40), function(h)
-@@+        table(d$elegivel[abs(d$x) <= h]))
-   h5 h15  h40
-0 227 655 1684
-1 213 616 1149
+@@> t(sapply(c(5, 15, 40), function(h) {
+@@+   r <- rdrobust(d$freq, -d$x, h = h)
+@@+   round(c(h = h, efeito = r$coef[1], ep = r$se[1],
+@@+           controle = r$N_h[1], tratamento = r$N_h[2]), 2)
+@@+ }))
+      h efeito   ep controle tratamento
+[1,]  5   7.21 1.59      227        213
+[2,] 15   6.95 0.98      655        616
+[3,] 40   5.79 0.64     1684       1149
 \end{consoleRpeq}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} \texttt{h} é a janela em R\$; \texttt{n}, as famílias; a tabela de baixo separa controle (\texttt{0}) e tratamento (\texttt{1}). Janela pequena: poucas famílias (ep 1,56); grande: mais precisão (ep 0,57).
-    \item \rot{Corte:} várias janelas (Lee e Lemieux, 2010); IC sem zero.
+    \item \rot{Onde olhar:} \texttt{h} é a janela em R\$; \texttt{controle} e \texttt{tratamento} são as famílias de cada lado dentro dela. O efeito fica entre 5,8 e 7,2: não depende da janela.
+    \item \rot{Corte:} mostrar várias janelas (Lee e Lemieux, 2010).
   \end{itemize}
 \end{leitura}
 \end{frame}
 
 \begin{frame}[fragile]{RDD, passo 3: os dois lados do corte são comparáveis?}
 \begin{consoleR}
-@@> m2 <- lm(idade_mae ~ elegivel * x, data = janela)
-@@> round(summary(m2)$coefficients["elegivel", ], 2)
-  Estimate Std. Error    t value   Pr(>|t|)
-      0.07       0.77       0.09       0.93
-@@> table(cut(d$renda, breaks = c(62, 67, 72, 77, 82, 87, 92)))
-(62,67] (67,72] (72,77] (77,82] (82,87] (87,92]
-    197     206     213     227     190     238
+@@> rc <- rdrobust(d$idade_mae, -d$x)
+@@> round(c(salto = rc$coef[1], ep = rc$se[1],
+@@+         p = rc$pv[3]), 2)
+salto    ep     p
+-0.13  0.76  0.85
+@@> rd_dens <- rddensity(-d$x)
+@@> round(rd_dens$test$p_jk, 3)
+[1] 0.967
 \end{consoleR}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} (1) a idade da mãe não deve ``saltar'' no corte: salto $0{,}07$, $p=0{,}93$. (2) a contagem por faixa não deve acumular logo abaixo do corte: 213 e 227, normal.
-    \item \rot{Corte:} covariáveis sem salto e densidade contínua no corte (McCrary, 2008).
+    \item \rot{Onde olhar:} (1) a idade da mãe não deve ``saltar'': salto $-0{,}13$, $p=0{,}85$. (2) a densidade da renda não deve ter salto: $p=0{,}97$, sem acúmulo logo abaixo do corte.
+    \item \rot{Corte:} aqui queremos $p$ \emph{alto} (Cattaneo, Jansson e Ma, 2020).
   \end{itemize}
 \end{leitura}
 \end{frame}

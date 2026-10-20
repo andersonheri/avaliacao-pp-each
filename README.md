@@ -48,7 +48,7 @@ O roteiro minuto a minuto está em [`material/roteiro_instrutor.md`](material/ro
 4. Abra `scripts/00_setup.R` e rode (instala o único pacote obrigatório, `ggplot2`).
 5. Abra o script do bloco (ex.: `scripts/02_experimento_rct.R`) e rode **linha a linha** com `Ctrl+Enter`. Cada passo está comentado; no fim há uma seção "PARA EXPLORAR".
 
-Pacotes **opcionais**: `MatchIt`, `rdrobust`, `fixest` (nada depende deles).
+Pacotes **opcionais**: `MatchIt`, `fixest`. O script 05 (RDD) usa `rdrobust` e `rddensity`, que ele instala sozinho na primeira vez (precisa de internet).
 
 ## Estrutura do repositório
 

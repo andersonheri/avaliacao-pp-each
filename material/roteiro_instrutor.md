@@ -101,7 +101,7 @@ O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 
 - **Experimento:** R$ 295, IC 273 a 318 (verdade 300). Com covariáveis, ~R$ 302 (EP 3,4); no script 02, também o poder (34 por grupo para R$ 300; 291 para R$ 100).
 - **PSM:** R$ 297 com renda antes no modelo (IC 282 a 314); R$ 476 sem ela. A motivação (não observada) fica com SMD 0,30.
 - **DiD:** R$ 300; EP 19,9 (ingênuo) e 7,8 (agrupado por pessoa); com tendências não paralelas, R$ 420 (placebo +47).
-- **RDD:** 6,2 p.p. (verdade 6); janela ±15; sem salto na idade da mãe.
+- **RDD (com `rdrobust`):** 6,75 p.p. (EP 0,93; IC robusto 5,0 a 9,2; janela ótima 16,8; verdade 6). Janelas 5, 15 e 40: 7,2, 6,9 e 5,8. Sem salto na idade da mãe (p = 0,85) e teste de densidade p = 0,97. A regressão local "na mão" (script, passos didáticos) dá 6,18 na janela ±15. Lembrar: `x = -d$x`, porque os elegíveis estão abaixo do corte.
 - **IV (script 06):** ingênua 525; ITT 107; IV 297 (IC 229 a 366); com exclusão violada, 574.
 - **Controle sintético (script 07):** efeito médio −4,6 (verdade −5); p de permutação 0,05.
 

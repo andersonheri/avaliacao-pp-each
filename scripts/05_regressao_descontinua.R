@@ -24,6 +24,18 @@
 
 source("scripts/00_setup.R")
 
+# Pacotes do RDD (usados no "caminho rápido" do curso; instalam só na primeira vez):
+#   rdrobust  = estima o salto, escolhe a janela e calcula erros-padrão robustos
+#   rddensity = teste de manipulação da variável de corte (substitui o histograma)
+for (pkg in c("rdrobust", "rddensity")) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    message("Instalando o pacote ", pkg, " (só na primeira vez)...")
+    install.packages(pkg)
+  }
+}
+library(rdrobust)
+library(rddensity)
+
 # -----------------------------------------------------------------------------
 # PASSO 1: O mundo simulado: transferência de renda e frequência escolar
 # -----------------------------------------------------------------------------
@@ -59,6 +71,39 @@ g_rdd <- ggplot() +
        x = "Renda per capita da família (R$)", y = "Frequência escolar (%)")
 print(g_rdd)
 salvar_fig(g_rdd, "05_rdd_dispersao")
+
+# =============================================================================
+# CAMINHO RÁPIDO COM rdrobust (é o que os slides mostram)
+# =============================================================================
+# ATENÇÃO AO SINAL: o rdrobust assume que o tratamento está ACIMA do corte. Aqui os
+# elegíveis estão ABAIXO (renda <= 77), então usamos x = -d$x (inverte o eixo).
+# Assim o efeito sai positivo (+6) e o "lado direito" passa a ser o dos elegíveis.
+
+# R1. O salto no corte. O rdrobust escolhe a janela ótima sozinho (h) e calcula o IC robusto.
+rd <- rdrobust(y = d$freq, x = -d$x)
+with(rd, round(data.frame(efeito = coef[1], ep = se[1],
+                          ic_inf = ci[3, 1], ic_sup = ci[3, 2], h = bws[1, 1]), 2))
+# summary(rd)   # (versão completa da saída)
+
+# R2. O resultado depende da janela? Fixamos h manualmente e comparamos.
+#     controle = famílias não elegíveis na janela; tratamento = elegíveis.
+t(sapply(c(5, 15, 40), function(h) {
+  r <- rdrobust(d$freq, -d$x, h = h)
+  round(c(h = h, efeito = r$coef[1], ep = r$se[1],
+          controle = r$N_h[1], tratamento = r$N_h[2]), 2)
+}))
+
+# R3. Validade do desenho: (a) uma característica pré-tratamento não deve "saltar"
+#     (a idade da mãe); (b) a densidade da renda não deve ter salto no corte
+#     (teste de manipulação, Cattaneo, Jansson e Ma, 2020). Queremos NÃO rejeitar (p alto).
+rc <- rdrobust(d$idade_mae, -d$x)
+round(c(salto = rc$coef[1], ep = rc$se[1], p = rc$pv[3]), 2)
+rd_dens <- rddensity(-d$x)
+round(rd_dens$test$p_jk, 3)
+
+# =============================================================================
+# PASSOS DIDÁTICOS: o que o rdrobust faz "por dentro" (leitura opcional)
+# =============================================================================
 
 # -----------------------------------------------------------------------------
 # PASSO 3: Estimativas ingênuas (e por que erram)
@@ -188,16 +233,10 @@ Fuzzy RDD: salto no resultado =", round(salto_resultado, 2),
 ")
 
 # -----------------------------------------------------------------------------
-# PASSO 8 (OPCIONAL): A versão "profissional": pacote rdrobust
+# PASSO 8: Saída completa do rdrobust (versão detalhada do caminho rápido)
 # -----------------------------------------------------------------------------
-# rdrobust escolhe a janela ótima automaticamente e calcula erros-padrão robustos.
-if (tem_pacote("rdrobust")) {
-  library(rdrobust)
-  resultado <- rdrobust(y = d$freq, x = d$renda, c = corte)
-  summary(resultado)
-} else {
-  message("rdrobust não instalado (install.packages('rdrobust')). Tudo bem: a regressão local acima faz o essencial.")
-}
+# Lembre do sinal: x = -d$x (os elegíveis estão abaixo do corte).
+summary(rd)
 
 # -----------------------------------------------------------------------------
 # RESUMO PARA DISCUSSÃO
