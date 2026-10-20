@@ -16,6 +16,23 @@
 #   qual é a pasta raiz) e rodar o script desejado, linha a linha (Ctrl+Enter).
 # =============================================================================
 
+# ---- 0. Pasta raiz do projeto ------------------------------------------------
+# Os scripts leem arquivos com caminhos como "scripts/funcoes_dgp.R", então o R
+# precisa estar na pasta raiz do projeto (a que contém "scripts/"). O jeito certo
+# é abrir "avaliacao-pp.Rproj". Se você abriu só o script, tentamos achar a raiz.
+if (!file.exists("scripts/funcoes_dgp.R")) {
+  if (file.exists("funcoes_dgp.R")) {
+    setwd("..")                                   # você estava dentro de scripts/
+  } else if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+    caminho <- tryCatch(rstudioapi::getSourceEditorContext()$path, error = function(e) "")
+    if (nzchar(caminho)) setwd(dirname(dirname(caminho)))   # pasta do script -> raiz
+  }
+}
+if (!file.exists("scripts/funcoes_dgp.R")) {
+  stop("Não achei a pasta do projeto. Use File > Open Project... e abra 'avaliacao-pp.Rproj'. ",
+       "Pasta atual do R: ", getwd(), call. = FALSE)
+}
+
 # ---- 1. Pacotes --------------------------------------------------------------
 # Obrigatório: só o ggplot2 (gráficos). Todo o resto é R "puro" (base R),
 # de propósito: assim vocês enxergam a lógica de cada técnica, sem "caixa-preta".
