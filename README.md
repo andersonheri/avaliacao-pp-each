@@ -87,8 +87,7 @@ Para regenerar as figuras antes: `Rscript scripts/99_gerar_todas_figuras.R` (na 
 
 ## Referências e materiais de estudo
 
-Veja [`REFERENCIAS.md`](REFERENCIAS.md): leituras do básico ao avançado, textos aplicados (com foco no Brasil, Ciência Política e Administração Pública), cursos e vídeos. Cada item indica se foi conferido.
-
+Veja [`REFERENCIAS.md`](REFERENCIAS.md) (também em [PDF](REFERENCIAS.pdf)): leituras do básico ao avançado, textos aplicados (com foco no Brasil, Ciência Política e Administração Pública), cursos e vídeos.
 ## Declaração de uso de inteligência artificial
 
 Este material foi elaborado com o apoio de uma ferramenta de inteligência artificial generativa (Claude, da Anthropic). A IA ajudou na construção dos **scripts em R e das simulações**, dos **exemplos** usados nos slides, das **imagens** dos slides (gráficos gerados pelos scripts) e na **checagem de gramática e de redação**. O conteúdo, as escolhas didáticas e a revisão final são do autor, que se responsabiliza pelo material. Recomenda-se conferir as referências citadas antes de reutilizá-las.
