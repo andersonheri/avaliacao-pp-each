@@ -54,17 +54,22 @@
 \end{frame}
 
 \begin{frame}[fragile]{RDD, passo 2: o resultado depende da janela?}
-\begin{consoleR}
+\begin{consoleRpeq}
 @@> round(sens[sens$h %in% c(5, 15, 40), ], 2)
    h efeito   ep    n   li   ls
 2  5   6.59 1.56  440 3.54 9.65
 5 15   6.18 0.90 1271 4.42 7.93
 8 40   5.64 0.57 2833 4.52 6.77
-\end{consoleR}
+@@> sapply(c(h5 = 5, h15 = 15, h40 = 40), function(h)
+@@+        table(d$elegivel[abs(d$x) <= h]))
+   h5 h15  h40
+0 227 655 1684
+1 213 616 1149
+\end{consoleRpeq}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Onde olhar:} \texttt{h} é a janela em R\$; \texttt{n} são as famílias; \texttt{li} e \texttt{ls} o IC de 95\%. Janela pequena: poucas famílias e muito parecidas (ep 1,56). Janela grande: mais precisão (ep 0,57), mas menos comparáveis.
-    \item \rot{Corte:} mostrar várias janelas (Lee e Lemieux, 2010). Aqui o efeito fica entre 5,6 e 6,6 e nenhum IC inclui zero.
+    \item \rot{Onde olhar:} \texttt{h} é a janela em R\$; \texttt{n}, as famílias; a tabela de baixo separa controle (\texttt{0}) e tratamento (\texttt{1}). Janela pequena: poucas famílias (ep 1,56); grande: mais precisão (ep 0,57).
+    \item \rot{Corte:} várias janelas (Lee e Lemieux, 2010); IC sem zero.
   \end{itemize}
 \end{leitura}
 \end{frame}
