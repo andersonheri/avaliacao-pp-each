@@ -82,9 +82,17 @@ salvar_fig(g_maldicao, "03_maldicao")
 # -----------------------------------------------------------------------------
 # Modelamos P(participa = 1 | características). Usamos só o que o avaliador
 # consegue observar: escolaridade, idade, sexo e a renda ANTES do programa.
+# POR QUE LOGIT? "participa" só vale 0 ou 1. A regressão logística (glm com
+# family = binomial) mantém a previsão entre 0 e 1, como toda probabilidade.
 modelo_ps <- glm(participa ~ escolaridade + idade + mulher + renda_antes,
                  data = dados, family = binomial)
-summary(modelo_ps)$coefficients
+round(summary(modelo_ps)$coefficients[-1, ], 4)   # [-1, ] tira o intercepto (não se interpreta)
+
+# COMO LER:
+#   - Estimate: olhe só o SINAL (o tamanho está na escala logit). Positivo = aumenta a
+#     chance de participar; negativo = diminui.
+#   - Pr(>|z|): o p-valor. p < 0,05 = a característica ajuda a prever quem participa (não é
+#     acaso). São essas diferenças que o escore usa para achar os "gêmeos".
 
 dados$ps  <- predict(modelo_ps, type = "response")   # probabilidade prevista (0 a 1)
 dados$lps <- qlogis(dados$ps)                         # mesma info, em escala logit (melhor p/ parear)

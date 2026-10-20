@@ -53,14 +53,17 @@
 \begin{consoleRpeq}
 @@> modelo_ps <- glm(participa ~ escolaridade + idade + mulher +
 @@+                  renda_antes, data = dados, family = binomial)
-@@> round(coef(modelo_ps), 4)
- (Intercept) escolaridade        idade       mulher  renda_antes
-     -4.6114      -0.0480      -0.0235       0.1883       0.0026
+@@> round(summary(modelo_ps)$coefficients[-1, ], 4)
+             Estimate Std. Error  z value Pr(>|z|)
+escolaridade  -0.0480     0.0155  -3.1063   0.0019
+idade         -0.0235     0.0028  -8.4700   0.0000
+mulher         0.1883     0.0660   2.8522   0.0043
+renda_antes    0.0026     0.0001  19.5414   0.0000
 \end{consoleRpeq}
 \begin{leitura}
   \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \rot{Por que logit:} \texttt{participa} só vale 0 ou 1; a logit mantém a previsão entre 0 e 1, como toda probabilidade.
-    \item \rot{Onde olhar:} o \textbf{sinal} de cada coeficiente. Positivo: aumenta a chance de participar (\texttt{renda\_antes}, \texttt{mulher}); negativo: diminui (\texttt{idade}, \texttt{escolaridade}). Todos com $p<0{,}05$. Não leia o tamanho: está na escala logit.
+    \item \rot{Onde olhar:} \texttt{Estimate} (só o \textbf{sinal}: $+$ aumenta a chance de participar, $-$ diminui) e \texttt{Pr(>|z|)}, o p-valor. (Logit: previsão entre 0 e 1.)
+    \item \rot{Por que o p importa:} $p<0{,}05$ (todos): a característica ajuda a prever quem participa, não é acaso. O escore usa isso para achar os ``gêmeos''.
   \end{itemize}
 \end{leitura}
 \end{frame}

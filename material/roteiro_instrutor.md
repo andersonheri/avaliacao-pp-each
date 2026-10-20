@@ -43,7 +43,7 @@
 | Min | O que fazer |
 |---|---|
 | 0 a 4 | Ideia; maldição da dimensionalidade; **características e exemplos** |
-| 4 a 13 | **Passo a passo** (4 slides + gráficos): a logit e como ler os coeficientes (sinal), escore e sobreposição (região comum), balanço (SMD; *love plot*), ATT e IC |
+| 4 a 13 | **Passo a passo** (4 slides + gráficos): a logit e como ler os coeficientes (sinal e p-valor: p < 0,05 = a característica ajuda a prever quem participa), escore e sobreposição (região comum), balanço (SMD; *love plot*), ATT e IC |
 | 13 a 15 | Resultado e robustez; pressuposto |
 
 O bootstrap (`B = 100`) leva uns 10 s. Para a demonstração, pode-se usar `B = 30`.
