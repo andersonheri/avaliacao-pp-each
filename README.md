@@ -1,4 +1,4 @@
-# Técnicas de Avaliação de Políticas Públicas: minicurso com simulações em R
+# Técnicas de Avaliação em Políticas Públicas: minicurso com simulações em R
 
 Minicurso do **Seminário Discente 2026**, Programa de Pós-Graduação em Gestão de Políticas Públicas (PPGGP), EACH/USP.
 **20 de outubro de 2026, 14h às 18h, online** (4 horas, com intervalo de 30 min).
